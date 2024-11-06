@@ -2,6 +2,7 @@ import Container from "./components/Container";
 import Divider from "./components/Divider";
 import FeaturedArticle from "./components/FeaturedArticle";
 import FeaturedEvent from "./components/FeaturedEvent";
+import Footer from "./components/Footer";
 import Header from "./components/Header";
 import HeroImage from "./components/HeroImage";
 import Video from "./components/Video";
@@ -28,6 +29,7 @@ function App() {
           <FeaturedEvent />
         </Container>
       </div>
+      <Footer></Footer>
     </div>
   );
 }
