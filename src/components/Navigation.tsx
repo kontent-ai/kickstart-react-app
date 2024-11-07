@@ -9,7 +9,7 @@ const Navigation: FC = () => {
 
   return (
     <nav>
-      <menu className="flex gap-[60px] items-center list-none">
+      <menu className="flex flex-col lg:flex-row gap-5 lg:gap-[60px] items-center list-none">
         {["Solutions", "Products", "Pricing", "Contact", "Our Company"].map(createMenuLink)}
       </menu>
     </nav>

@@ -2,8 +2,8 @@ import { FC } from "react";
 
 const Video: FC = () => {
   return (
-    <div className="inline-flex flex-col items-center">
-      <h2 className="text-azure text-[64px] leading-[54px] w-2/4 text-center">
+    <div className="flex flex-col items-center">
+      <h2 className="text-azure text-[40px] md:text-[64px] leading-[54px] w-2/4 text-center">
         Personalized Nutrition Plans
       </h2>
       <p className="w-4/6 text-center text-xl pt-6 text-gray">
