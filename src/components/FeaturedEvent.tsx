@@ -1,7 +1,13 @@
-import React from "react";
+import { FC } from "react";
 import FeaturedContent from "./FeaturedContent";
+import { Event } from "../model";
+import { formatDate } from "../utils/date";
 
-const FeaturedEvent: React.FC = () => {
+type FeaturedEventProps = Readonly<{
+  data: Event;
+}>;
+
+const FeaturedEvent: FC<FeaturedEventProps> = ({ data }) => {
   const createTag = (text: string) => (
     <div className="px-4 py-2 border-solid border rounded-full border-[#1D1D1B]">
       <p className="text-[#757565] text-lg">{text}</p>
@@ -9,19 +15,21 @@ const FeaturedEvent: React.FC = () => {
   );
 
   return (
-    <FeaturedContent type="event">
+    <FeaturedContent image={data.elements.asset} type="event">
       <>
         <div>
-          <h2 className="text-center xl:text-left text-5xl font-semibold text-burgundy">Event Name</h2>
-          <p className="text-center xl:text-left text-gray-light mt-6 text-lg">Jan 4, 2025 - Jan 6, 2025</p>
+          <h2 className="text-center xl:text-left text-5xl font-semibold text-burgundy">{data.elements.name.value}</h2>
+          <p className="text-center xl:text-left text-gray-light mt-6 text-lg">
+            {`${formatDate(data.elements.start_date.value as string)} - ${
+              formatDate(data.elements.end_date.value as string)
+            }`}
+          </p>
           <div className="flex mt-6 gap-2 justify-center xl:justify-normal">
-            {createTag("SEMINAR")}
-            {createTag("STRENGTH TRAINING")}
+            {data.elements.event_type.value.map(t => createTag(t.name.toUpperCase()))}
+            {data.elements.event_topic.value.map(t => createTag(t.name.toUpperCase()))}
           </div>
           <p className="text-center xl:text-left text-gray-700 mt-4 text-xl">
-            Whether you're looking to lose weight, gain muscle, or maintain a healthy body composition, our
-            nutritionists can help. We offer comprehensive weight management programs that combine nutrition education,
-            meal planning, and behavioral strategies.
+            {data.elements.description.value}
           </p>
         </div>
         <a href="#" className="text-center xl:text-left text-burgundy text-xl mt-6 font-semibold underline">
