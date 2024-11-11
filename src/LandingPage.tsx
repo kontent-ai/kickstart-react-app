@@ -22,10 +22,7 @@ const LandingPage = () => {
       )
         .item<LandingPage>("landing_page")
         .toPromise()
-        .then(res => {
-          console.log(res.data.item);
-          return res.data.item as LandingPage;
-        })
+        .then(res => res.data.item)
         .catch((err) => {
           if (err instanceof DeliveryError) {
             return null;
