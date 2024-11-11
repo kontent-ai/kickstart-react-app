@@ -86,7 +86,7 @@ const LandingPage = () => {
             {featuredEvent
               && (
                 <PageSection color="bg-creme">
-                  <FeaturedEvent event={landingPage.data.elements.featured_content.linkedItems[1] as Event} />
+                  <FeaturedEvent event={featuredEvent as Event} />
                 </PageSection>
               )}
           </div>
