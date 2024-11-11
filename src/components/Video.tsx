@@ -1,6 +1,11 @@
 import { FC } from "react";
+import { Video as VideoElement } from "../model";
 
-const Video: FC = () => {
+type VideoProps = {
+  video: VideoElement;
+};
+
+const Video: FC<VideoProps> = ({ video }) => {
   return (
     <div className="flex flex-col items-center">
       <h2 className="text-azure text-[40px] md:text-[64px] leading-[54px] w-2/4 text-center">
@@ -12,13 +17,16 @@ const Video: FC = () => {
         well-being.
       </p>
       <figure className="pt-20">
-        <img
-          className="w-4/6 block m-auto"
-          src="https://s3-alpha-sig.figma.com/img/8e6a/818f/cd7d1661c8c0dc1fb6059331c67755a2?Expires=1731888000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=iwkc5kFUQAJW0200J~vTvgGqV0ESVThGNcQhVXqth-CPR1ItOOHAzKHdoGRrUNzVQBYuAG~v6lbVTPFxnMD05smjphsPEPC4QgRWdX31pNZL9AMd8e1rQLZ7jC5DfsHG9vbvInvMTC75q1ejUEbye0ZkKtaR036bftedA64DDHlouhUffRmDMnU-OhGfq1~8LZvoVXemu4EJMqAk~aMku-o21iTUGqL5fyg~5HSk2198u~8bDc59YoQJl9uKfA8fJs2DbdLBE00l0QbmVeyCUST2EnusS~0hBykETgyCCN0frm4XEiCr5X66yViMEFT~34XMIS4YEFZmuyITqEsUVQ__"
-        >
-        </img>
+        <iframe
+          className="m-auto"
+          width={900}
+          height={590}
+          src={`${video.elements.video_link.value}&autoplay=1&mute=1`}
+          referrerPolicy="strict-origin-when-cross-origin"
+          allow={`${video.elements.autoplay.value && "autoplay"}`}
+        />
         <figcaption className="text-gray-light block m-auto w-fit text-xl pt-6">
-          How we optimize your performance
+          {video.elements.caption.value}
         </figcaption>
       </figure>
     </div>

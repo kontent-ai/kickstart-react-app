@@ -4,8 +4,8 @@ import FeaturedEvent from "./components/FeaturedEvent";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import HeroImage from "./components/HeroImage";
+import PageContent from "./components/PageContent";
 import PageSection from "./components/PageSection";
-import Video from "./components/Video";
 import "./index.css";
 import type { Article, Event, LandingPage } from "./model";
 import { createClient } from "./utils/client";
@@ -45,16 +45,14 @@ const LandingPage = () => {
         />
       </PageSection>
       <PageSection color="bg-white">
-        <div className="pt-[104px] pb-40 flex items-center ">
-          <Video />
-        </div>
+        <PageContent body={landingPage.data.elements.body_copy} />
       </PageSection>
       <PageSection color="bg-creme">
         <FeaturedArticle article={landingPage.data.elements.featured_content.linkedItems[0] as Article} />
       </PageSection>
       <Divider />
       <PageSection color="bg-creme">
-        <FeaturedEvent data={landingPage.data.elements.featured_content.linkedItems[1] as Event} />
+        <FeaturedEvent event={landingPage.data.elements.featured_content.linkedItems[1] as Event} />
       </PageSection>
       <Footer></Footer>
     </div>
