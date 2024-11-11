@@ -19,7 +19,9 @@ const Video: FC<VideoProps> = ({ video }) => {
           className="m-auto"
           width={900}
           height={590}
-          src={`${video.elements.video_link.value}${video.elements.autoplay.value && "autoplay=1"}`}
+          src={`${video.elements.video_link.value}${
+            video.elements.autoplay.value[0].codename === "true" ? "&autoplay=1&mute=1" : ""
+          }`}
           referrerPolicy="strict-origin-when-cross-origin"
           allow={"autoplay"}
         />
