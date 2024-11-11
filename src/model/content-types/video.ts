@@ -17,11 +17,6 @@ import type { Elements } from '@kontent-ai/delivery-sdk';
 import type { CoreContentType } from '../system/index.ts';
 
 /**
- * Type representing all available element codenames for Video
- */
-export type VideoElementCodenames = 'video_link' | 'caption' | 'autoplay';
-
-/**
  * Video
  *
  * Id: fe811adb-4000-4563-b4f7-7d00371e820c
@@ -29,6 +24,24 @@ export type VideoElementCodenames = 'video_link' | 'caption' | 'autoplay';
  */
 export type Video = CoreContentType<
     {
+        /**
+         * Headline
+         *
+         * Type: text
+         * Required: false
+         * Codename: headline
+         * Id: 5e1bf371-2032-4e14-a074-a4803f1ee368
+         */
+        readonly headline: Elements.TextElement;
+        /**
+         * Description
+         *
+         * Type: text
+         * Required: false
+         * Codename: description
+         * Id: 1824fdaa-4466-4abf-bd42-31aa3156444d
+         */
+        readonly description: Elements.TextElement;
         /**
          * Video Link
          *
@@ -59,3 +72,15 @@ export type Video = CoreContentType<
     },
     'video'
 >;
+
+/**
+ * Type representing all available element codenames for Video
+ */
+export type VideoElementCodenames = 'headline' | 'description' | 'video_link' | 'caption' | 'autoplay';
+
+/**
+ * Type guard for Video
+ */
+export function isVideo(item: CoreContentType): item is Video {
+    return item.system.type === 'video';
+}

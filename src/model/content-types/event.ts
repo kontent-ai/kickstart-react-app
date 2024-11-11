@@ -18,11 +18,6 @@ import type { CoreContentType } from '../system/index.ts';
 import type { EventType, Topics } from '../taxonomies/index.ts';
 
 /**
- * Type representing all available element codenames for Event
- */
-export type EventElementCodenames = 'name' | 'description' | 'asset' | 'start_date' | 'end_date' | 'event_type' | 'event_topic';
-
-/**
  * Event
  *
  * Id: 446d4c1e-5049-4e45-ae1c-4284e660fe68
@@ -96,3 +91,15 @@ export type Event = CoreContentType<
     },
     'event'
 >;
+
+/**
+ * Type representing all available element codenames for Event
+ */
+export type EventElementCodenames = 'name' | 'description' | 'asset' | 'start_date' | 'end_date' | 'event_type' | 'event_topic';
+
+/**
+ * Type guard for Event
+ */
+export function isEvent(item: CoreContentType): item is Event {
+    return item.system.type === 'event';
+}

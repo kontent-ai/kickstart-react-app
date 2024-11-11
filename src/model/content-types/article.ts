@@ -17,11 +17,6 @@ import type { Elements } from '@kontent-ai/delivery-sdk';
 import type { CoreContentType } from '../system/index.ts';
 
 /**
- * Type representing all available element codenames for Article
- */
-export type ArticleElementCodenames = 'title' | 'introduction' | 'image' | 'body_copy' | 'publish_date';
-
-/**
  * Article
  *
  * Id: decfd6d7-5392-4740-bdb7-f689264713bb
@@ -77,3 +72,15 @@ export type Article = CoreContentType<
     },
     'article'
 >;
+
+/**
+ * Type representing all available element codenames for Article
+ */
+export type ArticleElementCodenames = 'title' | 'introduction' | 'image' | 'body_copy' | 'publish_date';
+
+/**
+ * Type guard for Article
+ */
+export function isArticle(item: CoreContentType): item is Article {
+    return item.system.type === 'article';
+}

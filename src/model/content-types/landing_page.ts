@@ -18,11 +18,6 @@ import type { CoreContentType } from '../system/index.ts';
 import type { Video, Event, Article } from './index.ts';
 
 /**
- * Type representing all available element codenames for Landing Page
- */
-export type LandingPageElementCodenames = 'headline' | 'subheadline' | 'hero_image' | 'body_copy' | 'featured_content';
-
-/**
  * Landing Page
  *
  * Id: 9c8cf106-199f-4535-856b-a66e97399b42
@@ -78,3 +73,15 @@ export type LandingPage = CoreContentType<
     },
     'landing_page'
 >;
+
+/**
+ * Type representing all available element codenames for Landing Page
+ */
+export type LandingPageElementCodenames = 'headline' | 'subheadline' | 'hero_image' | 'body_copy' | 'featured_content';
+
+/**
+ * Type guard for Landing Page
+ */
+export function isLandingPage(item: CoreContentType): item is LandingPage {
+    return item.system.type === 'landing_page';
+}

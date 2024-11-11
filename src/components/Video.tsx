@@ -9,21 +9,19 @@ const Video: FC<VideoProps> = ({ video }) => {
   return (
     <div className="flex flex-col items-center">
       <h2 className="text-azure text-[40px] md:text-[64px] leading-[54px] w-2/4 text-center">
-        Personalized Nutrition Plans
+        {video.elements.headline.value}
       </h2>
       <p className="w-4/6 text-center text-xl pt-6 text-gray">
-        We create tailored nutrition plans that fit your unique lifestyle, health concerns, and dietary preferences. Our
-        experts work closely with you to develop realistic, achievable goals that promote long-term health and
-        well-being.
+        {video.elements.description.value}
       </p>
       <figure className="pt-20">
         <iframe
           className="m-auto"
           width={900}
           height={590}
-          src={`${video.elements.video_link.value}&autoplay=1&mute=1`}
+          src={`${video.elements.video_link.value}${video.elements.autoplay.value && "autoplay=1"}`}
           referrerPolicy="strict-origin-when-cross-origin"
-          allow={`${video.elements.autoplay.value && "autoplay"}`}
+          allow={"autoplay"}
         />
         <figcaption className="text-gray-light block m-auto w-fit text-xl pt-6">
           {video.elements.caption.value}
