@@ -13,4 +13,19 @@
 * -------------------------------------------------------------------------------
 **/
 
-export {};
+/**
+ * Event Topic
+ *
+ * Codename: event_topic
+ * Id: 97a1eee0-2fa1-452d-a21b-6a113b38fad0
+ */
+export type EventTopic =
+    | 'healthy_dieting'
+    | 'diabetes_management'
+    | 'nutrition'
+    | 'cardio_exercise'
+    | 'strength_training'
+    | 'physical_fitness'
+    | 'screenings'
+    | 'immunization'
+    | 'preventive_care';

@@ -13,4 +13,10 @@
 * -------------------------------------------------------------------------------
 **/
 
-export {};
+/**
+ * Event Type
+ *
+ * Codename: event_type
+ * Id: 520444f4-df68-46de-87fb-51bc9587e81a
+ */
+export type EventType = 'conference' | 'seminar' | 'webinar' | 'workshop';
