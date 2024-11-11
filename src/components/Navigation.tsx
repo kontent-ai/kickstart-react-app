@@ -2,7 +2,7 @@ import { FC } from "react";
 
 const Navigation: FC = () => {
   const createMenuLink = (name: string) => (
-    <li className="">
+    <li key={name}>
       <a href="#" className="text-xl leading-5 text-gray w-fit block hover:text-burgundy">{name}</a>
     </li>
   );
