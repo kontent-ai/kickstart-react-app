@@ -27,7 +27,7 @@ const createPortableTextComponents = (
     component: ({ value }: PortableTextTypeComponentProps<PortableTextComponent>) => {
       const item = element.linkedItems.find(item => item.system.codename === value.component._ref);
       if (!item) {
-        return <div>Did not find any item with codename{value.component._ref}</div>;
+        return <div>Did not find any item with codename {value.component._ref}</div>;
       }
 
       return <Video video={item} />;
