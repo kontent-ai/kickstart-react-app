@@ -18,7 +18,7 @@ export default {
         creme: "#fff7e7"
     },
       fontFamily: {
-        sans: ["Source Sans 3", 'Arial', 'sans-serif'],
+        sans: ['"Source Sans 3"', 'Arial', 'sans-serif'],
         libre: ['"Abhaya Libre"', "Arial"]
       }
     },
