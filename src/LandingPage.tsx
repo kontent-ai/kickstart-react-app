@@ -1,3 +1,4 @@
+import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import Divider from "./components/Divider";
 import FeaturedArticle from "./components/FeaturedArticle";
 import FeaturedEvent from "./components/FeaturedEvent";
@@ -21,8 +22,24 @@ const LandingPage = () => {
       )
         .item<LandingPage>("landing_page")
         .toPromise()
-        .then(res => res.data.item),
+        .then(res => {
+          console.log(res.data.item);
+          return res.data.item as LandingPage;
+        })
+        .catch((err) => {
+          if (err instanceof DeliveryError) {
+            return null;
+          }
+          throw err;
+        }),
   });
+
+  const featuredArticle = landingPage.data?.elements.featured_content.linkedItems.find(i =>
+    i.system.codename === "featured_article"
+  ) as Article;
+  const featuredEvent = landingPage.data?.elements.featured_content.linkedItems.find(i =>
+    i.system.codename === "featured_event"
+  ) as Event;
 
   if (landingPage.isPending) {
     return <div>Loading...</div>;
@@ -33,27 +50,48 @@ const LandingPage = () => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <PageSection color="bg-creme">
-        <HeroImage
-          data={{
-            headline: landingPage.data.elements.headline.value,
-            subheadline: landingPage.data.elements.subheadline.value,
-            heroImage: landingPage.data.elements.hero_image.value[0].url,
-          }}
-        />
-      </PageSection>
-      <PageSection color="bg-white">
-        <PageContent body={landingPage.data.elements.body_copy} />
-      </PageSection>
-      <PageSection color="bg-creme">
-        <FeaturedArticle article={landingPage.data.elements.featured_content.linkedItems[0] as Article} />
-      </PageSection>
-      <Divider />
-      <PageSection color="bg-creme">
-        <FeaturedEvent event={landingPage.data.elements.featured_content.linkedItems[1] as Event} />
-      </PageSection>
+
+      {landingPage.data
+        ? (
+          <div className="flex-grow">
+            {(landingPage.data.elements.headline.value || landingPage.data.elements.subheadline.value
+              || landingPage.data.elements.hero_image.value.length)
+              && (
+                <PageSection color="bg-creme">
+                  <HeroImage
+                    data={{
+                      headline: landingPage.data.elements.headline.value,
+                      subheadline: landingPage.data.elements.subheadline.value,
+                      heroImage: landingPage.data.elements.hero_image,
+                    }}
+                  />
+                </PageSection>
+              )}
+            {landingPage.data.elements.body_copy.value !== "<p><br></p>"
+              && (
+                <PageSection color="bg-white">
+                  <PageContent body={landingPage.data.elements.body_copy} />
+                </PageSection>
+              )}
+            {featuredArticle
+              && (
+                <PageSection color="bg-creme">
+                  <FeaturedArticle article={featuredArticle} />
+                </PageSection>
+              )}
+
+            {featuredArticle && featuredEvent && <Divider />}
+            {featuredEvent
+              && (
+                <PageSection color="bg-creme">
+                  <FeaturedEvent event={landingPage.data.elements.featured_content.linkedItems[1] as Event} />
+                </PageSection>
+              )}
+          </div>
+        )
+        : <div className="flex-grow" />}
       <Footer></Footer>
     </div>
   );

@@ -16,7 +16,7 @@ const FeaturedContent: FC<FeaturedContentProps> = ({ type, image, children }) =>
           {type === "event" ? "FEATURED EVENT" : "FEATURED ARTICLE"}
         </span>
         <img
-          src={image.value[0].url}
+          src={image.value[0]?.url ?? ""}
           alt={type}
           className="object-cover rounded-lg static"
         />
