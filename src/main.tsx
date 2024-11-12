@@ -2,13 +2,16 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import LandingPage from "./LandingPage.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AppContextComponent } from "./context/AppContext.tsx";
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <LandingPage />
+      <AppContextComponent>
+        <LandingPage />
+      </AppContextComponent>
     </QueryClientProvider>
   </StrictMode>,
 );

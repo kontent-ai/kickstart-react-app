@@ -11,15 +11,16 @@ import "./index.css";
 import type { Article, Event, LandingPage } from "./model";
 import { createClient } from "./utils/client";
 import { useQuery } from "@tanstack/react-query";
+import { FC } from "react";
+import { useAppContext } from "./context/AppContext";
 
-const LandingPage = () => {
+const LandingPage: FC = ({}) => {
+  const { environmentId, apiKey } = useAppContext();
+
   const landingPage = useQuery({
     queryKey: ["landing_page"],
     queryFn: () =>
-      createClient(
-        import.meta.env.VITE_ENVIRONMENT_ID!,
-        import.meta.env.VITE_DELIVERY_API_KEY!,
-      )
+      createClient(environmentId, apiKey)
         .item<LandingPage>("landing_page")
         .toPromise()
         .then(res => res.data.item)
