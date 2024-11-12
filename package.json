@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.2.4",
     "@kontent-ai/delivery-sdk": "^15.2.0",
     "@kontent-ai/rich-text-resolver": "^1.2.1",
     "@portabletext/react": "^3.1.0",
