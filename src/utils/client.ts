@@ -7,4 +7,7 @@ export const createClient = (environmentId: string, previewApiKey: string) =>
     defaultQueryConfig: {
       usePreviewMode: true,
     },
+    proxy: {
+      basePreviewUrl: import.meta.env.VITE_DELIVER_URL,
+    },
   });
