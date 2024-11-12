@@ -1,17 +1,22 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import LandingPage from "./LandingPage.tsx";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import LandingPage from "./pages/LandingPage.tsx";
 import { AppContextComponent } from "./context/AppContext.tsx";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-const queryClient = new QueryClient();
-
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (
       <AppContextComponent>
         <LandingPage />
       </AppContextComponent>
-    </QueryClientProvider>
+    ),
+  },
+]);
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <RouterProvider router={router} />
   </StrictMode>,
 );

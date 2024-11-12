@@ -1,18 +1,18 @@
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
-import Divider from "./components/Divider";
-import FeaturedArticle from "./components/FeaturedArticle";
-import FeaturedEvent from "./components/FeaturedEvent";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import HeroImage from "./components/HeroImage";
-import PageContent from "./components/PageContent";
-import PageSection from "./components/PageSection";
-import "./index.css";
-import type { Article, Event, LandingPage } from "./model";
-import { createClient } from "./utils/client";
+import Divider from "../components/Divider";
+import FeaturedArticle from "../components/FeaturedArticle";
+import FeaturedEvent from "../components/FeaturedEvent";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import HeroImage from "../components/HeroImage";
+import PageContent from "../components/PageContent";
+import PageSection from "../components/PageSection";
+import "../index.css";
+import type { Article, Event, LandingPage } from "../model";
+import { createClient } from "../utils/client";
 import { useQuery } from "@tanstack/react-query";
 import { FC } from "react";
-import { useAppContext } from "./context/AppContext";
+import { useAppContext } from "../context/AppContext";
 
 const LandingPage: FC = ({}) => {
   const { environmentId, apiKey } = useAppContext();
@@ -90,7 +90,7 @@ const LandingPage: FC = ({}) => {
           </div>
         )
         : <div className="flex-grow" />}
-      <Footer></Footer>
+      <Footer />
     </div>
   );
 };
