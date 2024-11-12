@@ -14,21 +14,23 @@ const Video: FC<VideoProps> = ({ video }) => {
       <p className="w-4/6 text-center text-xl pt-6 text-gray">
         {video.elements.description.value}
       </p>
-      <figure className="pt-20">
-        <iframe
-          className="m-auto"
-          width={900}
-          height={590}
-          src={`${video.elements.video_link.value}${
-            video.elements.autoplay.value[0].codename === "true" ? "&autoplay=1&mute=1" : ""
-          }`}
-          referrerPolicy="strict-origin-when-cross-origin"
-          allow={"autoplay"}
-        />
-        <figcaption className="text-gray-light block m-auto w-fit text-xl pt-6">
-          {video.elements.caption.value}
-        </figcaption>
-      </figure>
+      {video.elements.video_link.value && (
+        <figure className="pt-20">
+          <iframe
+            className="m-auto"
+            width={900}
+            height={590}
+            src={`${video.elements.video_link.value}${
+              video.elements.autoplay.value[0].codename === "true" ? "&autoplay=1&mute=1" : ""
+            }`}
+            referrerPolicy="strict-origin-when-cross-origin"
+            allow={"autoplay"}
+          />
+          <figcaption className="text-gray-light block m-auto w-fit text-xl pt-6">
+            {video.elements.caption.value}
+          </figcaption>
+        </figure>
+      )}
     </div>
   );
 };
