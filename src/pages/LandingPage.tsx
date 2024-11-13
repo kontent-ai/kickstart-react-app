@@ -21,9 +21,10 @@ const LandingPage: FC = ({}) => {
     queryKey: ["landing_page"],
     queryFn: () =>
       createClient(environmentId, apiKey)
-        .item<LandingPage>("landing_page")
+        .items<LandingPage>()
+        .type("landing_page")
         .toPromise()
-        .then(res => res.data.item)
+        .then(res => res.data.items[0])
         .catch((err) => {
           if (err instanceof DeliveryError) {
             return null;
@@ -32,12 +33,10 @@ const LandingPage: FC = ({}) => {
         }),
   });
 
-  const featuredArticle = landingPage.data?.elements.featured_content.linkedItems.find(i =>
-    i.system.codename === "featured_article"
-  ) as Article;
-  const featuredEvent = landingPage.data?.elements.featured_content.linkedItems.find(i =>
-    i.system.codename === "featured_event"
-  ) as Event;
+  const featuredArticle = landingPage.data?.elements.featured_content.linkedItems
+    .find(i => i.system.type === "article") as Article;
+  const featuredEvent = landingPage.data?.elements.featured_content.linkedItems
+    .find(i => i.system.type === "event") as Event;
 
   if (landingPage.isPending) {
     return <div>Loading...</div>;
