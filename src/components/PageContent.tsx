@@ -14,7 +14,7 @@ const PageContent: FC<PageContentProps> = ({ body }) => {
   const portableText = transformToPortableText(parsedTree);
 
   return (
-    <div className="pt-[104px] pb-40 flex items-center ">
+    <div className="pt-[104px] pb-40 flex flex-col items-center ">
       <PortableText value={portableText} components={createPortableTextComponents(body)} />
     </div>
   );
