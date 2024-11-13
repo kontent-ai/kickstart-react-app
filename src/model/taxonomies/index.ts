@@ -7,11 +7,11 @@
 * -------------------------------------------------------------------------------
 * 
 * Project: Kontent.ai Kickstart
-* Environment: Demo
-* Id: 038587ec-2989-01aa-becb-3908833e756d
+* Environment: Production
+* Id: 7cf79e13-fcde-01b6-f508-14ca05d794b8
 * 
 * -------------------------------------------------------------------------------
 **/
 
-export * from './eventTopic.ts';
 export * from './eventType.ts';
+export * from './topics.ts';

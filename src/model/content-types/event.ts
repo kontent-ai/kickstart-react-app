@@ -7,15 +7,15 @@
 * -------------------------------------------------------------------------------
 * 
 * Project: Kontent.ai Kickstart
-* Environment: Demo
-* Id: 038587ec-2989-01aa-becb-3908833e756d
+* Environment: Production
+* Id: 7cf79e13-fcde-01b6-f508-14ca05d794b8
 * 
 * -------------------------------------------------------------------------------
 **/
 
 import type { Elements } from '@kontent-ai/delivery-sdk';
 import type { CoreContentType } from '../system/index.ts';
-import type { EventType, EventTopic } from '../taxonomies/index.ts';
+import type { EventType, Topics } from '../taxonomies/index.ts';
 
 /**
  * Event
@@ -44,14 +44,14 @@ export type Event = CoreContentType<
          */
         readonly description: Elements.RichTextElement<CoreContentType>;
         /**
-         * Asset
+         * Image
          *
          * Type: asset
          * Required: false
-         * Codename: asset
+         * Codename: image
          * Id: 3e1b3668-0605-4f19-a689-a088448d49c0
          */
-        readonly asset: Elements.AssetsElement;
+        readonly image: Elements.AssetsElement;
         /**
          * Start date
          *
@@ -80,14 +80,14 @@ export type Event = CoreContentType<
          */
         readonly event_type: Elements.TaxonomyElement<EventType, 'event_type'>;
         /**
-         * Event Topic
+         * Topics
          *
          * Type: taxonomy
          * Required: false
          * Codename: event_topic
          * Id: 6ab84c72-0db5-4c09-88f8-d9bdefbc9849
          */
-        readonly event_topic: Elements.TaxonomyElement<EventTopic, 'event_topic'>;
+        readonly event_topic: Elements.TaxonomyElement<Topics, 'event_topic'>;
     },
     'event'
 >;
@@ -95,7 +95,7 @@ export type Event = CoreContentType<
 /**
  * Type representing all available element codenames for Event
  */
-export type EventElementCodenames = 'name' | 'description' | 'asset' | 'start_date' | 'end_date' | 'event_type' | 'event_topic';
+export type EventElementCodenames = 'name' | 'description' | 'image' | 'start_date' | 'end_date' | 'event_type' | 'event_topic';
 
 /**
  * Type guard for Event
