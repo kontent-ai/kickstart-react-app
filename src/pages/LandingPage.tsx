@@ -21,10 +21,9 @@ const LandingPage: FC = ({}) => {
     queryKey: ["landing_page"],
     queryFn: () =>
       createClient(environmentId, apiKey)
-        .items<LandingPage>()
-        .type("landing_page")
+        .item<LandingPage>("landing_page")
         .toPromise()
-        .then(res => res.data.items[0] as Partial<LandingPage>)
+        .then(res => res.data.item)
         .catch((err) => {
           if (err instanceof DeliveryError) {
             return null;
