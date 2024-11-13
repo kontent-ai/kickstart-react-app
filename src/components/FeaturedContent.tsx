@@ -20,7 +20,7 @@ const FeaturedContent: FC<FeaturedContentProps> = ({ type, image, children }) =>
             </span>
             <img
               src={image.value[0]?.url ?? ""}
-              alt={type}
+              alt={image.value[0].description ?? "image alt"}
               className="object-cover rounded-lg static"
             />
           </>

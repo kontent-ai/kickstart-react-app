@@ -25,6 +25,7 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
           <img
             className=" object-cover"
             src={data.heroImage.value[0].url}
+            alt={data.heroImage.value[0].description ?? "image-alt"}
           >
           </img>
         )}
