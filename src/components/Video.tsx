@@ -18,6 +18,7 @@ const Video: FC<VideoProps> = ({ video }) => {
         <figure className="pt-20">
           <iframe
             className="m-auto"
+            title={video.elements.headline.value}
             width={900}
             height={590}
             src={`${video.elements.video_link.value}${
