@@ -6,7 +6,7 @@ import { browserParse, transformToPortableText } from "@kontent-ai/rich-text-res
 import { PortableText, PortableTextComponents } from "@portabletext/react";
 
 type FeaturedEventProps = Readonly<{
-  event: Event;
+  event: Partial<Event>;
 }>;
 
 const portableTextComponents: PortableTextComponents = {
@@ -16,7 +16,7 @@ const portableTextComponents: PortableTextComponents = {
 };
 
 const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
-  const descriptionPortableText = transformToPortableText(browserParse(event.elements.description.value));
+  const descriptionPortableText = transformToPortableText(browserParse(event.elements?.description.value ?? ""));
 
   const createTag = (text: string) => (
     <div key={text} className="px-4 py-2 border-solid border rounded-full border-[#1D1D1B]">
@@ -24,36 +24,38 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
     </div>
   );
 
-  const shouldRender = event.elements.name.value || event.elements.description.value !== "<p><br></p>"
-    || event.elements.start_date.value
-    || event.elements.end_date.value || event.elements.asset.value.length || event.elements.event_topic.value.length
-    || event.elements.event_type.value.length;
+  const shouldRender = event.elements?.name.value || event.elements?.description.value !== "<p><br></p>"
+    || event.elements?.start_date.value
+    || event.elements?.end_date.value || event.elements?.image.value.length || event.elements?.event_topic.value.length
+    || event.elements?.event_type.value.length;
 
   return (
-    <FeaturedContent image={event.elements.asset} type="event">
+    <FeaturedContent image={event.elements?.image} type="event">
       {shouldRender
         ? (
           <>
             <div>
               <h2 className="text-center xl:text-left text-5xl font-semibold text-burgundy">
-                {event.elements.name.value}
+                {event.elements?.name.value}
               </h2>
               <p className="text-center xl:text-left text-gray-light mt-6 text-lg">
                 {`${
-                  event.elements.start_date.value !== null ? formatDate(event.elements.start_date.value as string) : ""
+                  event.elements?.start_date.value !== null
+                    ? formatDate(event.elements?.start_date.value as string)
+                    : ""
                 }${
-                  event.elements.end_date.value !== null
-                    ? ` - ${formatDate(event.elements.end_date.value as string)}`
+                  event.elements?.end_date.value !== null
+                    ? ` - ${formatDate(event.elements?.end_date.value as string)}`
                     : ""
                 }`}
               </p>
               <div className="flex mt-6 gap-2 justify-center xl:justify-normal">
-                {event.elements.event_type.value.map(t => createTag(t.name.toUpperCase()))}
-                {event.elements.event_topic.value.map(t => createTag(t.name.toUpperCase()))}
+                {event.elements?.event_type.value.map(t => createTag(t.name.toUpperCase()))}
+                {event.elements?.event_topic.value.map(t => createTag(t.name.toUpperCase()))}
               </div>
               <PortableText value={descriptionPortableText} components={portableTextComponents} />
             </div>
-            {event.elements.description.value !== "<p><br></p>" && (
+            {event.elements?.description.value !== "<p><br></p>" && (
               <a href="#" className="text-center xl:text-left text-burgundy text-xl mt-6 font-semibold underline">
                 Read more
               </a>

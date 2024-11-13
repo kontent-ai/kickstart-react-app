@@ -4,12 +4,12 @@ import { FC, PropsWithChildren } from "react";
 type FeaturedContentProps = PropsWithChildren<
   Readonly<{
     type: "article" | "event";
-    image: Elements.AssetsElement;
+    image?: Elements.AssetsElement;
   }>
 >;
 
 const FeaturedContent: FC<FeaturedContentProps> = ({ type, image, children }) => {
-  const img = image.value[0];
+  const img = image?.value[0];
   return (
     <div className="flex flex-col gap-5 xl:gap-16 xl:flex-row py-5 xl:py-[104px]">
       <div className="basis-1/3">

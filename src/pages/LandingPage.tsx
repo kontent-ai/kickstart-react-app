@@ -24,7 +24,7 @@ const LandingPage: FC = ({}) => {
         .items<LandingPage>()
         .type("landing_page")
         .toPromise()
-        .then(res => res.data.items[0])
+        .then(res => res.data.items[0] as Partial<LandingPage>)
         .catch((err) => {
           if (err instanceof DeliveryError) {
             return null;
@@ -33,10 +33,10 @@ const LandingPage: FC = ({}) => {
         }),
   });
 
-  const featuredArticle = landingPage.data?.elements.featured_content.linkedItems
-    .find(i => i.system.type === "article") as Article;
-  const featuredEvent = landingPage.data?.elements.featured_content.linkedItems
-    .find(i => i.system.type === "event") as Event;
+  const featuredArticle = landingPage.data?.elements?.featured_content.linkedItems
+    .find(i => i.system.type === "article") as Article | undefined;
+  const featuredEvent = landingPage.data?.elements?.featured_content.linkedItems
+    .find(i => i.system.type === "event") as Event | undefined;
 
   if (landingPage.isPending) {
     return <div>Loading...</div>;
@@ -53,8 +53,8 @@ const LandingPage: FC = ({}) => {
       {landingPage.data
         ? (
           <div className="flex-grow">
-            {(landingPage.data.elements.headline.value || landingPage.data.elements.subheadline.value
-              || landingPage.data.elements.hero_image.value.length)
+            {(landingPage.data.elements?.headline.value || landingPage.data.elements?.subheadline.value
+              || landingPage.data.elements?.hero_image.value.length)
               && (
                 <PageSection color="bg-creme">
                   <HeroImage
@@ -66,10 +66,10 @@ const LandingPage: FC = ({}) => {
                   />
                 </PageSection>
               )}
-            {landingPage.data.elements.body_copy.value !== "<p><br></p>"
+            {landingPage.data.elements?.body_copy && landingPage.data.elements?.body_copy.value !== "<p><br></p>"
               && (
                 <PageSection color="bg-white">
-                  <PageContent body={landingPage.data.elements.body_copy} />
+                  <PageContent body={landingPage.data.elements?.body_copy} />
                 </PageSection>
               )}
             {featuredArticle
