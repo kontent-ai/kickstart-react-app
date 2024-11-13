@@ -20,7 +20,7 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
 
   const createTag = (text: string) => (
     <div key={text} className="px-4 py-2 border-solid border rounded-full border-[#1D1D1B]">
-      <p className="text-[#757565] text-lg">{text}</p>
+      <p className="text-[#1D1D1B] text-lg">{text}</p>
     </div>
   );
 
