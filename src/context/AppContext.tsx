@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createContext, FC, PropsWithChildren, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { loadPreviewApiKey } from "../utils/api";
@@ -22,7 +22,7 @@ export const AppContextComponent: FC<PropsWithChildren> = ({ children }) => {
   const { envId } = useParams();
   const { getAccessTokenSilently, loginWithRedirect } = useAuth0();
 
-  const contextData = useQuery({
+  const contextData = useSuspenseQuery({
     queryKey: [`env-data${envId ? `-${envId}` : ""}`],
     queryFn: () => {
       if (!envId) {
@@ -53,14 +53,6 @@ export const AppContextComponent: FC<PropsWithChildren> = ({ children }) => {
         });
     },
   });
-
-  if (contextData.isPending) {
-    return <div>Loading...</div>;
-  }
-
-  if (contextData.isError) {
-    return <div>Error {contextData.error.message}</div>;
-  }
 
   return (
     <AppContext.Provider value={contextData.data}>
