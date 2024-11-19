@@ -37,14 +37,6 @@ const LandingPage: FC = ({}) => {
   const featuredEvent = landingPage.data?.elements?.featured_content.linkedItems
     .find(i => i.system.type === "event") as Event | undefined;
 
-  if (landingPage.isPending) {
-    return <div>Loading...</div>;
-  }
-
-  if (landingPage.isError) {
-    return <div>Error {landingPage.error.message}</div>;
-  }
-
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
@@ -81,7 +73,7 @@ const LandingPage: FC = ({}) => {
             {featuredArticle && featuredEvent && <Divider />}
             {featuredEvent
               && (
-                <PageSection color="bg-creme">
+                <PageSection color="bg-white">
                   <FeaturedEvent event={featuredEvent as Event} />
                 </PageSection>
               )}
