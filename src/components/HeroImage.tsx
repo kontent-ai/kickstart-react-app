@@ -23,7 +23,9 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
       <div className="xl:basis-1/2">
         {data.heroImage.value[0] && (
           <img
-            className=" object-cover"
+            className=" object-cover mx-auto"
+            width={670}
+            height={440}
             src={data.heroImage.value[0].url}
             alt={data.heroImage.value[0].description ?? "image-alt"}
           >

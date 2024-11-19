@@ -11,7 +11,7 @@ type FeaturedContentProps = PropsWithChildren<
 const FeaturedContent: FC<FeaturedContentProps> = ({ type, image, children }) => {
   const img = image?.value[0];
   return (
-    <div className="flex flex-col gap-5 xl:gap-16 xl:flex-row py-5 xl:py-[104px]">
+    <div className="flex flex-col gap-5 xl:gap-16 xl:flex-row py-5 xl:py-[104px] items-center">
       <div className="basis-1/3">
         {img && (
           <>
@@ -19,6 +19,8 @@ const FeaturedContent: FC<FeaturedContentProps> = ({ type, image, children }) =>
               {type === "event" ? "FEATURED EVENT" : "FEATURED ARTICLE"}
             </span>
             <img
+              width={640}
+              height={420}
               src={image.value[0]?.url ?? ""}
               alt={image.value[0].description ?? "image alt"}
               className="object-cover rounded-lg static"
