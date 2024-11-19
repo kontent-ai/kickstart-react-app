@@ -3,17 +3,12 @@ import FeaturedContent from "./FeaturedContent";
 import { Event } from "../model";
 import { formatDate } from "../utils/date";
 import { browserParse, transformToPortableText } from "@kontent-ai/rich-text-resolver";
-import { PortableText, PortableTextComponents } from "@portabletext/react";
+import { PortableText } from "@portabletext/react";
+import { defaultPortableRichTextComponents } from "../utils/richtext";
 
 type FeaturedEventProps = Readonly<{
   event: Partial<Event>;
 }>;
-
-const portableTextComponents: PortableTextComponents = {
-  block: {
-    normal: ({ children }) => <p className="text-center xl:text-left text-gray-700 mt-4 text-xl">{children}</p>,
-  },
-};
 
 const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
   const descriptionPortableText = transformToPortableText(browserParse(event.elements?.description.value ?? ""));
@@ -53,7 +48,9 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
                 {event.elements?.event_type.value.map(t => createTag(t.name.toUpperCase()))}
                 {event.elements?.event_topic.value.map(t => createTag(t.name.toUpperCase()))}
               </div>
-              <PortableText value={descriptionPortableText} components={portableTextComponents} />
+              <div className="mt-4">
+                <PortableText value={descriptionPortableText} components={defaultPortableRichTextComponents} />
+              </div>
             </div>
             {event.elements?.description.value !== "<p><br></p>" && (
               <a href="#" className="text-center xl:text-left text-burgundy text-xl mt-6 font-semibold underline">
