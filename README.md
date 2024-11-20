@@ -1,50 +1,67 @@
-# React + TypeScript + Vite
+# Kontent.ai Kickstart Sample React App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![Discord][discord-shield]][discord-url]
 
-Currently, two official plugins are available:
+This repository contains the solution for the Kontent.ai Kickstart Sample React App. It serves as a learning resource for those starting new projects with Kontent.ai, providing a foundational template to build upon.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The app is built with Vite for fast and optimized development, and Tailwind CSS is used for styling the application.
 
-## Expanding the ESLint configuration
+## Contributing
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### How to Contribute
 
-- Configure the top-level `parserOptions` property like this:
+- **Report Issues**: Use the [GitHub Issues](https://github.com/kontent-ai/data-ops/issues) to report bugs or request features.
+- **Fork the Repository**: Create a personal fork of the repository on GitHub.
+- **Create a Feature Branch**: Use a descriptive name for your branch.
+- **Submit a Pull Request**: Submit your changes for review.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Please read our [Contributing Guidelines](CONTRIBUTING.md) for more details.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Code of Conduct
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+This project adheres to a [Code of Conduct](https://github.com/kontent-ai/.github/blob/main/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### Getting Started with Development
+
+- Run `npm ci` to install packages.
+- Create a `.env` file from `.env.template` and fill out all necessary variables.
+- Run `npm run dev` to run the application in developer mode.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.
+
+---
+
+## Support
+
+If you have any questions or need assistance, please reach out:
+
+- **Kontent.ai Support**: [Contact Support](https://kontent.ai/support/)
+
+---
+
+## Additional Resources
+
+- **Kontent.ai Official Documentation**: [Learn more about Kontent.ai](https://kontent.ai/learn/)
+
+---
+
+[contributors-shield]: https://img.shields.io/github/contributors/kontent-ai/kickstart-react-app?style=for-the-badge
+[contributors-url]: https://github.com/kontent-ai/kickstart-react-app/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/kontent-ai/kickstart-react-app.svg?style=for-the-badge
+[forks-url]: https://github.com/kontent-ai/kickstart-react-app/network/members
+[stars-shield]: https://img.shields.io/github/stars/kontent-ai/kickstart-react-app.svg?style=for-the-badge
+[stars-url]: https://github.com/kontent-ai/kickstart-react-app/stargazers
+[issues-shield]: https://img.shields.io/github/issues/kontent-ai/kickstart-react-app.svg?style=for-the-badge
+[issues-url]: https://github.com/kontent-ai/kickstart-react-app/issues
+[license-shield]: https://img.shields.io/github/license/kontent-ai/kickstart-react-app.svg?style=for-the-badge
+[license-url]: https://github.com/kontent-ai/kickstart-react-app/blob/master/LICENSE.md
+[discord-shield]: https://img.shields.io/discord/821885171984891914?color=%237289DA&label=Kontent.ai%20Discord&logo=discord&style=for-the-badge
+[discord-url]: https://discord.com/invite/SKCxwPtevJ
+
