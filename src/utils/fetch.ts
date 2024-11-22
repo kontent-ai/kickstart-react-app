@@ -24,7 +24,7 @@ export const get = (url: string, requestContext: RequestContext) => {
   });
 };
 
-export const post = (url: string, data: Object, requestContext: RequestContext) => {
+export const post = (url: string, data: object, requestContext: RequestContext) => {
   return fetch(url, {
     method: "post",
     headers: {
