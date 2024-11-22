@@ -1,13 +1,13 @@
 import { FC } from "react";
 import { PortableText, PortableTextReactComponents, PortableTextTypeComponentProps } from "@portabletext/react";
 import { Elements } from "@kontent-ai/delivery-sdk";
-import { Video as VideoElement } from "../model";
+import { LandingPage, Video as VideoElement } from "../model";
 import Video from "./Video";
 import { browserParse, PortableTextComponent, transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextComponents } from "../utils/richtext";
 
 type PageContentProps = {
-  body: Elements.RichTextElement<VideoElement>;
+  body: LandingPage["elements"]["body_copy"];
 };
 
 const PageContent: FC<PageContentProps> = ({ body }) => {

@@ -1,29 +1,30 @@
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
-import Divider from "../components/Divider";
-import FeaturedArticle from "../components/FeaturedArticle";
-import FeaturedEvent from "../components/FeaturedEvent";
+
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import HeroImage from "../components/HeroImage";
 import PageContent from "../components/PageContent";
 import PageSection from "../components/PageSection";
 import "../index.css";
-import type { Article, Event, LandingPage } from "../model";
+import { type LandingPage } from "../model";
 import { createClient } from "../utils/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { FC } from "react";
 import { useAppContext } from "../context/AppContext";
+import { Replace } from "../utils/types";
+import RenderElement from "../components/RenderElement";
+import FeaturedContent from "../components/FeaturedContent";
 
-const LandingPage: FC = ({}) => {
+const LandingPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();
 
   const landingPage = useSuspenseQuery({
     queryKey: ["landing_page"],
     queryFn: () =>
       createClient(environmentId, apiKey)
-        .item<LandingPage>("landing_page")
+        .item("landing_page")
         .toPromise()
-        .then(res => res.data.item)
+        .then(res => res.data.item as Replace<LandingPage, { elements: Partial<LandingPage["elements"]> }>)
         .catch((err) => {
           if (err instanceof DeliveryError) {
             return null;
@@ -32,51 +33,38 @@ const LandingPage: FC = ({}) => {
         }),
   });
 
-  const featuredArticle = landingPage.data?.elements?.featured_content.linkedItems
-    .find(i => i.system.type === "article") as Article | undefined;
-  const featuredEvent = landingPage.data?.elements?.featured_content.linkedItems
-    .find(i => i.system.type === "event") as Event | undefined;
-
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
 
-      {landingPage.data
+      {landingPage.data && Object.entries(landingPage.data.elements).length
         ? (
           <div className="flex-grow">
-            {(landingPage.data.elements?.headline.value || landingPage.data.elements?.subheadline.value
-              || landingPage.data.elements?.hero_image.value.length)
-              && (
-                <PageSection color="bg-creme">
-                  <HeroImage
-                    data={{
-                      headline: landingPage.data.elements.headline.value,
-                      subheadline: landingPage.data.elements.subheadline.value,
-                      heroImage: landingPage.data.elements.hero_image,
-                    }}
-                  />
-                </PageSection>
-              )}
-            {landingPage.data.elements?.body_copy && landingPage.data.elements?.body_copy.value !== "<p><br></p>"
-              && (
-                <PageSection color="bg-white">
-                  <PageContent body={landingPage.data.elements?.body_copy} />
-                </PageSection>
-              )}
-            {featuredArticle
-              && (
-                <PageSection color="bg-creme">
-                  <FeaturedArticle article={featuredArticle} />
-                </PageSection>
-              )}
-
-            {featuredArticle && featuredEvent && <Divider />}
-            {featuredEvent
-              && (
-                <PageSection color="bg-white">
-                  <FeaturedEvent event={featuredEvent as Event} />
-                </PageSection>
-              )}
+            <PageSection color="bg-creme">
+              <HeroImage
+                data={{
+                  headline: landingPage.data.elements.headline,
+                  subheadline: landingPage.data.elements.subheadline,
+                  heroImage: landingPage.data.elements.hero_image,
+                }}
+              />
+            </PageSection>
+            <RenderElement
+              element={landingPage.data.elements.body_copy}
+              elementCodename="body_copy"
+              requiredElementType="rich_text"
+              errorMessageClassName="container"
+            >
+              <PageContent body={landingPage.data.elements.body_copy!} />
+            </RenderElement>
+            <RenderElement
+              element={landingPage.data.elements.featured_content}
+              elementCodename="featured_content"
+              requiredElementType="modular_content"
+              errorMessageClassName="container"
+            >
+              <FeaturedContent featuredContent={landingPage.data.elements.featured_content!}></FeaturedContent>
+            </RenderElement>
           </div>
         )
         : <div className="flex-grow" />}

@@ -1,11 +1,12 @@
 import { Elements } from "@kontent-ai/delivery-sdk";
 import { FC } from "react";
+import RenderElement from "./RenderElement";
 
 type HeroImageProps = Readonly<{
   data: {
-    headline?: string;
-    subheadline?: string;
-    heroImage: Elements.AssetsElement;
+    headline?: Elements.TextElement;
+    subheadline?: Elements.TextElement;
+    heroImage?: Elements.AssetsElement;
   };
 }>;
 
@@ -13,24 +14,30 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
   return (
     <div className="flex flex-col xl:flex-row pt-10 xl:pt-[104px] pb-10 xl:pb-[160px] gap-5">
       <div className="xl:basis-1/2">
-        <h1 className="text-center xl:text-left font-libre text-[64px] md:text-[94px] text-burgundy font-bold leading-[64px] md:leading-[78px]">
-          {data.headline}
-        </h1>
-        <p className="text-center xl:text-left font-sans text-xl text-gray">
-          {data.subheadline}
-        </p>
+        <RenderElement element={data.headline} elementCodename="headline" requiredElementType="text">
+          <h1 className="text-center xl:text-left font-libre text-[64px] md:text-[94px] text-burgundy font-bold leading-[64px] md:leading-[78px]">
+            {data.headline?.value}
+          </h1>
+        </RenderElement>
+        <RenderElement element={data.subheadline} elementCodename="subheadline" requiredElementType="text">
+          <p className="text-center xl:text-left font-sans text-xl text-gray">{data.subheadline?.value}</p>
+        </RenderElement>
       </div>
       <div className="xl:basis-1/2">
-        {data.heroImage.value[0] && (
-          <img
-            className=" object-cover mx-auto"
-            width={670}
-            height={440}
-            src={data.heroImage.value[0].url}
-            alt={data.heroImage.value[0].description ?? "image-alt"}
-          >
-          </img>
-        )}
+        <RenderElement element={data.heroImage} elementCodename="hero_image" requiredElementType="text">
+          {data.heroImage?.value[0]
+            ? (
+              <img
+                className=" object-cover mx-auto"
+                width={670}
+                height={440}
+                src={data.heroImage.value[0].url}
+                alt={data.heroImage.value[0].description ?? "image-alt"}
+              >
+              </img>
+            )
+            : <></>}
+        </RenderElement>
       </div>
     </div>
   );
