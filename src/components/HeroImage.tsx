@@ -24,14 +24,14 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
         </RenderElement>
       </div>
       <div className="xl:basis-1/2">
-        <RenderElement element={data.heroImage} elementCodename="hero_image" requiredElementType="text">
+        <RenderElement element={data.heroImage} elementCodename="hero_image" requiredElementType="asset">
           {data.heroImage?.value[0]
             ? (
               <img
                 className=" object-cover mx-auto"
                 width={670}
                 height={440}
-                src={data.heroImage.value[0].url}
+                src={`${data.heroImage.value[0].url}?auto=format`}
                 alt={data.heroImage.value[0].description ?? "image-alt"}
               >
               </img>
