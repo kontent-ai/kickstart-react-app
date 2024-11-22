@@ -15,7 +15,7 @@ The app is built with Vite for fast and optimized development, and Tailwind CSS 
 
 ### How to Contribute
 
-- **Report Issues**: Use the [GitHub Issues](https://github.com/kontent-ai/data-ops/issues) to report bugs or request features.
+- **Report Issues**: Use the [GitHub Issues](https://github.com/kontent-ai/kickstart-react-app/issues) to report bugs or request features.
 - **Fork the Repository**: Create a personal fork of the repository on GitHub.
 - **Create a Feature Branch**: Use a descriptive name for your branch.
 - **Submit a Pull Request**: Submit your changes for review.
