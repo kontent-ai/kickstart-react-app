@@ -55,7 +55,9 @@ const LandingPage: FC = () => {
               requiredElementType="rich_text"
               errorMessageClassName="container"
             >
+              <PageSection color="bg-white">
               <PageContent body={landingPage.data.elements.body_copy!} />
+              </PageSection>
             </RenderElement>
             <RenderElement
               element={landingPage.data.elements.featured_content}
