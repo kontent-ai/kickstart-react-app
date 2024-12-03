@@ -14,6 +14,7 @@ import { useAppContext } from "../context/AppContext";
 import { Replace } from "../utils/types";
 import RenderElement from "../components/RenderElement";
 import FeaturedContent from "../components/FeaturedContent";
+import { contentTypes } from "../model/project";
 
 const LandingPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();
@@ -22,9 +23,11 @@ const LandingPage: FC = () => {
     queryKey: ["landing_page"],
     queryFn: () =>
       createClient(environmentId, apiKey)
-        .item("landing_page")
+        .items()
+        .type(contentTypes.landing_page.codename)
+        .limitParameter(1)
         .toPromise()
-        .then(res => res.data.item as Replace<LandingPage, { elements: Partial<LandingPage["elements"]> }>)
+        .then(res => res.data.items[0] as Replace<LandingPage, { elements: Partial<LandingPage["elements"]> }> ?? null)
         .catch((err) => {
           if (err instanceof DeliveryError) {
             return null;
@@ -56,7 +59,7 @@ const LandingPage: FC = () => {
               errorMessageClassName="container"
             >
               <PageSection color="bg-white">
-              <PageContent body={landingPage.data.elements.body_copy!} />
+                <PageContent body={landingPage.data.elements.body_copy!} />
               </PageSection>
             </RenderElement>
             <RenderElement
