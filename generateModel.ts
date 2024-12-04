@@ -11,7 +11,7 @@ if(!VITE_ENVIRONMENT_ID){
 }
 
 if(!VITE_MAPI_API_KEY){
-  throw new Error("VITE_DELIVERY_API_KEY cannot be empty!");
+  throw new Error("VITE_MAPI_API_KEY cannot be empty!");
 }
 
 await generateDeliveryModelsAsync(
