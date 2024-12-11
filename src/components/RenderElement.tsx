@@ -39,15 +39,22 @@ const RenderElement: FC<RenderElementProps> = (props) => {
   if (!props.element) {
     return (
       <KontentComponentErrorMessage errorMessageClassName={props.errorMessageClassName}>
-        Missing or invalid element codename{" "}
+        Missing element with the codename{"  "}
         <b>
           <i>{props.elementCodename}</i>
-        </b>. To learn more about codenames refer to the{" "}
+        </b>. Ensure that your{" "}
+        <a
+          href="https://kontent.ai/learn/try-kontent-ai/build-the-foundation/create-a-landing-page-structure#a-create-a-landing-page-content-type"
+          className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+        >
+          Landing Page content type
+        </a>{" "}
+        contains elements with elements names and{" "}
         <a
           href="https://kontent.ai/learn/docs/content-model/content-types#a-edit-codenames"
           className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
         >
-          Kontent.ai documentation
+          codenames
         </a>.
       </KontentComponentErrorMessage>
     );

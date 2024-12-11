@@ -62,16 +62,17 @@ const LandingPage: FC = () => {
         <div className="flex-grow">
           <PageSection color="white">
             <KontentComponentErrorMessage>
-              Missing or invalid content type codename{" "}
+              Missing a content type with the codename{"  "}
               <b>
                 <i>{contentTypes.landing_page.codename}</i>
-              </b>. To learn more about codenames refer to the{" "}
+              </b>. Please create the{"  "}
               <a
-                href="https://kontent.ai/learn/docs/content-model/content-types#a-edit-codenames"
+                href="https://kontent.ai/learn/try-kontent-ai/build-the-foundation/create-a-landing-page-structure#a-create-a-landing-page-content-type"
                 className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
               >
-                Kontent.ai documentation
-              </a>.
+                Landing Page content type
+              </a>{" "}
+              according to the instructions.
             </KontentComponentErrorMessage>
           </PageSection>
         </div>
