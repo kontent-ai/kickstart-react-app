@@ -1,6 +1,7 @@
 import { Elements } from "@kontent-ai/delivery-sdk";
 import type { FC, ReactNode } from "react";
 import { ElementCodenames } from "../model";
+import KontentComponentErrorMessage from "./KontentComponentErrorMessage";
 
 type AllElementsUnion =
   | Elements.TextElement
@@ -37,7 +38,7 @@ type RenderElementProps = {
 const RenderElement: FC<RenderElementProps> = (props) => {
   if (!props.element) {
     return (
-      <p className={`text-balance font-sans text-xl text-gray ${props.errorMessageClassName ?? ""}`}>
+      <KontentComponentErrorMessage errorMessageClassName={props.errorMessageClassName}>
         Missing or invalid element codename{" "}
         <b>
           <i>{props.elementCodename}</i>
@@ -48,20 +49,20 @@ const RenderElement: FC<RenderElementProps> = (props) => {
         >
           Kontent.ai documentation
         </a>.
-      </p>
+      </KontentComponentErrorMessage>
     );
   }
 
   if (props.element.type !== props.requiredElementType) {
     return (
-      <p className={`text-balance font-sans text-xl text-gray ${props.errorMessageClassName ?? ""}`}>
+      <KontentComponentErrorMessage errorMessageClassName={props.errorMessageClassName}>
         Invalid type of element with codename{" "}
         <b>
           <i>{props.elementCodename}</i>
         </b>
         {". "}
         Required type of element: <b>{props.requiredElementType}</b>. Actual type: <b>{props.element.type}</b>.
-      </p>
+      </KontentComponentErrorMessage>
     );
   }
 
