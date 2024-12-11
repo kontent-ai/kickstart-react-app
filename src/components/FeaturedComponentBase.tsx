@@ -31,7 +31,7 @@ const FeaturedComponentBase: FC<FeaturedContentProps> = ({ type, image, children
               <img
                 width={640}
                 height={420}
-                src={image.value[0]?.url ? `${image.value[0]?.url}?auto=format` : ""}
+                src={image.value[0]?.url ? `${image.value[0]?.url}?auto=format&w=800` : ""}
                 alt={image.value[0].description ?? "image alt"}
                 className="object-cover rounded-lg static"
               />

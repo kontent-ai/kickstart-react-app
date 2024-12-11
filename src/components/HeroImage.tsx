@@ -51,7 +51,7 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
                 className=" object-cover mx-auto"
                 width={670}
                 height={440}
-                src={`${data.heroImage.value[0].url}?auto=format`}
+                src={`${data.heroImage.value[0].url}?auto=format&w=800`}
                 alt={data.heroImage.value[0].description ?? "image-alt"}
               >
               </img>
