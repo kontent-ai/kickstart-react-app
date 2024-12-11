@@ -1,6 +1,6 @@
 import { Elements } from "@kontent-ai/delivery-sdk";
 import type { FC, ReactNode } from "react";
-import { ElementCodenames } from "../model";
+import { ContentTypeCodenames, ElementCodenames } from "../model";
 import KontentComponentErrorMessage from "./KontentComponentErrorMessage";
 
 type AllElementsUnion =
@@ -30,26 +30,27 @@ type ElementTypeUnion =
 type RenderElementProps = {
   element?: AllElementsUnion;
   elementCodename: ElementCodenames;
+  typeCodename: ContentTypeCodenames;
   requiredElementType: ElementTypeUnion;
   errorMessageClassName?: string;
+  link: string | undefined;
   children?: ReactNode | (() => ReactNode);
 };
 
 const RenderElement: FC<RenderElementProps> = (props) => {
+  const renderTypeCodenameLink = () => (
+    <a href={props.link} className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
+      {props.typeCodename} content type
+    </a>
+  );
+
   if (!props.element) {
     return (
       <KontentComponentErrorMessage errorMessageClassName={props.errorMessageClassName}>
-        Missing element with the codename{"  "}
+        Missing element with the codename{" "}
         <b>
           <i>{props.elementCodename}</i>
-        </b>. Ensure that your{" "}
-        <a
-          href="https://kontent.ai/learn/try-kontent-ai/build-the-foundation/create-a-landing-page-structure#a-create-a-landing-page-content-type"
-          className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-        >
-          Landing Page content type
-        </a>{" "}
-        contains elements with elements names and{" "}
+        </b>. Ensure that your {renderTypeCodenameLink()} contains elements with correct names and{" "}
         <a
           href="https://kontent.ai/learn/docs/content-model/content-types#a-edit-codenames"
           className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"

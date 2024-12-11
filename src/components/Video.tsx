@@ -2,6 +2,8 @@ import { FC } from "react";
 import { Video as VideoType } from "../model";
 import { Replace } from "../utils/types";
 import RenderElement from "./RenderElement";
+import { contentTypes } from "../model/project";
+import { videoLink } from "../constants/links";
 
 type VideoProps = {
   video: Replace<VideoType, { elements: Partial<VideoType["elements"]> }>;
@@ -10,17 +12,35 @@ type VideoProps = {
 const Video: FC<VideoProps> = ({ video }) => {
   return (
     <div className="flex flex-col items-center">
-      <RenderElement element={video.elements.headline} elementCodename="headline" requiredElementType="text">
+      <RenderElement
+        element={video.elements.headline}
+        elementCodename="headline"
+        requiredElementType="text"
+        typeCodename={contentTypes.video.codename}
+        link={videoLink}
+      >
         <h2 className="text-azure text-[40px] md:text-[64px] leading-[54px] w-2/4 text-center">
           {video.elements.headline?.value}
         </h2>
       </RenderElement>
-      <RenderElement element={video.elements.description} elementCodename="description" requiredElementType="text">
+      <RenderElement
+        element={video.elements.description}
+        elementCodename="description"
+        requiredElementType="text"
+        typeCodename={contentTypes.video.codename}
+        link={videoLink}
+      >
         <p className="w-4/6 text-center text-xl pt-6 text-gray">
           {video.elements.description?.value}
         </p>
       </RenderElement>
-      <RenderElement element={video.elements.video_link} elementCodename="video_link" requiredElementType="text">
+      <RenderElement
+        element={video.elements.video_link}
+        elementCodename="video_link"
+        requiredElementType="text"
+        typeCodename={contentTypes.video.codename}
+        link={videoLink}
+      >
         {video.elements.video_link?.value
           ? (
             <figure className="pt-20">
@@ -35,7 +55,13 @@ const Video: FC<VideoProps> = ({ video }) => {
                 referrerPolicy="strict-origin-when-cross-origin"
                 allow={"autoplay"}
               />
-              <RenderElement element={video.elements.caption} elementCodename="caption" requiredElementType="text">
+              <RenderElement
+                element={video.elements.caption}
+                elementCodename="caption"
+                requiredElementType="text"
+                typeCodename={contentTypes.video.codename}
+                link={videoLink}
+              >
                 <figcaption className="text-gray-light block m-auto w-fit text-xl pt-6">
                   {video.elements.caption?.value}
                 </figcaption>

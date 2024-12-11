@@ -7,6 +7,8 @@ import { PortableText } from "@portabletext/react";
 import { defaultPortableRichTextComponents } from "../utils/richtext";
 import { Replace } from "../utils/types";
 import RenderElement from "./RenderElement";
+import { contentTypes } from "../model/project";
+import { eventLink } from "../constants/links";
 
 type FeaturedEventProps = Readonly<{
   event: Replace<Event, { elements: Partial<Event["elements"]> }>;
@@ -26,7 +28,13 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
       <FeaturedComponentBase image={event.elements.image} type="event">
         <>
           <div>
-            <RenderElement element={event.elements.name} elementCodename="name" requiredElementType="text">
+            <RenderElement
+              element={event.elements.name}
+              elementCodename="name"
+              requiredElementType="text"
+              link={eventLink}
+              typeCodename={contentTypes.event.codename}
+            >
               <h2 className="text-center xl:text-left text-5xl font-semibold text-burgundy">
                 {event.elements.name?.value}
               </h2>
@@ -35,6 +43,8 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
               element={event.elements.start_date}
               elementCodename="start_date"
               requiredElementType="date_time"
+              link={eventLink}
+              typeCodename={contentTypes.event.codename}
             >
               <p className="text-center xl:text-left text-gray-light mt-6 text-lg">
                 {`${
@@ -56,6 +66,8 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
               element={event.elements.description}
               elementCodename="description"
               requiredElementType="rich_text"
+              typeCodename={contentTypes.event.codename}
+              link={eventLink}
               children={() => (
                 <div className="mt-4">
                   <PortableText

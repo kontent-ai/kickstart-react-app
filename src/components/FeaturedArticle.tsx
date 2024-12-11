@@ -3,6 +3,8 @@ import FeaturedComponentBase from "./FeaturedComponentBase";
 import { Article } from "../model";
 import { Replace } from "../utils/types";
 import RenderElement from "./RenderElement";
+import { contentTypes } from "../model/project";
+import { articleLink } from "../constants/links";
 
 type FeaturedArticleProps = Readonly<{
   article: Replace<Article, { elements: Partial<Article["elements"]> }>;
@@ -15,7 +17,13 @@ const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
     <FeaturedComponentBase type="article" image={article.elements?.image}>
       <>
         <div>
-          <RenderElement element={article.elements.title} elementCodename="title" requiredElementType="text">
+          <RenderElement
+            element={article.elements.title}
+            elementCodename="title"
+            requiredElementType="text"
+            typeCodename={contentTypes.article.codename}
+            link={articleLink}
+          >
             <h2 className="text-center xl:text-left text-5xl font-semibold text-burgundy">
               {article.elements.title?.value}
             </h2>
@@ -24,6 +32,8 @@ const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
             element={article.elements.publish_date}
             elementCodename="publish_date"
             requiredElementType="date_time"
+            typeCodename={contentTypes.article.codename}
+            link={articleLink}
           >
             <p className="text-center xl:text-left text-gray-light mt-6 text-lg">
               {article.elements.publish_date?.value
@@ -40,6 +50,8 @@ const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
             element={article.elements.introduction}
             elementCodename="introduction"
             requiredElementType="text"
+            typeCodename={contentTypes.article.codename}
+            link={articleLink}
           >
             <p className="text-center xl:text-left text-gray-700 mt-4 text-xl">
               {article.elements.introduction?.value}

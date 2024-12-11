@@ -15,6 +15,7 @@ import FeaturedContent from "../components/FeaturedContent";
 import { contentTypes } from "../model/project";
 import KontentComponentErrorMessage from "../components/KontentComponentErrorMessage";
 import Layout from "../components/Layout";
+import { landingPageLink } from "../constants/links";
 
 const LandingPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();
@@ -105,6 +106,8 @@ const LandingPage: FC = () => {
           elementCodename="body_copy"
           requiredElementType="rich_text"
           errorMessageClassName="container"
+          typeCodename={contentTypes.landing_page.codename}
+          link={landingPageLink}
         >
           <PageSection color="bg-white">
             <PageContent body={landingPage.data.elements.body_copy!} />
@@ -115,6 +118,8 @@ const LandingPage: FC = () => {
           elementCodename="featured_content"
           requiredElementType="modular_content"
           errorMessageClassName="container"
+          typeCodename={contentTypes.landing_page.codename}
+          link={landingPageLink}
         >
           <FeaturedContent featuredContent={landingPage.data.elements.featured_content!}></FeaturedContent>
         </RenderElement>
