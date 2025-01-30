@@ -1,6 +1,6 @@
-import { PortableTextReactComponents } from "@portabletext/react";
+import { PortableTextReactResolvers } from "@kontent-ai/rich-text-resolver/utils/react";
 
-export const defaultPortableRichTextComponents: Partial<PortableTextReactComponents> = {
+export const defaultPortableRichTextResolvers: PortableTextReactResolvers = {
   list: {
     bullet: ({ children }) => <ul className="text-xl text-gray-700 list-disc ml-8">{children}</ul>,
     number: ({ children }) => <ol className="text-xl text-gray-700 list-decimal ml-8">{children}</ol>,
