@@ -3,12 +3,12 @@ import FeaturedComponentBase from "./FeaturedComponentBase";
 import { Event } from "../model";
 import { formatDate } from "../utils/date";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
-import { PortableText } from "@portabletext/react";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
 import { Replace } from "../utils/types";
 import RenderElement from "./RenderElement";
 import { contentTypes } from "../model/project";
 import { eventLink } from "../constants/links";
+import { PortableText } from "@kontent-ai/rich-text-resolver/utils/react";
 
 type FeaturedEventProps = Readonly<{
   event: Replace<Event, { elements: Partial<Event["elements"]> }>;

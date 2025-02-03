@@ -1,11 +1,10 @@
 import { FC } from "react";
-import { PortableText } from "@portabletext/react";
 import { Elements } from "@kontent-ai/delivery-sdk";
 import { LandingPage, Video as VideoElement } from "../model";
 import Video from "./Video";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
-import { PortableTextReactResolvers } from "@kontent-ai/rich-text-resolver/utils/react";
+import { PortableText, PortableTextReactResolvers } from "@kontent-ai/rich-text-resolver/utils/react";
 
 type PageContentProps = {
   body: LandingPage["elements"]["body_copy"];
