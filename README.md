@@ -32,6 +32,15 @@ This project adheres to a [Code of Conduct](https://github.com/kontent-ai/.githu
 - Create a `.env` file from `.env.template` and fill out all necessary variables.
 - Run `npm run dev` to run the application in developer mode.
 
+### Regenerating model
+After updating the Kickstart application's content model, the TypeScript models must also be regenerated. We've provided a script to automate this process using the [Kontent.ai Model Generator](https://github.com/kontent-ai/model-generator-js).
+
+```bash
+npm run model:generate
+```
+> [!NOTE]
+> The `VITE_MANAGEMENT_API_KEY` variable inside .env file must be set to generate models properly.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.
