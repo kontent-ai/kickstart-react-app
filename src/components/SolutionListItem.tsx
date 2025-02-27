@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import RenderElement from "./RenderElement";
 import { articleLink } from "../constants/links";
-import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
 import { Solution } from "../model/content-types/solution";
 import { Replace } from "../utils/types";
-import { DeliveryError } from "@kontent-ai/delivery-sdk";
 
 const SolutionList: React.FC = () => {
   const { environmentId, apiKey } = useAppContext();
@@ -13,17 +11,7 @@ const SolutionList: React.FC = () => {
   const [solutions, setSolutions] = useState<ReadonlyArray<Solution> | null>(null);
 
   useEffect(() => {
-    createClient(environmentId, apiKey)
-      .items<Solution>()
-      .type("solution")
-      .toPromise()
-      .then(res => setSolutions(res.data.items))
-      .catch((err) => {
-        if (err instanceof DeliveryError) {
-          return null;
-        }
-        throw err;
-      });
+    // TODO: fetch solutions from Kontent.ai
   }, [environmentId, apiKey]);
 
   if (!solutions || solutions.length === 0) {

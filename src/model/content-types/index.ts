@@ -16,5 +16,4 @@
 export * from "./article.ts";
 export * from "./event.ts";
 export * from "./landingPage.ts";
-export * from "./solution.ts";
 export * from "./video.ts";
