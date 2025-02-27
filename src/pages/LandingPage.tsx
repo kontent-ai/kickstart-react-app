@@ -16,7 +16,6 @@ import { contentTypes } from "../model/project";
 import KontentComponentErrorMessage from "../components/KontentComponentErrorMessage";
 import Layout from "../components/Layout";
 import { landingPageLink } from "../constants/links";
-import SolutionList from "../components/SolutionListItem";
 
 const LandingPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();
@@ -103,7 +102,9 @@ const LandingPage: FC = () => {
           />
         </PageSection>
         <PageSection color="bg-white">
-          <SolutionList />
+          {
+            // TODO: render SolutionList
+          }
         </PageSection>
         <RenderElement
           element={landingPage.data.elements.body_copy}

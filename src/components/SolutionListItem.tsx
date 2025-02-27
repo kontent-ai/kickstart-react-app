@@ -2,30 +2,17 @@ import React, { useEffect, useState } from "react";
 import RenderElement from "./RenderElement";
 import { contentTypes } from "../model/project";
 import { articleLink } from "../constants/links";
-import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
 import { Solution } from "../model/content-types/solution";
 import { Replace } from "../utils/types";
-import { DeliveryError } from "@kontent-ai/delivery-sdk";
 
 const SolutionList: React.FC = () => {
   const { environmentId, apiKey } = useAppContext();
 
   const [solutions, setSolutions] = useState<Solution[] | null>(null);
 
-  // TODO: decide whether use this react hook with useState or React Query.
   useEffect(() => {
-    createClient(environmentId, apiKey)
-      .items<Solution>()
-      .type(contentTypes.solution.codename)
-      .toPromise()
-      .then(res => setSolutions(res.data.items))
-      .catch((err) => {
-        if (err instanceof DeliveryError) {
-          return null;
-        }
-        throw err;
-      });
+    // TODO: fetch solutions from Kontent
   }, [environmentId, apiKey]);
 
   if (!solutions) {
