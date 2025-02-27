@@ -9,7 +9,11 @@
 
 This repository contains the solution for the Kontent.ai Kickstart Sample React App. It serves as a learning resource for those starting new projects with Kontent.ai, providing a foundational template to build upon.
 
-The app is built with Vite for fast and optimized development, and Tailwind CSS is used for styling the application.
+If you'd like to explore a fully set up Kontent.ai project, you can import content from one of the backups located in the `./scripts/backups` folder.
+
+```bash
+npm run model:import --filename="<path-to-the-script>"
+```
 
 ## Contributing
 
@@ -31,6 +35,16 @@ This project adheres to a [Code of Conduct](https://github.com/kontent-ai/.githu
 - Run `npm ci` to install packages.
 - Create a `.env` file from `.env.template` and fill out all necessary variables.
 - Run `npm run dev` to run the application in developer mode.
+
+### Regenerating model
+After updating the Kickstart application's content model, the TypeScript models must also be regenerated. We've provided a script to automate this process using the [Kontent.ai Model Generator](https://github.com/kontent-ai/model-generator-js).
+
+```bash
+npm run model:generate
+```
+> [!NOTE]
+> Ensure that the `.env` file contains the `VITE_ENVIRONMENT_ID` and `VITE_MANAGEMENT_API_KEY` variables for proper model generation.
+
 
 ## License
 
