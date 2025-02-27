@@ -3,7 +3,6 @@ import FeaturedComponentBase from "./FeaturedComponentBase";
 import { Article } from "../model";
 import { Replace } from "../utils/types";
 import RenderElement from "./RenderElement";
-import { contentTypes } from "../model/project";
 import { articleLink } from "../constants/links";
 
 type FeaturedArticleProps = Readonly<{
@@ -21,7 +20,7 @@ const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
             element={article.elements.title}
             elementCodename="title"
             requiredElementType="text"
-            typeCodename={contentTypes.article.codename}
+            typeCodename={"article"}
             link={articleLink}
           >
             <h2 className="text-center xl:text-left text-5xl font-semibold text-burgundy">
@@ -32,7 +31,7 @@ const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
             element={article.elements.publish_date}
             elementCodename="publish_date"
             requiredElementType="date_time"
-            typeCodename={contentTypes.article.codename}
+            typeCodename={"article"}
             link={articleLink}
           >
             <p className="text-center xl:text-left text-gray-light mt-6 text-lg">
@@ -50,7 +49,7 @@ const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
             element={article.elements.introduction}
             elementCodename="introduction"
             requiredElementType="text"
-            typeCodename={contentTypes.article.codename}
+            typeCodename={"article"}
             link={articleLink}
           >
             <p className="text-center xl:text-left text-gray-700 mt-4 text-xl">

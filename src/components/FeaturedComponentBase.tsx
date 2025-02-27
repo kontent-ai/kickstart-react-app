@@ -1,7 +1,6 @@
 import { Elements } from "@kontent-ai/delivery-sdk";
 import { FC, PropsWithChildren } from "react";
 import RenderElement from "./RenderElement";
-import { contentTypes } from "../model/project";
 import { articleLink, eventLink } from "../constants/links";
 
 type FeaturedContentProps = PropsWithChildren<
@@ -20,7 +19,7 @@ const FeaturedComponentBase: FC<FeaturedContentProps> = ({ type, image, children
           element={image}
           elementCodename="image"
           requiredElementType="asset"
-          typeCodename={type === "article" ? contentTypes.article.codename : contentTypes.event.codename}
+          typeCodename={type === "article" ? "article" : "event"}
           link={type === "article" ? articleLink : eventLink}
         >
           {img && (

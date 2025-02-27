@@ -12,7 +12,6 @@ import { useAppContext } from "../context/AppContext";
 import { Replace } from "../utils/types";
 import RenderElement from "../components/RenderElement";
 import FeaturedContent from "../components/FeaturedContent";
-import { contentTypes } from "../model/project";
 import KontentComponentErrorMessage from "../components/KontentComponentErrorMessage";
 import Layout from "../components/Layout";
 import { landingPageLink } from "../constants/links";
@@ -26,7 +25,7 @@ const LandingPage: FC = () => {
         queryKey: ["landing_page_type"],
         queryFn: () =>
           createClient(environmentId, apiKey)
-            .type(contentTypes.landing_page.codename)
+            .type("landing_page")
             .toPromise()
             .then(res => res.data)
             .catch((err) => {
@@ -41,7 +40,7 @@ const LandingPage: FC = () => {
         queryFn: () =>
           createClient(environmentId, apiKey)
             .items()
-            .type(contentTypes.landing_page.codename)
+            .type("landing_page")
             .limitParameter(1)
             .toPromise()
             .then(res =>
@@ -65,7 +64,7 @@ const LandingPage: FC = () => {
             <KontentComponentErrorMessage>
               Missing a content type with the codename{"  "}
               <b>
-                <i>{contentTypes.landing_page.codename}</i>
+                <i>{"landing_page"}</i>
               </b>. Please create the{"  "}
               <a
                 href="https://kontent.ai/learn/try-kontent-ai/build-the-foundation/create-a-landing-page-structure#a-create-a-landing-page-content-type"
@@ -106,7 +105,7 @@ const LandingPage: FC = () => {
           elementCodename="body_copy"
           requiredElementType="rich_text"
           errorMessageClassName="container"
-          typeCodename={contentTypes.landing_page.codename}
+          typeCodename={"landing_page"}
           link={landingPageLink}
         >
           <PageSection color="bg-white">
@@ -118,7 +117,7 @@ const LandingPage: FC = () => {
           elementCodename="featured_content"
           requiredElementType="modular_content"
           errorMessageClassName="container"
-          typeCodename={contentTypes.landing_page.codename}
+          typeCodename={"landing_page"}
           link={landingPageLink}
         >
           <FeaturedContent featuredContent={landingPage.data.elements.featured_content!}></FeaturedContent>

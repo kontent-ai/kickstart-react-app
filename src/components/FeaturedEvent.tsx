@@ -6,7 +6,6 @@ import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
 import { Replace } from "../utils/types";
 import RenderElement from "./RenderElement";
-import { contentTypes } from "../model/project";
 import { eventLink } from "../constants/links";
 import { PortableText } from "@kontent-ai/rich-text-resolver/utils/react";
 
@@ -33,7 +32,7 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
               elementCodename="name"
               requiredElementType="text"
               link={eventLink}
-              typeCodename={contentTypes.event.codename}
+              typeCodename={"event"}
             >
               <h2 className="text-center xl:text-left text-5xl font-semibold text-burgundy">
                 {event.elements.name?.value}
@@ -44,7 +43,7 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
               elementCodename="start_date"
               requiredElementType="date_time"
               link={eventLink}
-              typeCodename={contentTypes.event.codename}
+              typeCodename={"event"}
             >
               <p className="text-center xl:text-left text-gray-light mt-6 text-lg">
                 {`${
@@ -66,7 +65,7 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
               element={event.elements.description}
               elementCodename="description"
               requiredElementType="rich_text"
-              typeCodename={contentTypes.event.codename}
+              typeCodename={"event"}
               link={eventLink}
               children={() => (
                 <div className="mt-4">
