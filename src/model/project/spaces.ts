@@ -13,13 +13,13 @@
 * -------------------------------------------------------------------------------
 **/
 
-export const collections = {
+export const spaces = {
   /**
-   * Default
+   * Default Space
    */
-  default: {
-    name: "Default",
-    codename: "default",
-    id: "00000000-0000-0000-0000-000000000000",
+  defaultSpace: {
+    name: "Default Space",
+    codename: "default_space",
+    id: "e6fa1437-2367-4c8b-bb11-45ecccef6311",
   },
 } as const;
