@@ -11,7 +11,7 @@ if (!environmentId || !mapiKey) {
 }
 
 if (!process.env.npm_config_filename) {
-  throw new Error('You have to provide a filename of backup zip file. Provide the "filename" parameter directly without -- (e.g. npm run ficto:migrate --name=addItems).');
+  throw new Error('You have to provide a filename of backup zip file. Provide the "filename" parameter directly without -- (e.g. npm run model:import --filename="<path>").');
 }
 
 await cleanEnvironment({
