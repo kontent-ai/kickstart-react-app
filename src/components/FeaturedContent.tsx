@@ -15,6 +15,11 @@ const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent }) => {
 
   return (
     <>
+      {(featuredArticle || featuredEvent) && (
+        <h2 className="text-6xl text-azure text-center">
+          Featured Content
+        </h2>
+      )}
       {featuredArticle
         && (
           <PageSection color="bg-creme">

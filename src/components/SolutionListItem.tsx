@@ -26,7 +26,7 @@ const SolutionList: React.FC = () => {
       });
   }, [environmentId, apiKey]);
 
-  if (!solutions) {
+  if (!solutions || solutions.length === 0) {
     return null;
   }
 
@@ -47,7 +47,7 @@ type SolutionListItemProps = Readonly<{
 const SolutionListItem: React.FC<SolutionListItemProps> = ({ solution }) => {
   const shouldRender = Object.entries(solution).length > 0;
   return shouldRender && (
-    <div className="flex flex-col xl:flex-row pt-4 pb-4 justify-center items-center">
+    <div className="flex flex-col xl:flex-row pt-4 pb-4 gap-10 justify-center items-center">
       <div className="pr-4">
         <RenderElement
           element={solution.elements.image}
@@ -79,7 +79,7 @@ const SolutionListItem: React.FC<SolutionListItemProps> = ({ solution }) => {
           typeCodename={"solution"}
           link={articleLink}
         >
-          <h2 className="text-center xl:text-left text-5xl font-semibold text-burgundy">
+          <h2 className="text-left text-5xl font-semibold text-burgundy">
             {solution.elements.headline?.value}
           </h2>
         </RenderElement>
@@ -90,7 +90,7 @@ const SolutionListItem: React.FC<SolutionListItemProps> = ({ solution }) => {
           typeCodename={"solution"}
           link={articleLink}
         >
-          <p className="text-center xl:text-left text-gray-700 mt-4 text-xl">
+          <p className="text-left text-gray-700 mt-4 text-xl">
             {solution.elements.introduction?.value}
             <p>
               <a href="#" className="text-burgundy text-xl mt-6 font-semibold underline">

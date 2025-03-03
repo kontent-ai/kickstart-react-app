@@ -52,7 +52,7 @@ const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
             typeCodename={"article"}
             link={articleLink}
           >
-            <p className="text-center xl:text-left text-gray-700 mt-4 text-xl">
+            <p className="text-left text-gray-700 mt-4 text-xl">
               {article.elements.introduction?.value}
             </p>
           </RenderElement>
