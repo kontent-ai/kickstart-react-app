@@ -10,7 +10,6 @@
     "fmt": "dprint fmt",
     "fmt:check": "dprint check",
     "model:generate": "npx tsx ./scripts/generateModel.ts",
-    "model:import": "npx tsx ./scripts/importProject.ts",
     "preview": "vite preview"
   },
   "dependencies": {
