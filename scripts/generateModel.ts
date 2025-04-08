@@ -14,10 +14,12 @@ if(!VITE_MANAGEMENT_API_KEY){
   throw new Error("VITE_MAPI_API_KEY cannot be empty!");
 }
 
+
+
 await generateDeliveryModelsAsync(
   {
     environmentId: VITE_ENVIRONMENT_ID,
-    apiKey: VITE_MANAGEMENT_API_KEY,
+    managementApiKey: VITE_MANAGEMENT_API_KEY,
     addTimestamp: false,
     createFiles: true,
     outputDir: "./src/model",

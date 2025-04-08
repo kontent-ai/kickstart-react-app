@@ -3,19 +3,19 @@ import RenderElement from "./RenderElement";
 import { articleLink } from "../constants/links";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
-import { Solution } from "../model/content-types/solution";
 import { Replace } from "../utils/types";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
+import { Service } from "../model";
 
 const SolutionList: React.FC = () => {
   const { environmentId, apiKey } = useAppContext();
 
-  const [solutions, setSolutions] = useState<ReadonlyArray<Solution> | null>(null);
+  const [solutions, setSolutions] = useState<ReadonlyArray<Service> | null>(null);
 
   useEffect(() => {
     createClient(environmentId, apiKey)
-      .items<Solution>()
-      .type("solution")
+      .items<Service>()
+      .type("service")
       .toPromise()
       .then(res => setSolutions(res.data.items))
       .catch((err) => {
@@ -41,7 +41,7 @@ const SolutionList: React.FC = () => {
 };
 
 type SolutionListItemProps = Readonly<{
-  solution: Replace<Solution, { elements: Partial<Solution["elements"]> }>;
+  solution: Replace<Service, { elements: Partial<Service["elements"]> }>;
 }>;
 
 const SolutionListItem: React.FC<SolutionListItemProps> = ({ solution }) => {
@@ -53,10 +53,10 @@ const SolutionListItem: React.FC<SolutionListItemProps> = ({ solution }) => {
           element={solution.elements.image}
           elementCodename="image"
           requiredElementType="asset"
-          typeCodename={"solution"}
+          typeCodename={"service"}
           link={articleLink}
         >
-          {solution.elements.image && (
+          {solution.elements.image?.value[0] && (
             <>
               <img
                 width={640}
@@ -64,7 +64,7 @@ const SolutionListItem: React.FC<SolutionListItemProps> = ({ solution }) => {
                 src={solution.elements.image.value[0]?.url
                   ? `${solution.elements.image.value[0]?.url}?auto=format&w=800`
                   : ""}
-                alt={solution.elements.image.value[0].description ?? "image alt"}
+                alt={"image alt"}
                 className="object-cover rounded-lg static"
               />
             </>
@@ -73,32 +73,34 @@ const SolutionListItem: React.FC<SolutionListItemProps> = ({ solution }) => {
       </div>
       <div className="xl:w-1/2">
         <RenderElement
-          element={solution.elements.headline}
-          elementCodename="headline"
+          element={solution.elements.name}
+          elementCodename="name"
           requiredElementType="text"
-          typeCodename={"solution"}
+          typeCodename={"service"}
           link={articleLink}
         >
           <h2 className="text-left text-5xl font-semibold text-burgundy">
-            {solution.elements.headline?.value}
+            {solution.elements.name?.value}
           </h2>
         </RenderElement>
-        <RenderElement
-          element={solution.elements.introduction}
-          elementCodename="introduction"
+        {
+          /* <RenderElement
+          element={solution.elements.description}
+          elementCodename="description"
           requiredElementType="text"
-          typeCodename={"solution"}
+          typeCodename={"service"}
           link={articleLink}
         >
           <p className="text-left text-gray-700 mt-4 text-xl">
-            {solution.elements.introduction?.value}
+            {solution.elements.description?.value}
             <p>
               <a href="#" className="text-burgundy text-xl mt-6 font-semibold underline">
                 Read more
               </a>
             </p>
           </p>
-        </RenderElement>
+        </RenderElement> */
+        }
       </div>
     </div>
   );

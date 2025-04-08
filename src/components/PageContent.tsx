@@ -1,6 +1,5 @@
 import { FC } from "react";
-import { Elements } from "@kontent-ai/delivery-sdk";
-import { LandingPage, Video as VideoElement } from "../model";
+import { isVideo, LandingPage } from "../model";
 import Video from "./Video";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
@@ -21,7 +20,7 @@ const PageContent: FC<PageContentProps> = ({ body }) => {
 };
 
 const createPortableTextComponents = (
-  element: Elements.RichTextElement<VideoElement>,
+  element: PageContentProps["body"],
 ): PortableTextReactResolvers => ({
   ...defaultPortableRichTextResolvers,
   types: {
@@ -31,7 +30,11 @@ const createPortableTextComponents = (
         return <div>Did not find any item with codename {value.component._ref}</div>;
       }
 
-      return <Video video={item} />;
+      if (isVideo(item)) {
+        return <Video video={item} />;
+      }
+
+      return <div>Unsupported item type: {item.system.type}</div>;
     },
   },
 });
