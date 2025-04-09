@@ -15,7 +15,6 @@ import FeaturedContent from "../components/FeaturedContent";
 import KontentComponentErrorMessage from "../components/KontentComponentErrorMessage";
 import Layout from "../components/Layout";
 import { landingPageLink } from "../constants/links";
-import SolutionList from "../components/SolutionListItem";
 
 const LandingPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();
@@ -92,7 +91,7 @@ const LandingPage: FC = () => {
   return (
     <Layout>
       <div className="flex-grow">
-        <PageSection color="bg-creme">
+        <PageSection color="bg-burgundy">
           <HeroImage
             data={{
               headline: landingPage.data.elements.headline,
@@ -100,9 +99,6 @@ const LandingPage: FC = () => {
               heroImage: landingPage.data.elements.hero_image,
             }}
           />
-        </PageSection>
-        <PageSection color="bg-white">
-          <SolutionList />
         </PageSection>
         <RenderElement
           element={landingPage.data.elements.body_copy}
