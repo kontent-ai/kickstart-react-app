@@ -26,14 +26,23 @@ export type Disclaimer = CoreContentType<
   DisclaimerElementCodenames,
   {
     /**
-     * Content
+     * Headline
      *
-     * Type: rich_text
+     * Type: text
      * Required: true
-     * Codename: content
-     * Id: d8a15abf-e1c6-4949-a11a-24a4572af5c6
+     * Codename: headline
+     * Id: 58fa6567-06ef-4add-a59a-a189d89b1d27
      */
-    readonly content: Elements.RichTextElement<CoreContentType>;
+    readonly headline: Elements.TextElement;
+    /**
+     * Subheadline
+     *
+     * Type: text
+     * Required: true
+     * Codename: subheadline
+     * Id: b85982af-b575-4650-b8e7-8a34e1b0e99c
+     */
+    readonly subheadline: Elements.TextElement;
     /**
      * Type
      *
@@ -42,7 +51,7 @@ export type Disclaimer = CoreContentType<
      * Codename: type
      * Id: d142d0ee-2163-44a0-bcfd-f4146488c858
      */
-    readonly type: Elements.MultipleChoiceElement<"legal" | "informational" | "promotional" | "warning">;
+    readonly type: Elements.MultipleChoiceElement<"informational" | "promotional">;
   },
   "disclaimer"
 >;
@@ -50,7 +59,7 @@ export type Disclaimer = CoreContentType<
 /**
  * Type representing all available element codenames for Disclaimer
  */
-export type DisclaimerElementCodenames = "content" | "type";
+export type DisclaimerElementCodenames = "headline" | "subheadline" | "type";
 
 /**
  * Type guard for Disclaimer

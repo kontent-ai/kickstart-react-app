@@ -23,7 +23,8 @@ export type LanguageCodenames = "de-DE" | "default" | "es-ES";
  */
 export type ContentTypeCodenames =
   | "article"
-  | "blog"
+  | "blog_post"
+  | "call_to_action"
   | "disclaimer"
   | "event"
   | "landing_page"
@@ -67,8 +68,9 @@ export type ElementCodenames =
   | "biography"
   | "body_copy"
   | "body"
+  | "button_label"
+  | "button_link"
   | "caption"
-  | "content"
   | "description"
   | "email"
   | "end_date"
@@ -79,6 +81,7 @@ export type ElementCodenames =
   | "guidelines"
   | "headline"
   | "hero_image"
+  | "image_position"
   | "image"
   | "introduction"
   | "job_title"

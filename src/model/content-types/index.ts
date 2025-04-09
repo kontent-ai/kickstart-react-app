@@ -14,7 +14,8 @@
 **/
 
 export * from "./article.ts";
-export * from "./blog.ts";
+export * from "./blogPost.ts";
+export * from "./callToAction.ts";
 export * from "./disclaimer.ts";
 export * from "./event.ts";
 export * from "./landingPage.ts";

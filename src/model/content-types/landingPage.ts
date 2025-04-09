@@ -15,7 +15,7 @@
 
 import type { Elements } from "@kontent-ai/delivery-sdk";
 import type { CoreContentType } from "../system/index.ts";
-import type { Video, Disclaimer, Article, Event, Page } from "./index.ts";
+import type { Video, Disclaimer, CallToAction, Event, Article, Page } from "./index.ts";
 
 /**
  * Landing Page
@@ -61,7 +61,7 @@ export type LandingPage = CoreContentType<
      * Codename: body_copy
      * Id: 7b9826ff-5cb0-450f-b16a-bd176aed04cf
      */
-    readonly body_copy: Elements.RichTextElement<Video | Disclaimer>;
+    readonly body_copy: Elements.RichTextElement<Video | Disclaimer | CallToAction>;
     /**
      * Featured Content
      *
@@ -70,7 +70,7 @@ export type LandingPage = CoreContentType<
      * Codename: featured_content
      * Id: 38cf004b-3054-43ff-9b7a-f0734b1d35f1
      */
-    readonly featured_content: Elements.LinkedItemsElement<Article | Event>;
+    readonly featured_content: Elements.LinkedItemsElement<Event | Article | CallToAction>;
     /**
      * Subpages
      *

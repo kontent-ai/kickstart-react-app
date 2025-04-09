@@ -17,13 +17,13 @@ import type { Elements } from "@kontent-ai/delivery-sdk";
 import type { CoreContentType } from "../system/index.ts";
 
 /**
- * Blog
+ * Blog Post
  *
  * Id: 336302c0-0634-4974-b33b-8c7b0469e837
- * Codename: blog
+ * Codename: blog_post
  */
-export type Blog = CoreContentType<
-  BlogElementCodenames,
+export type BlogPost = CoreContentType<
+  BlogPostElementCodenames,
   {
     /**
      * Title
@@ -53,20 +53,20 @@ export type Blog = CoreContentType<
      */
     readonly body: Elements.RichTextElement<CoreContentType>;
   },
-  "blog"
+  "blog_post"
 >;
 
 /**
- * Type representing all available element codenames for Blog
+ * Type representing all available element codenames for Blog Post
  */
-export type BlogElementCodenames = "title" | "image" | "body";
+export type BlogPostElementCodenames = "title" | "image" | "body";
 
 /**
- * Type guard for Blog
+ * Type guard for Blog Post
  *
  * Id: 336302c0-0634-4974-b33b-8c7b0469e837
- * Codename: blog
+ * Codename: blog_post
  */
-export function isBlog(item: CoreContentType | undefined | null): item is Blog {
-  return item?.system?.type === "blog";
+export function isBlogPost(item: CoreContentType | undefined | null): item is BlogPost {
+  return item?.system?.type === "blog_post";
 }
