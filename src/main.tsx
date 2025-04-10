@@ -7,6 +7,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import BlogPage from "./pages/BlogPage.tsx";
 import Layout from "./components/Layout.tsx";
 import BlogDetail from "./pages/BlogDetail.tsx";
+import ServicesListingPage from "./pages/ServicesListingPage.tsx";
+import ServiceDetail from "./pages/ServiceDetail.tsx";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +28,14 @@ const router = createBrowserRouter([
       {
         path: "/blog/:slug",
         Component: BlogDetail,
+      },
+      {
+        path: "/services",
+        Component: ServicesListingPage,
+      },
+      {
+        path: "/services/:slug",
+        Component: ServiceDetail,
       },
     ],
   },

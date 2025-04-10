@@ -8,19 +8,20 @@ type TagProps = Readonly<{
 const Tag: FC<TagProps> = ({ text, className = "" }) => (
   <div
     key={text}
-    className={`px-4 py-2 border-solid border rounded-full border-[#1D1D1B] ${className}`}
+    className={`w-fit px-4 py-2 border-solid border rounded-full border-[#1D1D1B] ${className}`}
   >
-    <p className="text-[#1D1D1B] text-lg">{text}</p>
+    <p className="text-[#1D1D1B] text-[12px] leading-[150%] uppercase font-[600]">{text}</p>
   </div>
 );
 
 type TagsProps = Readonly<{
-  tags: string[];
+  tags: ReadonlyArray<string>;
+  orientation?: "horizontal" | "vertical";
   className?: string;
 }>;
 
-const Tags: FC<TagsProps> = ({ tags }) => (
-  <div className="flex mt-6 gap-2 justify-center xl:justify-normal">
+const Tags: FC<TagsProps> = ({ tags, orientation = "horizontal" }) => (
+  <div className={`flex gap-2 justify-center xl:justify-normal ${orientation === "vertical" ? "flex-col" : ""}`}>
     {tags.map(tag => <Tag key={tag} text={tag} />)}
   </div>
 );

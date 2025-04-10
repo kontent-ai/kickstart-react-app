@@ -33,17 +33,18 @@ h1, h2, h3 {
   --color-link: var(--color-burgundy);
   --color-link-hover: var(--color-azure);
 
-  --color-button-background: var(--color-azure);
+  --color-button-background: transparent;
   --color-button-background-hover: var(--color-burgundy);
-  --color-button-border: var(--color-azure);
+  --color-button-border: var(--color-burgundy);
   --color-button-border-hover: var(--color-burgundy);
-  --color-button-text: var(--color-white);
+  --color-button-text: #000000;
   --color-button-text-hover: var(--color-white);
+
 
   --size-heading-1: 94px;
   --size-heading-2: 48px;
   --size-heading-3: 32px;
-  --size-heading-4: 28px;
+  --size-heading-4: 20px;
 
   --line-height-heading-1: 84%;
   --line-height-heading-2: 84%;
@@ -65,6 +66,16 @@ h1, h2, h3 {
     --color-button-background-hover: var(--color-creme);
     --color-button-text-hover: var(--color-gray);
     --color-button-border-hover: var(--color-creme);
+
+    @apply button-azure-on-burgundy;
+}
+
+.azure-theme {
+  --color-background: var(--color-azure);
+  --color-heading-1: var(--color-white);
+  --color-heading-2: var(--color-white);
+  --color-heading-3: var(--color-white);
+  --color-body: var(--color-white);
 }
 
 .creme-theme {
@@ -74,6 +85,21 @@ h1, h2, h3 {
   --color-text: var(--color-gray);
 }
 
+.button-azure {
+  --color-button-background: var(--color-azure);
+  --color-button-background-hover: var(--color-burgundy);
+  --color-button-border: var(--color-azure);
+  --color-button-border-hover: var(--color-burgundy);
+  --color-button-text: var(--color-white);
+  --color-button-text-hover: var(--color-white);
+}
+
+.button-azure-on-burgundy {
+  @apply button-azure;
+  --color-button-background-hover: var(--color-creme);
+  --color-button-border-hover: var(--color-creme);
+  --color-button-text-hover: var(--color-grey);
+}
 
 .rich-text-body {
   --size-heading-1: 94px;
