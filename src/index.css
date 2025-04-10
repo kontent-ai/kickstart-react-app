@@ -2,12 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+h1, h2, h3 {
+  @apply font-libre;
+}
+
 :root {
   --color-burgundy: #993265;
   --color-azure: #009edb;
   --color-white: #ffffff;
-  --color-gray: #3b3b3b;
-  --color-gray-light: #8e8e8e;
+  --color-grey: #3b3b3b;
+  --color-grey-light: #8e8e8e;
   --color-creme: #fff7e7;
 
   --color-primary: var(--color-burgundy); 
@@ -16,7 +20,10 @@
 
   --color-background: var(--color--white);
 
-  --color-heading: var(--color-azure);
+  --color-heading-1: var(--color-burgundy);
+  --color-heading-2: var(--color-azure);
+  --color-heading-3: var(--color-azure);
+  --color-heading-4: var(--color-azure);
 
   --color-body-large: var(--color-grey);
   --color-body: var(--color-grey);
@@ -32,11 +39,28 @@
   --color-button-border-hover: var(--color-burgundy);
   --color-button-text: var(--color-white);
   --color-button-text-hover: var(--color-white);
+
+  --size-heading-1: 94px;
+  --size-heading-2: 48px;
+  --size-heading-3: 32px;
+  --size-heading-4: 28px;
+
+  --line-height-heading-1: 84%;
+  --line-height-heading-2: 84%;
+  --line-height-heading-3: 84%;
+  --line-height-heading-4: 84%;
+
+  --font-weight-heading-1: 800;
+  --font-weight-heading-2: 800;
+  --font-weight-heading-3: 800;
+  --font-weight-heading-4: 800;
 }
 
 .burgundy-theme {
     --color-background: var(--color-burgundy);
-    --color-heading: var(--color-creme);
+    --color-heading-1: var(--color-creme);
+    --color-heading-2: var(--color-creme);
+    --color-heading-3: var(--color-creme);
     --color-body: var(--color-creme);
     --color-button-background-hover: var(--color-creme);
     --color-button-text-hover: var(--color-gray);
@@ -48,4 +72,27 @@
   --color-secondary: var(--color-burgundy);
   --color-heading: var(--color-burgundy);
   --color-text: var(--color-gray);
+}
+
+
+.rich-text-body {
+  --size-heading-1: 94px;
+  --size-heading-2: 48px;
+  --size-heading-3: 36px;
+  --size-heading-4: 20px;
+
+  --color-heading-1: var(--color-grey);
+  --color-heading-2: var(--color-grey);
+  --color-heading-3: var(--color-grey);
+  --color-heading-4: var(--color-grey);
+
+  --line-height-heading-1: 170%;
+  --line-height-heading-2: 170%;
+  --line-height-heading-3: 170%;
+  --line-height-heading-4: 170%;
+
+  --font-weight-heading-1: 800;
+  --font-weight-heading-2: 800;
+  --font-weight-heading-3: 800;
+  --font-weight-heading-4: 700;
 }

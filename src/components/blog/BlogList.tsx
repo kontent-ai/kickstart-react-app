@@ -19,14 +19,16 @@ type BlogListProps = Readonly<{
 const BlogList: React.FC<BlogListProps> = ({ blogs }) => {
   const blogItems = blogs.map((blog, index) => (
     <PageSection key={index} color="bg-white">
-      <BlogListItem
-        key={index}
-        imageSrc={blog.imageSrc}
-        title={blog.title}
-        description={blog.description}
-        readMoreLink={blog.readMoreLink}
-        className="pt-[98px] pb-[150px]"
-      />
+      <div className="max-w-6xl mx-auto">
+        <BlogListItem
+          key={index}
+          imageSrc={blog.imageSrc}
+          title={blog.title}
+          description={blog.description}
+          readMoreLink={blog.readMoreLink}
+          className="pt-[98px] pb-[150px]"
+        />
+      </div>
     </PageSection>
   ));
 

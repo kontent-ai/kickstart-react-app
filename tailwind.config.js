@@ -11,7 +11,7 @@ export default {
         burgundy: "#993265",
         azure: "#009edb",
         white: '#ffffff',
-        gray: {
+        grey: {
           light: "#8e8e8e",
           DEFAULT: "#3b3b3b"
         },
@@ -20,9 +20,10 @@ export default {
         secondary: 'var(--color-secondary)',
         ternary: 'var(--color-ternary)',
 
-        "heading-1-color": 'var(--color-heading)',
-        "heading-2-color": 'var(--color-heading)',
-        "heading-3-color": 'var(--color-heading)',
+        "heading-1-color": 'var(--color-heading-1)',
+        "heading-2-color": 'var(--color-heading-2)',
+        "heading-3-color": 'var(--color-heading-3)',
+        "heading-4-color": 'var(--color-heading-4)',
 
         "body-large-color": 'var(--color-body-large)',
         "body-color": 'var(--color-body)',
@@ -41,12 +42,13 @@ export default {
         "button-text-hover-color": 'var(--color-button-text-hover)',
     },
     fontSize: {
-      'heading-1': ['94px', { lineHeight: '84%', fontWeight: '800', fontFamily: 'Abhaya Libre' }],
-      'heading-2': ['48px', { lineHeight: '84%', fontWeight: '800', fontFamily: 'Abhaya Libre' }],
-      'heading-3': ['32px', { lineHeight: '84%', fontWeight: '800', fontFamily: 'Abhaya Libre' }],
+      'heading-1': ['var(--size-heading-1)', { lineHeight: 'var(--line-height-heading-1)', fontWeight: 'var(--font-weight-heading-1)'}],
+      'heading-2': ['var(--size-heading-2)', { lineHeight: 'var(--line-height-heading-2)', fontWeight: 'var(--font-weight-heading-2)'}],
+      'heading-3': ['var(--size-heading-3)', { lineHeight: 'var(--line-height-heading-3)', fontWeight: 'var(--font-weight-heading-3)'}],
+      'heading-4': ['var(--size-heading-4)', { lineHeight: 'var(--line-height-heading-4)', fontWeight: 'var(--font-weight-heading-4)'}],
       'body-large': ['1.125rem', { lineHeight: '1.75rem' }],
-      'body': ['20px', { lineHeight: '150%', fontFamily: 'Source Sans 3', color: '#3b3b3b' }],
-      'small': ['0.875rem', { lineHeight: '1.25rem' }],
+      'body': ['20px', { lineHeight: '150%', color: '#3b3b3b' }],
+      'small': ['15px', { lineHeight: '150%', color: '#3b3b3b' }],
     },
       fontFamily: {
         sans: ['"Source Sans 3"', 'Arial', 'sans-serif'],

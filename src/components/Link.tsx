@@ -1,3 +1,5 @@
+import { NavLink } from "react-router";
+
 type LinkProps = Readonly<{
   href: string;
   text: string;
@@ -6,9 +8,9 @@ type LinkProps = Readonly<{
 
 const Link = ({ href, text, className = "" }: LinkProps) => {
   return (
-    <a href={href} className={`text-link-color text-body underline hover:text-link-hover-color ${className}`}>
+    <NavLink to={href} className={`text-link-color text-body underline hover:text-link-hover-color ${className}`}>
       {text}
-    </a>
+    </NavLink>
   );
 };
 

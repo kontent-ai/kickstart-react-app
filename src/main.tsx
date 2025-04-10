@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import BlogPage from "./pages/BlogPage.tsx";
 import Layout from "./components/Layout.tsx";
+import BlogDetail from "./pages/BlogDetail.tsx";
 
 const queryClient = new QueryClient();
 
@@ -16,11 +17,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <LandingPage />,
+        Component: LandingPage,
       },
       {
         path: "/blog",
-        element: <BlogPage />,
+        Component: BlogPage,
+      },
+      {
+        path: "/blog/:slug",
+        Component: BlogDetail,
       },
     ],
   },

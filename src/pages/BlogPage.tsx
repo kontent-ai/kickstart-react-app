@@ -49,7 +49,7 @@ const BlogPage: React.FC = () => {
             imageSrc: b.elements.image?.value[0].url,
             title: b.elements.title?.value,
             description: transformToPortableText(b.elements.body?.value),
-            readMoreLink: "",
+            readMoreLink: b.system.codename,
           }))}
         />
       </div>
