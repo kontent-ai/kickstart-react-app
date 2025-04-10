@@ -39,7 +39,7 @@ const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent }) => {
               buttonHref={item.elements.button_link.value[0]}
               imageSrc={item.elements.image.value[0].url}
               imageAlt={item.elements.image.value[0].description ?? "alt"}
-              style="linkedItem"
+              style="burgundy"
             />
           </div>
         </PageSection>

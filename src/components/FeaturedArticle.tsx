@@ -5,6 +5,7 @@ import { Replace } from "../utils/types";
 import RenderElement from "./RenderElement";
 import { articleLink } from "../constants/links";
 import Tags from "./Tags";
+import Link from "./Link";
 
 type FeaturedArticleProps = Readonly<{
   article: Replace<Article, { elements: Partial<Article["elements"]> }>;
@@ -59,9 +60,7 @@ const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
             </p>
           </RenderElement>
         </div>
-        <a href="#" className="text-center xl:text-left text-burgundy text-xl mt-6 font-semibold underline">
-          Read more
-        </a>
+        <Link href={articleLink} text="Read more" className="mt-6" />
       </>
     </FeaturedComponentBase>
   );

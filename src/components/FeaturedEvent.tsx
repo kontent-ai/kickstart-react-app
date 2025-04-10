@@ -9,6 +9,7 @@ import RenderElement from "./RenderElement";
 import { eventLink } from "../constants/links";
 import { PortableText } from "@kontent-ai/rich-text-resolver/utils/react";
 import Tags from "./Tags";
+import Link from "./Link";
 
 type FeaturedEventProps = Readonly<{
   event: Replace<Event, { elements: Partial<Event["elements"]> }>;
@@ -74,11 +75,7 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
             >
             </RenderElement>
           </div>
-          {event.elements.description?.value !== "<p><br></p>" && (
-            <a href="#" className="text-center xl:text-left text-burgundy text-xl mt-6 font-semibold underline">
-              Read more
-            </a>
-          )}
+          {event.elements.description?.value !== "<p><br></p>" && <Link href={"#"} text="Read more" className="mt-6" />}
         </>
       </FeaturedComponentBase>
     )

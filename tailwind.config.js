@@ -15,7 +15,30 @@ export default {
           light: "#8e8e8e",
           DEFAULT: "#3b3b3b"
         },
-        creme: "#fff7e7"
+        creme: "#fff7e7",
+        primary: 'var(--color-primary)',
+        secondary: 'var(--color-secondary)',
+        ternary: 'var(--color-ternary)',
+
+        "heading-1-color": 'var(--color-heading)',
+        "heading-2-color": 'var(--color-heading)',
+        "heading-3-color": 'var(--color-heading)',
+
+        "body-large-color": 'var(--color-body-large)',
+        "body-color": 'var(--color-body)',
+        "body-small-color": 'var(--color-small)',
+
+        "border-color": 'var(--color-border)',
+        "link-color": 'var(--color-link)',
+        "link-hover-color": 'var(--color-link-hover)',
+        "background-color": 'var(--color-background)',
+
+        "button-background-color": 'var(--color-button-background)',
+        "button-background-hover-color": 'var(--color-button-background-hover)',
+        "button-border-color": 'var(--color-button-border)',
+        "button-border-hover-color": 'var(--color-button-border-hover)',
+        "button-text-color": 'var(--color-button-text)',
+        "button-text-hover-color": 'var(--color-button-text-hover)',
     },
     fontSize: {
       'heading-1': ['94px', { lineHeight: '84%', fontWeight: '800', fontFamily: 'Abhaya Libre' }],

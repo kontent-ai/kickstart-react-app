@@ -14,7 +14,7 @@ type HeroImageProps = Readonly<{
 
 const HeroImage: FC<HeroImageProps> = ({ data }) => {
   return (
-    <div className="flex flex-col py-10 xl:py-0 xl:flex-row xl:gap-32">
+    <div className="burgundy-theme flex flex-col py-10 xl:py-0 xl:flex-row xl:gap-32">
       <div className="xl:basis-1/2 pt-10 xl:pt-[104px] pb-10 xl:pb-[160px] flex flex-col items-center xl:items-start gap-10">
         <RenderElement
           element={data.headline}
@@ -23,7 +23,7 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
           typeCodename={"landing_page"}
           link={landingPageLink}
         >
-          <h1 className="text-center xl:text-left font-libre text-[64px] md:text-[94px] text-creme font-bold leading-[64px] md:leading-[78px]">
+          <h1 className="text-center xl:text-left font-libre text-[64px] md:text-[94px] text-heading-1-color font-bold leading-[64px] md:leading-[78px]">
             {data.headline?.value}
           </h1>
         </RenderElement>
@@ -34,7 +34,7 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
           typeCodename={"landing_page"}
           link={landingPageLink}
         >
-          <p className="text-center xl:text-left font-sans text-xl text-creme">{data.subheadline?.value}</p>
+          <p className="text-center xl:text-left font-sans text-xl text-body-color">{data.subheadline?.value}</p>
         </RenderElement>
 
         <ButtonLink href={"/?preview"}>

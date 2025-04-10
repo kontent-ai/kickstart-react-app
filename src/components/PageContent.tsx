@@ -4,8 +4,8 @@ import Video from "./Video";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
 import { PortableText, PortableTextReactResolvers } from "@kontent-ai/rich-text-resolver/utils/react";
-import PromotionalDisclaimer from "./PromotionalDisclaimer";
-import InformationalDisclaimer from "./InformationalDisclaimer";
+import PromotionalDisclaimer from "./disclaimer/PromotionalDisclaimer";
+import InformationalDisclaimer from "./disclaimer/InformationalDisclaimer";
 import CallToAction from "./CallToAction";
 
 type PageContentProps = {
@@ -52,7 +52,6 @@ const createPortableTextComponents = (
           imageSrc={item.elements.image.value[0].url}
           imageAlt={item.elements.image.value[0].description ?? "alt"}
           reverse={index % 2 === 0}
-          style="richTextComponent"
         />
       );
     },

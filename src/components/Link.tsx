@@ -1,11 +1,12 @@
 type LinkProps = Readonly<{
   href: string;
   text: string;
+  className?: string;
 }>;
 
-const Link = ({ href, text }: LinkProps) => {
+const Link = ({ href, text, className = "" }: LinkProps) => {
   return (
-    <a href={href} className="text-burgundy text-body underline hover:text-azure">
+    <a href={href} className={`text-link-color text-body underline hover:text-link-hover-color ${className}`}>
       {text}
     </a>
   );

@@ -1,3 +1,51 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --color-burgundy: #993265;
+  --color-azure: #009edb;
+  --color-white: #ffffff;
+  --color-gray: #3b3b3b;
+  --color-gray-light: #8e8e8e;
+  --color-creme: #fff7e7;
+
+  --color-primary: var(--color-burgundy); 
+  --color-secondary: var(--color-creme);
+  --color-ternary: var(--color-azure);
+
+  --color-background: var(--color--white);
+
+  --color-heading: var(--color-azure);
+
+  --color-body-large: var(--color-grey);
+  --color-body: var(--color-grey);
+  --color-small: var(--color-grey);
+
+  --color-border: var(--color-burgundy);
+  --color-link: var(--color-burgundy);
+  --color-link-hover: var(--color-azure);
+
+  --color-button-background: var(--color-azure);
+  --color-button-background-hover: var(--color-burgundy);
+  --color-button-border: var(--color-azure);
+  --color-button-border-hover: var(--color-burgundy);
+  --color-button-text: var(--color-white);
+  --color-button-text-hover: var(--color-white);
+}
+
+.burgundy-theme {
+    --color-background: var(--color-burgundy);
+    --color-heading: var(--color-creme);
+    --color-body: var(--color-creme);
+    --color-button-background-hover: var(--color-creme);
+    --color-button-text-hover: var(--color-gray);
+    --color-button-border-hover: var(--color-creme);
+}
+
+.creme-theme {
+  --color-primary: var(--color-creme);     
+  --color-secondary: var(--color-burgundy);
+  --color-heading: var(--color-burgundy);
+  --color-text: var(--color-gray);
+}
