@@ -9,6 +9,7 @@ import Layout from "./components/Layout.tsx";
 import BlogDetail from "./pages/BlogDetail.tsx";
 import ServicesListingPage from "./pages/ServicesListingPage.tsx";
 import ServiceDetail from "./pages/ServiceDetail.tsx";
+import NotFound from "./components/NotFound.tsx";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/services/:slug",
         Component: ServiceDetail,
+      },
+      {
+        path: "/*",
+        Component: NotFound,
       },
     ],
   },
