@@ -25,7 +25,7 @@ export type Metadata = Snippet<
   MetadataElementCodenames,
   {
     /**
-     * Title
+     * Meta Title
      *
      * Type: text
      * Required: false

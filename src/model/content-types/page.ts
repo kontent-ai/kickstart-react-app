@@ -31,7 +31,7 @@ export type Page = CoreContentType<
      * Headline
      *
      * Type: text
-     * Required: false
+     * Required: true
      * Codename: headline
      * Id: 05721c93-8dcb-4daa-81b6-df690efaef61
      */
@@ -40,7 +40,7 @@ export type Page = CoreContentType<
      * Subheadline
      *
      * Type: text
-     * Required: false
+     * Required: true
      * Codename: subheadline
      * Id: 719d23e7-d174-498f-b0aa-46640791b5fb
      */

@@ -16,6 +16,7 @@
 import type { Elements } from "@kontent-ai/delivery-sdk";
 import type { ArticleType, GeneralHealthcareTopics } from "../taxonomies/index.ts";
 import type { CoreContentType } from "../system/index.ts";
+import type { Metadata } from "../content-type-snippets/index.ts";
 import type { Person } from "./index.ts";
 
 /**
@@ -99,7 +100,25 @@ export type Article = CoreContentType<
      * Id: 945fa79f-fc67-480b-8e20-b777cce76ab5
      */
     readonly topics: Elements.TaxonomyElement<GeneralHealthcareTopics, "topics">;
-  },
+    /**
+     * Related Articles
+     *
+     * Type: modular_content
+     * Required: false
+     * Codename: related_articles
+     * Id: bf44c9a2-6bd9-455a-8cfd-68cc806cf359
+     */
+    readonly related_articles: Elements.LinkedItemsElement<Article>;
+    /**
+     * URL slug
+     *
+     * Type: url_slug
+     * Required: false
+     * Codename: url_slug
+     * Id: f95032a0-481e-4297-ad58-76fa2eb7edaf
+     */
+    readonly url_slug: Elements.UrlSlugElement;
+  } & Metadata,
   "article"
 >;
 
@@ -114,7 +133,12 @@ export type ArticleElementCodenames =
   | "image"
   | "body_copy"
   | "article_type"
-  | "topics";
+  | "topics"
+  | "related_articles"
+  | "metadata__title"
+  | "metadata__keywords"
+  | "metadata__description"
+  | "url_slug";
 
 /**
  * Type guard for Article

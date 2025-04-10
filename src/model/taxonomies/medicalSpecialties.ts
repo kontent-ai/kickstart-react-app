@@ -20,13 +20,18 @@
  * Id: 22981808-66a0-4d9a-8aa7-4d92f04ead5a
  */
 export const medicalSpecialtiesValues = [
+  "clinical_research",
   "cardiology",
-  "oncology",
-  "neurology",
-  "pediatrics",
-  "orthopedics",
-  "endocrinology",
   "dermatology",
+  "endocrinology",
+  "experimental_medicine",
+  "immunology",
+  "infectious_diseases",
+  "neurodegenerative_disorders",
+  "neurology",
+  "oncology",
+  "orthopedics",
+  "pediatrics",
 ] as const;
 
 /**

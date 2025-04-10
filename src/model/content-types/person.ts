@@ -53,6 +53,15 @@ export type Person = CoreContentType<
      */
     readonly prefix: Elements.TextElement;
     /**
+     * Suffixes
+     *
+     * Type: text
+     * Required: false
+     * Codename: suffixes
+     * Id: 20132f59-693c-4383-91da-e0e4fd47f183
+     */
+    readonly suffixes: Elements.TextElement;
+    /**
      * Biography
      *
      * Type: rich_text
@@ -100,12 +109,12 @@ export type Person = CoreContentType<
     /**
      * Website
      *
-     * Type: modular_content
+     * Type: text
      * Required: false
      * Codename: website
-     * Id: b6ccc50c-692b-5b54-a078-e3ba8e4d6f42
+     * Id: b5899dc5-a299-4f6e-a169-d1e50ed2e8f2
      */
-    readonly website: Elements.LinkedItemsElement<CoreContentType>;
+    readonly website: Elements.TextElement;
   },
   "person"
 >;
@@ -117,6 +126,7 @@ export type PersonElementCodenames =
   | "first_name"
   | "last_name"
   | "prefix"
+  | "suffixes"
   | "biography"
   | "image"
   | "job_title"

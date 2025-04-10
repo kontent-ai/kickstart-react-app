@@ -46,6 +46,15 @@ export type Service = CoreContentType<
      */
     readonly image: Elements.AssetsElement;
     /**
+     * Summary
+     *
+     * Type: text
+     * Required: true
+     * Codename: summary
+     * Id: 2e46fa0f-e79c-47c8-8c79-748cf73bebe7
+     */
+    readonly summary: Elements.TextElement;
+    /**
      * Description
      *
      * Type: rich_text
@@ -79,7 +88,7 @@ export type Service = CoreContentType<
 /**
  * Type representing all available element codenames for Service
  */
-export type ServiceElementCodenames = "name" | "image" | "description" | "team" | "medical_specialties";
+export type ServiceElementCodenames = "name" | "image" | "summary" | "description" | "team" | "medical_specialties";
 
 /**
  * Type guard for Service
