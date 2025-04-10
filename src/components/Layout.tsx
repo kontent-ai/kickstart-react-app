@@ -1,11 +1,12 @@
 import { FC, PropsWithChildren } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
+import { Outlet } from "react-router-dom";
 
-const Layout: FC<PropsWithChildren> = ({ children }) => (
+const Layout: FC<PropsWithChildren> = () => (
   <div className="flex flex-col min-h-screen">
     <Header />
-    {children}
+    <Outlet />
     <Footer />
   </div>
 );

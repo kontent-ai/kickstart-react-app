@@ -13,7 +13,6 @@ import { Replace } from "../utils/types";
 import RenderElement from "../components/RenderElement";
 import FeaturedContent from "../components/FeaturedContent";
 import KontentComponentErrorMessage from "../components/KontentComponentErrorMessage";
-import Layout from "../components/Layout";
 import { landingPageLink } from "../constants/links";
 
 const LandingPage: FC = () => {
@@ -58,72 +57,64 @@ const LandingPage: FC = () => {
 
   if (!landingPageType.data) {
     return (
-      <Layout>
-        <div className="flex-grow">
-          <PageSection color="white">
-            <KontentComponentErrorMessage>
-              Missing a content type with the codename{"  "}
-              <b>
-                <i>{"landing_page"}</i>
-              </b>. Please create the{"  "}
-              <a
-                href="https://kontent.ai/learn/try-kontent-ai/build-the-foundation/create-a-landing-page-structure#a-create-a-landing-page-content-type"
-                className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-              >
-                Landing Page content type
-              </a>{" "}
-              according to the instructions.
-            </KontentComponentErrorMessage>
-          </PageSection>
-        </div>
-      </Layout>
+      <div className="flex-grow">
+        <PageSection color="white">
+          <KontentComponentErrorMessage>
+            Missing a content type with the codename{"  "}
+            <b>
+              <i>{"landing_page"}</i>
+            </b>. Please create the{"  "}
+            <a
+              href="https://kontent.ai/learn/try-kontent-ai/build-the-foundation/create-a-landing-page-structure#a-create-a-landing-page-content-type"
+              className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+            >
+              Landing Page content type
+            </a>{" "}
+            according to the instructions.
+          </KontentComponentErrorMessage>
+        </PageSection>
+      </div>
     );
   }
 
   if (!landingPage.data || !Object.entries(landingPage.data.elements).length) {
-    return (
-      <Layout>
-        <div className="flex-grow" />
-      </Layout>
-    );
+    return <div className="flex-grow" />;
   }
 
   return (
-    <Layout>
-      <div className="flex-grow">
-        <PageSection color="bg-burgundy">
-          <HeroImage
-            data={{
-              headline: landingPage.data.elements.headline,
-              subheadline: landingPage.data.elements.subheadline,
-              heroImage: landingPage.data.elements.hero_image,
-            }}
-          />
+    <div className="flex-grow">
+      <PageSection color="bg-burgundy">
+        <HeroImage
+          data={{
+            headline: landingPage.data.elements.headline,
+            subheadline: landingPage.data.elements.subheadline,
+            heroImage: landingPage.data.elements.hero_image,
+          }}
+        />
+      </PageSection>
+      <RenderElement
+        element={landingPage.data.elements.body_copy}
+        elementCodename="body_copy"
+        requiredElementType="rich_text"
+        errorMessageClassName="container"
+        typeCodename={"landing_page"}
+        link={landingPageLink}
+      >
+        <PageSection color="bg-white">
+          <PageContent body={landingPage.data.elements.body_copy!} />
         </PageSection>
-        <RenderElement
-          element={landingPage.data.elements.body_copy}
-          elementCodename="body_copy"
-          requiredElementType="rich_text"
-          errorMessageClassName="container"
-          typeCodename={"landing_page"}
-          link={landingPageLink}
-        >
-          <PageSection color="bg-white">
-            <PageContent body={landingPage.data.elements.body_copy!} />
-          </PageSection>
-        </RenderElement>
-        <RenderElement
-          element={landingPage.data.elements.featured_content}
-          elementCodename="featured_content"
-          requiredElementType="modular_content"
-          errorMessageClassName="container"
-          typeCodename={"landing_page"}
-          link={landingPageLink}
-        >
-          <FeaturedContent featuredContent={landingPage.data.elements.featured_content!}></FeaturedContent>
-        </RenderElement>
-      </div>
-    </Layout>
+      </RenderElement>
+      <RenderElement
+        element={landingPage.data.elements.featured_content}
+        elementCodename="featured_content"
+        requiredElementType="modular_content"
+        errorMessageClassName="container"
+        typeCodename={"landing_page"}
+        link={landingPageLink}
+      >
+        <FeaturedContent featuredContent={landingPage.data.elements.featured_content!}></FeaturedContent>
+      </RenderElement>
+    </div>
   );
 };
 

@@ -4,6 +4,7 @@ import { Article } from "../model";
 import { Replace } from "../utils/types";
 import RenderElement from "./RenderElement";
 import { articleLink } from "../constants/links";
+import Tags from "./Tags";
 
 type FeaturedArticleProps = Readonly<{
   article: Replace<Article, { elements: Partial<Article["elements"]> }>;
@@ -45,6 +46,7 @@ const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
                 }`}
             </p>
           </RenderElement>
+          <Tags tags={article.elements.topics?.value.map(t => t.name) ?? []} />
           <RenderElement
             element={article.elements.introduction}
             elementCodename="introduction"

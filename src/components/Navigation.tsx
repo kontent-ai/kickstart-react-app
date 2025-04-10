@@ -1,16 +1,21 @@
 import { FC } from "react";
+import { NavLink } from "react-router";
 
 const Navigation: FC = () => {
-  const createMenuLink = (name: string) => (
+  const createMenuLink = (name: string, link: string) => (
     <li key={name}>
-      <a href="#" className="text-xl leading-5 text-gray w-fit block hover:text-burgundy">{name}</a>
+      <NavLink to={link} className="text-xl leading-5 text-gray w-fit block hover:text-burgundy">{name}</NavLink>
     </li>
   );
 
   return (
     <nav>
       <menu className="flex flex-col lg:flex-row gap-5 lg:gap-[60px] items-center list-none">
-        {["Solutions", "Products", "Pricing", "Contact", "Our Company"].map(createMenuLink)}
+        {createMenuLink("Home", "/")}
+        {createMenuLink("Services", "/services")}
+        {createMenuLink("Our Team", "/our-team")}
+        {createMenuLink("Research", "/research")}
+        {createMenuLink("Blog", "/blog")}
       </menu>
     </nav>
   );
