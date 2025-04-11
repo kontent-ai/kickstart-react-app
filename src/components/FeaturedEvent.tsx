@@ -20,7 +20,14 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
 
   return shouldRender
     ? (
-      <FeaturedComponentBase image={event.elements.image} type="event">
+      <FeaturedComponentBase
+        image={{
+          url: event.elements.image?.value[0].url ?? "",
+          alt: event.elements.image?.value[0].description ?? "",
+        }}
+        type="event"
+        displayFeatured={true}
+      >
         <>
           <div>
             <RenderElement
@@ -57,6 +64,7 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
               tags={[...event.elements.event_type?.value ?? [], ...event.elements.event_topic?.value ?? []].map(t =>
                 t.name
               )}
+              className="mt-4"
             />
             <RenderElement
               element={event.elements.description}

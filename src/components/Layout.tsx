@@ -5,7 +5,7 @@ import { Outlet, ScrollRestoration } from "react-router-dom";
 
 const Layout: FC<PropsWithChildren> = () => (
   <div className="flex flex-col min-h-screen">
-    <ScrollRestoration />
+    <ScrollRestoration getKey={location => location.pathname} />
     <Header />
     <Outlet />
     <Footer />

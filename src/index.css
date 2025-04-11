@@ -12,6 +12,7 @@ h1, h2, h3 {
   --color-white: #ffffff;
   --color-grey: #3b3b3b;
   --color-grey-light: #8e8e8e;
+  --color-grey-dark: #1D1D1B;
   --color-creme: #fff7e7;
 
   --color-primary: var(--color-burgundy); 
@@ -40,6 +41,8 @@ h1, h2, h3 {
   --color-button-text: #000000;
   --color-button-text-hover: var(--color-white);
 
+  --color-tag-border: var(--color-grey-dark);
+  --color-tag-text: var(--color-grey-dark);
 
   --size-heading-1: 94px;
   --size-heading-2: 48px;
@@ -76,12 +79,16 @@ h1, h2, h3 {
   --color-heading-2: var(--color-white);
   --color-heading-3: var(--color-white);
   --color-body: var(--color-white);
+  --color-tag-border: var(--color-white);
+  --color-tag-text: var(--color-white);
 }
 
 .creme-theme {
   --color-primary: var(--color-creme);     
   --color-secondary: var(--color-burgundy);
-  --color-heading: var(--color-burgundy);
+  --color-heading-1: var(--color-burgundy);
+  --color-heading-2: var(--color-burgundy);
+  --color-heading-3: var(--color-burgundy);
   --color-text: var(--color-gray);
 }
 

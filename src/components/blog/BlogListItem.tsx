@@ -33,7 +33,7 @@ const BlogListItem: React.FC<BlogListItemProps> = ({
         <h2 className="text-heading-2 font-libre text-burgundy mb-4">
           {title}
         </h2>
-        <div className="text-body text-gray mb-4 max-w-3xl line-clamp-4">
+        <div className="text-body-lg text-gray mb-4 max-w-3xl line-clamp-4">
           <PortableText value={description} />
         </div>
         <Link href={readMoreLink} text="Read more" />

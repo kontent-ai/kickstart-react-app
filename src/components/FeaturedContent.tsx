@@ -16,7 +16,20 @@ const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent }) => {
       if (isArticle(item)) {
         return (
           <PageSection color="bg-creme">
-            <FeaturedArticle article={item} />
+            <FeaturedArticle
+              article={{
+                image: {
+                  url: item.elements.image.value[0].url,
+                  alt: item.elements.image.value[0].description ?? "",
+                },
+                title: item.elements.title.value,
+                publishDate: item.elements.publish_date.value ?? "",
+                introduction: item.elements.introduction.value,
+                topics: item.elements.topics.value.map(t => t.name),
+              }}
+              displayFeatured={true}
+              urlSlug={item.elements.url_slug.value}
+            />
           </PageSection>
         );
       }
