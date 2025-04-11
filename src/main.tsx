@@ -12,6 +12,8 @@ import ServiceDetail from "./pages/ServiceDetail.tsx";
 import NotFound from "./components/NotFound.tsx";
 import ArticlesListingPage from "./pages/ArticlesListingPage.tsx";
 import ArticleDetailPage from "./pages/ArticleDetailPage.tsx";
+import OurTeamPage from "./pages/OurTeamPage.tsx";
+import PersonDetailPage from "./pages/PersonDetailPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +49,14 @@ const router = createBrowserRouter([
       {
         path: "/research/:slug",
         Component: ArticleDetailPage,
+      },
+      {
+        path: "/our-team",
+        Component: OurTeamPage,
+      },
+      {
+        path: "/our-team/:slug",
+        Component: PersonDetailPage,
       },
       {
         path: "/*",
