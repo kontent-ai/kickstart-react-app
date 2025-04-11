@@ -15,6 +15,7 @@
 
 import type { Elements } from "@kontent-ai/delivery-sdk";
 import type { CoreContentType } from "../system/index.ts";
+import type { Metadata } from "../content-type-snippets/index.ts";
 
 /**
  * Blog Post
@@ -52,14 +53,30 @@ export type BlogPost = CoreContentType<
      * Id: e74bc043-0613-4554-8fb5-4d03a42c61a5
      */
     readonly body: Elements.RichTextElement<CoreContentType>;
-  },
+    /**
+     * URL Slug
+     *
+     * Type: url_slug
+     * Required: true
+     * Codename: url_slug
+     * Id: 574faf3f-4f42-430e-9227-a361a237ce61
+     */
+    readonly url_slug: Elements.UrlSlugElement;
+  } & Metadata,
   "blog_post"
 >;
 
 /**
  * Type representing all available element codenames for Blog Post
  */
-export type BlogPostElementCodenames = "title" | "image" | "body";
+export type BlogPostElementCodenames =
+  | "title"
+  | "image"
+  | "body"
+  | "metadata__title"
+  | "metadata__keywords"
+  | "metadata__description"
+  | "url_slug";
 
 /**
  * Type guard for Blog Post

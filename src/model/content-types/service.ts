@@ -81,6 +81,15 @@ export type Service = CoreContentType<
      * Id: 7be1529e-bf12-457c-bb7e-b852bd81ec0f
      */
     readonly medical_specialties: Elements.TaxonomyElement<MedicalSpecialties, "medical_specialties">;
+    /**
+     * URL Slug
+     *
+     * Type: url_slug
+     * Required: false
+     * Codename: url_slug
+     * Id: 83850919-af92-4bef-9f7d-d8bd3df7efe7
+     */
+    readonly url_slug: Elements.UrlSlugElement;
   },
   "service"
 >;
@@ -88,7 +97,14 @@ export type Service = CoreContentType<
 /**
  * Type representing all available element codenames for Service
  */
-export type ServiceElementCodenames = "name" | "image" | "summary" | "description" | "team" | "medical_specialties";
+export type ServiceElementCodenames =
+  | "name"
+  | "image"
+  | "summary"
+  | "description"
+  | "team"
+  | "medical_specialties"
+  | "url_slug";
 
 /**
  * Type guard for Service

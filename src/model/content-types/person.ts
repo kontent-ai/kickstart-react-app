@@ -74,7 +74,7 @@ export type Person = CoreContentType<
      * Image
      *
      * Type: asset
-     * Required: false
+     * Required: true
      * Codename: image
      * Id: 891ea65d-96ab-5530-a363-0cb6109554f2
      */
