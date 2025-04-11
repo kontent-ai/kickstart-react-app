@@ -177,7 +177,7 @@ const ArticlesListingPage: FC = () => {
               })
               : "No date",
             topics: article.elements.topics.value.map(topic => topic.name),
-            urlSlug: article.system.codename,
+            urlSlug: article.elements.url_slug.value,
           }))}
       />
     </div>

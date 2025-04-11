@@ -81,7 +81,7 @@ const ServicesListingPage: FC = () => {
             name: service.elements.name.value,
             summary: service.elements.summary.value,
             tags: service.elements.medical_specialties.value.map(specialty => specialty.name),
-            urlSlug: service.system.codename,
+            urlSlug: service.elements.url_slug.value,
           }))}
         />
       </PageSection>

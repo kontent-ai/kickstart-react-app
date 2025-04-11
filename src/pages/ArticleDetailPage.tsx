@@ -58,9 +58,10 @@ const ArticleDetailPage: React.FC = () => {
     queryKey: [`article-detail_${slug}`],
     queryFn: () =>
       createClient(environmentId, apiKey)
-        .item<Article>(slug ?? "")
+        .items<Article>()
+        .equalsFilter("elements.url_slug", slug ?? "")
         .toPromise()
-        .then(res => res.data.item)
+        .then((res) => res.data.items[0])
         .catch((err) => {
           if (err instanceof DeliveryError) {
             return null;
