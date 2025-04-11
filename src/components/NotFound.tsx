@@ -8,7 +8,7 @@ const NotFound: FC = () => {
       <div className="flex flex-col items-center justify-center py-20">
         <h1 className="text-heading-1 text-heading-1-color mb-4">404</h1>
         <h2 className="text-heading-3 text-heading-3-color mb-6">Page Not Found</h2>
-        <p className="text-body text-body-color mb-8 text-center max-w-xl">
+        <p className="text-body-lg text-body-color mb-8 text-center max-w-xl">
           The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
         </p>
         <Link

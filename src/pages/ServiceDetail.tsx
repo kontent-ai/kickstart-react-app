@@ -79,7 +79,7 @@ const ServiceDetail: React.FC = () => {
             <h1 className="text-heading-1 text-heading-1-color max-w-[12ch]">
               {service.elements.name.value}
             </h1>
-            <p className="text-body text-body-color text-[32px] leading-[130%]">
+            <p className="text-body-lg text-body-color text-[32px] leading-[130%]">
               {service.elements.summary.value}
             </p>
           </div>

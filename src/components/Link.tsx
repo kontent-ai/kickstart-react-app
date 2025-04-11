@@ -8,7 +8,10 @@ type LinkProps = Readonly<{
 
 const Link = ({ href, text, className = "" }: LinkProps) => {
   return (
-    <NavLink to={href} className={`text-link-color text-body underline hover:text-link-hover-color ${className}`}>
+    <NavLink
+      to={href}
+      className={`inline-block text-link-color text-body-lg underline hover:text-link-hover-color ${className}`}
+    >
       {text}
     </NavLink>
   );

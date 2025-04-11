@@ -56,7 +56,7 @@ const ServicesListingPage: FC = () => {
             <h1 className="text-heading-1 text-heading-1-color">
               {servicesPage.data.item.elements.headline.value}
             </h1>
-            <p className="text-body text-body-color">
+            <p className="text-body-lg text-body-color">
               {servicesPage.data.item.elements.subheadline.value}
             </p>
           </div>

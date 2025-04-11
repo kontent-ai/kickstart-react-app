@@ -13,7 +13,8 @@ export default {
         white: '#ffffff',
         grey: {
           light: "#8e8e8e",
-          DEFAULT: "#3b3b3b"
+          DEFAULT: "#3b3b3b",
+          dark: "#1D1D1B"
         },
         creme: "#fff7e7",
         primary: 'var(--color-primary)',
@@ -34,6 +35,9 @@ export default {
         "link-hover-color": 'var(--color-link-hover)',
         "background-color": 'var(--color-background)',
 
+        "tag-border-color": 'var(--color-tag-border)',
+        "tag-text-color": 'var(--color-tag-text)',
+
         "button-background-color": 'var(--color-button-background)',
         "button-background-hover-color": 'var(--color-button-background-hover)',
         "button-border-color": 'var(--color-button-border)',
@@ -46,9 +50,12 @@ export default {
       'heading-2': ['var(--size-heading-2)', { lineHeight: 'var(--line-height-heading-2)', fontWeight: 'var(--font-weight-heading-2)'}],
       'heading-3': ['var(--size-heading-3)', { lineHeight: 'var(--line-height-heading-3)', fontWeight: 'var(--font-weight-heading-3)'}],
       'heading-4': ['var(--size-heading-4)', { lineHeight: 'var(--line-height-heading-4)', fontWeight: 'var(--font-weight-heading-4)'}],
-      'body-large': ['1.125rem', { lineHeight: '1.75rem' }],
-      'body': ['20px', { lineHeight: '150%', color: '#3b3b3b' }],
-      'small': ['15px', { lineHeight: '150%', color: '#3b3b3b' }],
+      'body-xl': ['24px', { lineHeight: '150%' }],
+      'body-lg': ['20px', { lineHeight: '150%' }],
+      'body-md': ['18px', { lineHeight: '150%' }],
+      'body-sm': ['15px', { lineHeight: '150%' }],
+      'body-xs': ['12px', { lineHeight: '150%' }],
+
     },
       fontFamily: {
         sans: ['"Source Sans 3"', 'Arial', 'sans-serif'],
