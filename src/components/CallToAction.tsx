@@ -8,7 +8,7 @@ type CallToActionProps = Readonly<{
   buttonHref: string;
   imageSrc: string;
   imageAlt: string;
-  reverse?: boolean;
+  imagePosition?: "left" | "right" | "center";
   style?: "burgundy" | "default";
 }>;
 
@@ -19,13 +19,13 @@ const CallToAction: React.FC<CallToActionProps> = ({
   buttonHref,
   imageSrc,
   imageAlt,
-  reverse = false,
+  imagePosition = "left",
   style = "default",
 }) => {
   return (
     <div
       className={`${style === "burgundy" ? "burgundy-theme" : ""} flex flex-col xl:h-[420px] ${
-        reverse ? "xl:flex-row-reverse" : "xl:flex-row"
+        imagePosition === "right" ? "xl:flex-row-reverse" : "xl:flex-row"
       } items-center gap-16`}
     >
       <div className="rounded-lg w-[560px]">

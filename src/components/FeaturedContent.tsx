@@ -28,7 +28,7 @@ const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent }) => {
                 topics: item.elements.topics.value.map(t => t.name),
               }}
               displayFeatured={true}
-              urlSlug={item.elements.url_slug.value}
+              urlSlug={`/articles/${item.elements.url_slug.value}`}
             />
           </PageSection>
         );
@@ -52,6 +52,7 @@ const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent }) => {
               buttonHref={item.elements.button_link.value[0]}
               imageSrc={item.elements.image.value[0].url}
               imageAlt={item.elements.image.value[0].description ?? "alt"}
+              imagePosition={item.elements.image_position.value[0].codename}
               style="burgundy"
             />
           </div>

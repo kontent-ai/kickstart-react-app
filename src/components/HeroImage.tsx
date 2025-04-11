@@ -37,7 +37,7 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
           <p className="text-center xl:text-left font-sans text-xl text-body-color">{data.subheadline?.value}</p>
         </RenderElement>
 
-        <ButtonLink href={"/?preview"}>
+        <ButtonLink href={"/services"}>
           <p>Explore our services</p>
         </ButtonLink>
       </div>

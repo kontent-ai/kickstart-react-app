@@ -27,7 +27,7 @@ const createPortableTextComponents = (
 ): PortableTextReactResolvers => ({
   ...defaultPortableRichTextResolvers,
   types: {
-    componentOrItem: ({ value, index }) => {
+    componentOrItem: ({ value }) => {
       const item = element.linkedItems.find(item => item.system.codename === value.componentOrItem._ref);
       if (!item) {
         return <div>Did not find any item with codename {value.component._ref}</div>;
@@ -51,7 +51,7 @@ const createPortableTextComponents = (
           buttonHref={item.elements.button_link.value[0]}
           imageSrc={item.elements.image.value[0].url}
           imageAlt={item.elements.image.value[0].description ?? "alt"}
-          reverse={index % 2 === 0}
+          imagePosition={item.elements.image_position.value[0].codename}
         />
       );
     },
