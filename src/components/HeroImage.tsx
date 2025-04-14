@@ -14,8 +14,8 @@ type HeroImageProps = Readonly<{
 
 const HeroImage: FC<HeroImageProps> = ({ data }) => {
   return (
-    <div className="burgundy-theme flex flex-col py-10 xl:py-0 xl:flex-row xl:gap-32">
-      <div className="xl:basis-1/2 pt-10 xl:pt-[104px] pb-10 xl:pb-[160px] flex flex-col items-center xl:items-start gap-10">
+    <div className="burgundy-theme flex flex-col py-10 lg:py-0 lg:flex-row lg:gap-32">
+      <div className="lg:basis-1/2 pt-10 lg:pt-[104px] pb-10 lg:pb-[160px] flex flex-col items-center lg:items-start gap-10">
         <RenderElement
           element={data.headline}
           elementCodename="headline"
@@ -23,7 +23,7 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
           typeCodename={"landing_page"}
           link={landingPageLink}
         >
-          <h1 className="text-center xl:text-left font-libre text-[64px] md:text-[94px] text-heading-1-color font-bold leading-[64px] md:leading-[78px]">
+          <h1 className="text-center lg:text-left font-libre text-[64px] md:text-[94px] text-heading-1-color font-bold leading-[64px] md:leading-[78px]">
             {data.headline?.value}
           </h1>
         </RenderElement>
@@ -34,14 +34,14 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
           typeCodename={"landing_page"}
           link={landingPageLink}
         >
-          <p className="text-center xl:text-left font-sans text-xl text-body-color">{data.subheadline?.value}</p>
+          <p className="text-center lg:text-left font-sans text-xl text-body-color">{data.subheadline?.value}</p>
         </RenderElement>
 
         <ButtonLink href={"/services"}>
           <p>Explore our services</p>
         </ButtonLink>
       </div>
-      <div className="xl:basis-1/2">
+      <div className="lg:basis-1/2">
         <RenderElement
           element={data.heroImage}
           elementCodename="hero_image"

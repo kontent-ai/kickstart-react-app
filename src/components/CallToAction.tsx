@@ -24,9 +24,9 @@ const CallToAction: React.FC<CallToActionProps> = ({
 }) => {
   const calculateLayout = (imagePosition: "left" | "right" | "center") => {
     if (imagePosition === "left") {
-      return "xl:flex-row";
+      return "lg:flex-row";
     } else if (imagePosition === "right") {
-      return "xl:flex-row-reverse";
+      return "lg:flex-row-reverse";
     }
     return "";
   };
@@ -37,7 +37,7 @@ const CallToAction: React.FC<CallToActionProps> = ({
         calculateLayout(imagePosition)
       } items-center gap-16`}
     >
-      <div className="rounded-lg w-[560px]">
+      <div className="rounded-lg xl:w-[560px] lg:w-[420px]">
         <img
           src={imageSrc}
           width={560}
@@ -47,7 +47,7 @@ const CallToAction: React.FC<CallToActionProps> = ({
         />
       </div>
 
-      <div className={`flex xl:flex-1 flex-col gap-5 ${imagePosition === "center" ? "items-center" : ""}`}>
+      <div className={`flex lg:flex-1 flex-col gap-5 ${imagePosition === "center" ? "items-center" : ""}`}>
         <h2 className={`flex w-fit text-6xl font-bold text-heading-2-color`}>{title}</h2>
 
         <p className={`flex text-xl text-body-color line-clamp-5`}>

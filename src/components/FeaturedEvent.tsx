@@ -37,7 +37,7 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
               link={eventLink}
               typeCodename={"event"}
             >
-              <h2 className="text-center xl:text-left text-5xl font-semibold text-burgundy">
+              <h2 className="text-center lg:text-left text-5xl font-semibold text-burgundy">
                 {event.elements.name?.value}
               </h2>
             </RenderElement>
@@ -48,7 +48,7 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
               link={eventLink}
               typeCodename={"event"}
             >
-              <p className="text-center xl:text-left text-gray-light mt-6 text-lg">
+              <p className="text-center lg:text-left text-gray-light mt-6 text-lg">
                 {`${
                   event.elements.start_date?.value?.length
                     ? formatDate(event.elements.start_date?.value as string)

@@ -134,7 +134,7 @@ const ArticleDetailPage: React.FC = () => {
           <p className="text-body-xl text-body-color font-[600] w-[728px] max-w-[728px]">
             {article.elements.introduction.value}
           </p>
-          <div className="rich-text-body flex-mx-auto flex flex-col gap-5 items-center">
+          <div className="rich-text-body flex mx-auto flex-col gap-5 items-center max-w-[728px]">
             <PortableText
               value={transformToPortableText(article.elements.body_copy?.value)}
               components={defaultPortableRichTextResolvers}

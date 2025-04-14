@@ -22,7 +22,7 @@ type TagsProps = Readonly<{
 
 const Tags: FC<TagsProps> = ({ tags, orientation = "horizontal", className = "" }) => (
   <div
-    className={`flex gap-2 justify-center xl:justify-normal ${
+    className={`flex gap-2 justify-center lg:justify-normal ${
       orientation === "vertical" ? "flex-col" : ""
     } ${className}`}
   >
