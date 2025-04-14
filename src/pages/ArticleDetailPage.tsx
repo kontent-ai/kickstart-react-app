@@ -3,14 +3,14 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
-import { Article } from "../model";
+import { Article, LanguageCodenames } from "../model";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import { PortableText } from "@portabletext/react";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
 import PageSection from "../components/PageSection";
 import Tags from "../components/Tags";
-import { NavLink } from "react-router";
+import { NavLink, useSearchParams } from "react-router";
 import PersonCard from "../components/PersonCard";
 import ArticleList from "../components/articles/ArticleList";
 
@@ -54,8 +54,12 @@ const ArticleDetailPage: React.FC = () => {
   const { environmentId, apiKey } = useAppContext();
   const { slug } = useParams();
 
-  const articleData = useQuery({
-    queryKey: [`article-detail_${slug}`],
+  const [searchParams] = useSearchParams();
+
+  const lang = searchParams.get("lang");
+
+  const articleSystem = useQuery({
+    queryKey: [`article-detail_${slug}-system`],
     queryFn: () =>
       createClient(environmentId, apiKey)
         .items<Article>()
@@ -69,6 +73,35 @@ const ArticleDetailPage: React.FC = () => {
           throw err;
         }),
   });
+
+  const articleCodename = articleSystem.data?.system.codename;
+
+  const articleData = useQuery({
+    queryKey: ["article-detail", slug, lang],
+    queryFn: () =>
+      createClient(environmentId, apiKey)
+        .items<Article>()
+        .equalsFilter("system.codename", articleCodename ?? "")
+        .languageParameter((lang ?? "default") as LanguageCodenames)
+        .depthParameter(1)
+        .toPromise()
+        .then((res) => {
+          console.log("res", res.data.items);
+          return res.data.items[0];
+        })
+        .catch((err) => {
+          if (err instanceof DeliveryError) {
+            return null;
+          }
+          throw err;
+        }),
+    enabled: !!articleCodename,
+  });
+
+  console.log("articleCodename", articleCodename);
+  console.log("lang", lang);
+
+  console.log("articleData", articleData.data);
 
   if (!articleData.data) {
     return <div className="flex-grow" />;
@@ -143,29 +176,31 @@ const ArticleDetailPage: React.FC = () => {
         </div>
       </PageSection>
 
-      <PageSection color="bg-creme">
-        <div className="creme-theme flex gap-24 max-w-[728px] mx-auto py-[104px] items-center ">
-          <h2 className="text-heading-2 text-heading-2-color">
-            Author
-          </h2>
-          <p className="text-body-lg text-body-color">
-            <PersonCard
-              prefix={article.elements.author.linkedItems[0].elements.prefix?.value}
-              firstName={article.elements.author.linkedItems[0].elements.first_name?.value || ""}
-              lastName={article.elements.author.linkedItems[0].elements.last_name?.value || ""}
-              suffix={article.elements.author.linkedItems[0].elements.suffixes?.value}
-              jobTitle={article.elements.author.linkedItems[0].elements.job_title?.value || ""}
-              image={{
-                url: article.elements.author.linkedItems[0].elements.image?.value[0]?.url || "",
-                alt: article.elements.author.linkedItems[0].elements.image?.value[0]?.description
-                  || `Photo of ${article.elements.author.linkedItems[0].elements.first_name?.value} ${
-                    article.elements.author.linkedItems[0].elements.last_name?.value
-                  }`,
-              }}
-            />
-          </p>
-        </div>
-      </PageSection>
+      {article.elements.author?.linkedItems[0] && (
+        <PageSection color="bg-creme">
+          <div className="creme-theme flex gap-24 max-w-[728px] mx-auto py-[104px] items-center ">
+            <h2 className="text-heading-2 text-heading-2-color">
+              Author
+            </h2>
+            <p className="text-body-lg text-body-color">
+              <PersonCard
+                prefix={article.elements.author.linkedItems[0].elements.prefix?.value}
+                firstName={article.elements.author.linkedItems[0].elements.first_name?.value || ""}
+                lastName={article.elements.author.linkedItems[0].elements.last_name?.value || ""}
+                suffix={article.elements.author.linkedItems[0].elements.suffixes?.value}
+                jobTitle={article.elements.author.linkedItems[0].elements.job_title?.value || ""}
+                image={{
+                  url: article.elements.author.linkedItems[0].elements.image?.value[0]?.url || "",
+                  alt: article.elements.author.linkedItems[0].elements.image?.value[0]?.description
+                    || `Photo of ${article.elements.author.linkedItems[0].elements.first_name?.value} ${
+                      article.elements.author.linkedItems[0].elements.last_name?.value
+                    }`,
+                }}
+              />
+            </p>
+          </div>
+        </PageSection>
+      )}
 
       {article.elements.related_articles.linkedItems.length > 0 && (
         <PageSection color="bg-white">
