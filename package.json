@@ -17,6 +17,7 @@
     "@auth0/auth0-react": "^2.3.0",
     "@kontent-ai/delivery-sdk": "^16.0.0",
     "@kontent-ai/rich-text-resolver": "^2.0.1",
+    "@kontent-ai/smart-link": "^4.0.1",
     "@portabletext/react": "^3.2.0",
     "@tanstack/react-query": "^5.72.0",
     "dotenv": "^16.4.7",
