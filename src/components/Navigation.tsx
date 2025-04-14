@@ -11,11 +11,11 @@ const Navigation: FC = () => {
   return (
     <nav>
       <menu className="flex flex-col lg:flex-row gap-5 lg:gap-[60px] items-center list-none">
-        {createMenuLink("Home", "/")}
-        {createMenuLink("Services", "/services")}
-        {createMenuLink("Our Team", "/our-team")}
-        {createMenuLink("Research", "/research")}
-        {createMenuLink("Blog", "/blog")}
+        {createMenuLink("Home", "")}
+        {createMenuLink("Services", "services")}
+        {createMenuLink("Our Team", "our-team")}
+        {createMenuLink("Research", "research")}
+        {createMenuLink("Blog", "blog")}
       </menu>
     </nav>
   );
