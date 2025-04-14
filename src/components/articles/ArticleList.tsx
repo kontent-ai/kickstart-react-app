@@ -1,6 +1,5 @@
 import React from "react";
 import FeaturedArticle from "../FeaturedArticle";
-import { interleave } from "../../utils/array";
 import Divider from "../Divider";
 import PageSection from "../PageSection";
 
@@ -24,12 +23,13 @@ type ArticleListProps = Readonly<{
 const ArticleList: React.FC<ArticleListProps> = ({ articles }) => {
   return (
     <div className="flex flex-col items-center ">
-      {articles.length === 0 ? <p className="text-center text-grey text-body-xl">No articles available</p> : (
-        interleave(
-          articles.map((article, index) => (
+      {articles.length === 0
+        ? <p className="text-center text-grey text-body-xl">No articles available</p>
+        : (articles.map((article, index) => (
+          <div key={article.urlSlug}>
             <PageSection color="bg-white">
               <FeaturedArticle
-                key={index}
+                key={article.urlSlug}
                 article={{
                   image: article.image,
                   title: article.title,
@@ -40,10 +40,9 @@ const ArticleList: React.FC<ArticleListProps> = ({ articles }) => {
                 urlSlug={article.urlSlug}
               />
             </PageSection>
-          )),
-          <Divider />,
-        )
-      )}
+            {index !== articles.length - 1 && <Divider />}
+          </div>
+        )))}
     </div>
   );
 };

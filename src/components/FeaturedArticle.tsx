@@ -30,10 +30,10 @@ const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article, displayFeatu
     >
       <>
         <div>
-          <h2 className="text-center xl:text-left text-heading-2 font-semibold text-burgundy">
+          <h2 className="text-center lg:text-left text-heading-2 font-semibold text-burgundy">
             {article.title}
           </h2>
-          <p className="text-center xl:text-left text-gray-light mt-6 text-body-md">
+          <p className="text-center lg:text-left text-gray-light mt-6 text-body-md">
             {article.publishDate
               && `Published on ${
                 new Date(article.publishDate).toLocaleDateString("en-US", {

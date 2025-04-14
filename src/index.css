@@ -69,6 +69,8 @@ h1, h2, h3 {
     --color-button-background-hover: var(--color-creme);
     --color-button-text-hover: var(--color-gray);
     --color-button-border-hover: var(--color-creme);
+    --color-tag-text: var(--color-creme);
+    --color-tag-border: var(--color-creme);
 
     @apply button-azure-on-burgundy;
 }

@@ -8,6 +8,49 @@ import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import ArticleList from "../components/articles/ArticleList";
 import Selector, { SelectorOption } from "../components/Selector";
 import { useSearchParams } from "react-router-dom";
+import ImageWithTag from "../components/ImageWithTag";
+import Tags from "../components/Tags";
+import ButtonLink from "../components/ButtonLink";
+
+type FeaturedArticleProps = Readonly<{
+  image: {
+    url: string;
+    alt: string;
+    width: number;
+    height: number;
+  };
+  title: string;
+  published: string;
+  tags: ReadonlyArray<string>;
+  description: string;
+  urlSlug: string;
+}>;
+const FeaturedArticle: FC<FeaturedArticleProps> = ({ image, title, published, tags, description, urlSlug }) => {
+  return (
+    <div className="flex flex-col lg:flex-row items-center pt-[104px] pb-[120px] gap-12">
+      <ImageWithTag
+        image={{
+          url: image.url,
+          alt: image.alt,
+          width: image.width,
+          height: image.height,
+        }}
+        tagText="Featured Article"
+        className="lg:basis-1/2 xl:basis-2/5"
+      />
+
+      <div className="lg:basis-1/2 xl:basis-3/5">
+        <h2 className="text-heading-2 text-heading-2-color">{title}</h2>
+        <p className="text-body-md text-body-color pt-4">{published}</p>
+        <Tags tags={tags} className="mt-4" />
+        <p className="text-body-lg text-body-color pt-3">
+          {description}
+        </p>
+        <ButtonLink href={urlSlug} className="mt-6">Read More</ButtonLink>
+      </div>
+    </div>
+  );
+};
 
 const ArticlesListingPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();
@@ -56,6 +99,7 @@ const ArticlesListingPage: FC = () => {
           createClient(environmentId, apiKey)
             .items<Article>()
             .type("article")
+            .orderByDescending("elements.publish_date")
             .toPromise()
             .then(res => res.data.items)
             .catch((err) => {
@@ -101,12 +145,10 @@ const ArticlesListingPage: FC = () => {
     return <div className="flex-grow" />;
   }
 
-  if (!articlesPage.data || !articles.data) {
-    return <div className="flex-grow" />;
-  }
+  const featuredArticle = articles.data[0];
 
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col">
       <PageSection color="bg-creme">
         <div className="flex flex-row items-center pt-[104px] pb-[160px]">
           <div className="flex flex-col flex-1 gap-6 ">
@@ -128,8 +170,31 @@ const ArticlesListingPage: FC = () => {
           </div>
         </div>
       </PageSection>
+      <PageSection color="bg-burgundy">
+        <div className="burgundy-theme">
+          <FeaturedArticle
+            image={{
+              url: featuredArticle.elements.image.value[0].url,
+              alt: featuredArticle.elements.image.value[0].description ?? "",
+              width: 670,
+              height: 440,
+            }}
+            title={featuredArticle.elements.title.value}
+            published={`Published on ${
+              new Date(featuredArticle.elements.publish_date.value ?? "").toLocaleDateString("en-US", {
+                month: "short",
+                year: "numeric",
+                day: "numeric",
+              })
+            }`}
+            tags={featuredArticle.elements.topics.value.map(t => t.name)}
+            description={featuredArticle.elements.introduction.value}
+            urlSlug={featuredArticle.elements.url_slug.value}
+          />
+        </div>
+      </PageSection>
       <PageSection color="bg-white">
-        <div className="flex flex-row gap-6">
+        <div className="flex flex-row gap-6 pt-16">
           <Selector
             label="Article Type"
             options={[
