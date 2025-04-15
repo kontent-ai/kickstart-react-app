@@ -11,7 +11,7 @@ import { FC } from "react";
 import { useAppContext } from "../context/AppContext";
 import { Replace } from "../utils/types";
 import RenderElement from "../components/RenderElement";
-import FeaturedContent from "../components/FeaturedContent";
+import FeaturedContent from "../components/landingPage/FeaturedContent";
 import KontentComponentErrorMessage from "../components/KontentComponentErrorMessage";
 import { landingPageLink } from "../constants/links";
 

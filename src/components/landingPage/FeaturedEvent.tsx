@@ -1,15 +1,15 @@
 import { FC } from "react";
 import FeaturedComponentBase from "./FeaturedComponentBase";
-import { Event } from "../model";
-import { formatDate } from "../utils/date";
+import { Event } from "../../model";
+import { formatDate } from "../../utils/date";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
-import { defaultPortableRichTextResolvers } from "../utils/richtext";
-import { Replace } from "../utils/types";
-import RenderElement from "./RenderElement";
-import { eventLink } from "../constants/links";
+import { defaultPortableRichTextResolvers } from "../../utils/richtext";
+import { Replace } from "../../utils/types";
+import RenderElement from "../RenderElement";
+import { eventLink } from "../../constants/links";
 import { PortableText } from "@kontent-ai/rich-text-resolver/utils/react";
-import Tags from "./Tags";
-import Link from "./Link";
+import Tags from "../Tags";
+import Link from "../Link";
 
 type FeaturedEventProps = Readonly<{
   event: Replace<Event, { elements: Partial<Event["elements"]> }>;

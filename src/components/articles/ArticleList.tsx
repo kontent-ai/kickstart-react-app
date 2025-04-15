@@ -1,5 +1,5 @@
 import React from "react";
-import FeaturedArticle from "../FeaturedArticle";
+import FeaturedArticle from "../landingPage/FeaturedArticle";
 import Divider from "../Divider";
 import PageSection from "../PageSection";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import FeaturedComponentBase from "./FeaturedComponentBase";
-import Tags from "./Tags";
-import Link from "./Link";
+import Tags from "../Tags";
+import Link from "../Link";
 
 type FeaturedArticleProps = Readonly<{
   article: Readonly<{

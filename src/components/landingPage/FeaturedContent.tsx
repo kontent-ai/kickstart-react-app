@@ -1,10 +1,10 @@
 import { FC } from "react";
-import { isArticle, isEvent, LandingPage } from "../model";
-import PageSection from "./PageSection";
+import { isArticle, isEvent, LandingPage } from "../../model";
+import PageSection from "../PageSection";
 import FeaturedArticle from "./FeaturedArticle";
 import FeaturedEvent from "./FeaturedEvent";
-import Divider from "./Divider";
-import CallToAction from "./CallToAction";
+import Divider from "../Divider";
+import CallToAction from "../CallToAction";
 
 type FeaturedContentProps = {
   featuredContent: LandingPage["elements"]["featured_content"];
