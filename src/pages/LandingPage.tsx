@@ -11,16 +11,21 @@ import { FC } from "react";
 import { useAppContext } from "../context/AppContext";
 import { Replace } from "../utils/types";
 import FeaturedContent from "../components/landingPage/FeaturedContent";
+import { useSearchParams } from "react-router-dom";
 
 const LandingPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();
+  const [searchParams] = useSearchParams();
+  const isPreview = searchParams.get("preview") === "true";
+
+  console.log("isPreview", isPreview);
 
   const [landingPage] = useSuspenseQueries({
     queries: [
       {
         queryKey: ["landing_page"],
         queryFn: () =>
-          createClient(environmentId, apiKey)
+          createClient(environmentId, apiKey, isPreview)
             .items()
             .type("landing_page")
             .limitParameter(1)

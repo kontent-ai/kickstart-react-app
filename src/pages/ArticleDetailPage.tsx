@@ -63,11 +63,12 @@ const ArticleDetailPage: React.FC = () => {
   const [searchParams] = useSearchParams();
 
   const lang = searchParams.get("lang");
+  const isPreview = searchParams.get("preview") === "true";
 
   const articleSystem = useQuery({
     queryKey: [`article-detail_${slug}-system`],
     queryFn: () =>
-      createClient(environmentId, apiKey)
+      createClient(environmentId, apiKey, isPreview)
         .items<Article>()
         .equalsFilter("elements.url_slug", slug ?? "")
         .toPromise()
@@ -85,7 +86,7 @@ const ArticleDetailPage: React.FC = () => {
   const articleData = useQuery({
     queryKey: ["article-detail", slug, lang],
     queryFn: () =>
-      createClient(environmentId, apiKey)
+      createClient(environmentId, apiKey, isPreview)
         .items<Article>()
         .equalsFilter("system.codename", articleCodename ?? "")
         .languageParameter((lang ?? "default") as LanguageCodenames)
@@ -167,8 +168,8 @@ const ArticleDetailPage: React.FC = () => {
             <img
               width={670}
               height={440}
-              src={article.elements.image.value[0].url}
-              alt={article.elements.image.value[0].description ?? ""}
+              src={article.elements.image.value[0]?.url ?? ""}
+              alt={article.elements.image.value[0]?.description ?? ""}
               className="rounded-lg w-[670px] h-[440px] object-cover"
             />
           </div>
@@ -225,8 +226,8 @@ const ArticleDetailPage: React.FC = () => {
               articles={article.elements.related_articles.linkedItems.map(article => ({
                 title: article.elements.title.value,
                 image: {
-                  url: article.elements.image.value[0].url,
-                  alt: article.elements.image.value[0].description ?? "",
+                  url: article.elements.image.value[0]?.url ?? "",
+                  alt: article.elements.image.value[0]?.description ?? "",
                 },
                 urlSlug: article.elements.url_slug.value,
                 introduction: article.elements.introduction.value,

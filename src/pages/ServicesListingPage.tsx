@@ -6,16 +6,18 @@ import { createClient } from "../utils/client";
 import { Page, Service } from "../model";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import ServiceList from "../components/services/ServiceList";
-
+import { useSearchParams } from "react-router-dom";
 const ServicesListingPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();
+  const [searchParams] = useSearchParams();
+  const isPreview = searchParams.get("preview") === "true";
 
   const [servicesPage, services] = useSuspenseQueries({
     queries: [
       {
         queryKey: ["services_page"],
         queryFn: () =>
-          createClient(environmentId, apiKey)
+          createClient(environmentId, apiKey, isPreview)
             .item<Page>("services")
             .toPromise()
             .then(res => res.data)
@@ -29,7 +31,7 @@ const ServicesListingPage: FC = () => {
       {
         queryKey: ["services_listing"],
         queryFn: () =>
-          createClient(environmentId, apiKey)
+          createClient(environmentId, apiKey, isPreview)
             .items<Service>()
             .type("service")
             .toPromise()
@@ -64,8 +66,8 @@ const ServicesListingPage: FC = () => {
             <img
               width={670}
               height={440}
-              src={servicesPage.data.item.elements.hero_image?.value[0].url}
-              alt={servicesPage.data.item.elements.hero_image?.value[0].description ?? ""}
+              src={servicesPage.data.item.elements.hero_image?.value[0]?.url ?? "https://placehold.co/670x440"}
+              alt={servicesPage.data.item.elements.hero_image?.value[0]?.description ?? ""}
               className="rounded-lg"
             />
           </div>
@@ -75,8 +77,8 @@ const ServicesListingPage: FC = () => {
         <ServiceList
           services={services.data.map(service => ({
             image: {
-              url: service.elements.image.value[0].url,
-              alt: service.elements.image.value[0].description ?? "",
+              url: service.elements.image.value[0]?.url ?? "",
+              alt: service.elements.image.value[0]?.description ?? "",
             },
             name: service.elements.name.value,
             summary: service.elements.summary.value,

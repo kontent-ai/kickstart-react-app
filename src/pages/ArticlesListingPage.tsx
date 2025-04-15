@@ -60,13 +60,14 @@ const ArticlesListingPage: FC = () => {
 
   const articleTypeCodename = searchParams.get("type");
   const articleTopicCodename = searchParams.get("topic");
+  const isPreview = searchParams.get("preview") === "true";
 
   const [articlesPage, articlesTypes, articlesTopics, articles] = useSuspenseQueries({
     queries: [
       {
         queryKey: ["articles_page"],
         queryFn: () =>
-          createClient(environmentId, apiKey)
+          createClient(environmentId, apiKey, isPreview)
             .item<Page>("research")
             .toPromise()
             .then(res => res.data)
@@ -80,7 +81,7 @@ const ArticlesListingPage: FC = () => {
       {
         queryKey: ["articles_types"],
         queryFn: () =>
-          createClient(environmentId, apiKey)
+          createClient(environmentId, apiKey, isPreview)
             .taxonomy("article_type")
             .toPromise()
             .then(res => res.data.taxonomy),
@@ -88,7 +89,7 @@ const ArticlesListingPage: FC = () => {
       {
         queryKey: ["articles_topics"],
         queryFn: () =>
-          createClient(environmentId, apiKey)
+          createClient(environmentId, apiKey, isPreview)
             .taxonomy("general_healthcare_topics")
             .toPromise()
             .then(res => res.data.taxonomy),
@@ -96,7 +97,7 @@ const ArticlesListingPage: FC = () => {
       {
         queryKey: ["articles_listing"],
         queryFn: () =>
-          createClient(environmentId, apiKey)
+          createClient(environmentId, apiKey, isPreview)
             .items<Article>()
             .type("article")
             .orderByDescending("elements.publish_date")
@@ -163,35 +164,37 @@ const ArticlesListingPage: FC = () => {
             <img
               width={670}
               height={440}
-              src={articlesPage.data.item.elements.hero_image?.value[0].url}
-              alt={articlesPage.data.item.elements.hero_image?.value[0].description ?? ""}
+              src={articlesPage.data.item.elements.hero_image?.value[0]?.url ?? "https://placehold.co/670x440"}
+              alt={articlesPage.data.item.elements.hero_image?.value[0]?.description ?? ""}
               className="rounded-lg"
             />
           </div>
         </div>
       </PageSection>
       <PageSection color="bg-burgundy">
-        <div className="burgundy-theme">
-          <FeaturedArticle
-            image={{
-              url: featuredArticle.elements.image.value[0].url,
-              alt: featuredArticle.elements.image.value[0].description ?? "",
-              width: 670,
-              height: 440,
-            }}
-            title={featuredArticle.elements.title.value}
-            published={`Published on ${
-              new Date(featuredArticle.elements.publish_date.value ?? "").toLocaleDateString("en-US", {
-                month: "short",
-                year: "numeric",
-                day: "numeric",
-              })
-            }`}
-            tags={featuredArticle.elements.topics.value.map(t => t.name)}
-            description={featuredArticle.elements.introduction.value}
-            urlSlug={featuredArticle.elements.url_slug.value}
-          />
-        </div>
+        {featuredArticle && (
+          <div className="burgundy-theme">
+            <FeaturedArticle
+              image={{
+                url: featuredArticle.elements.image.value[0]?.url ?? "",
+                alt: featuredArticle.elements.image.value[0]?.description ?? "",
+                width: 670,
+                height: 440,
+              }}
+              title={featuredArticle.elements.title.value}
+              published={`Published on ${
+                new Date(featuredArticle.elements.publish_date.value ?? "").toLocaleDateString("en-US", {
+                  month: "short",
+                  year: "numeric",
+                  day: "numeric",
+                })
+              }`}
+              tags={featuredArticle.elements.topics.value.map(t => t.name)}
+              description={featuredArticle.elements.introduction.value}
+              urlSlug={featuredArticle.elements.url_slug.value}
+            />
+          </div>
+        )}
       </PageSection>
       <PageSection color="bg-white">
         <div className="flex flex-row gap-6 pt-16">
@@ -229,8 +232,8 @@ const ArticlesListingPage: FC = () => {
           )
           .map(article => ({
             image: {
-              url: article.elements.image.value[0].url,
-              alt: article.elements.image.value[0].description ?? "",
+              url: article.elements.image.value[0]?.url ?? "",
+              alt: article.elements.image.value[0]?.description ?? "",
             },
             title: article.elements.title.value,
             introduction: article.elements.introduction.value,

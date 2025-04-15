@@ -43,7 +43,7 @@ export const getProjectContainerForEnvironment = (
   environmentId: string,
 ): Promise<ProjectContainer | null> => {
   const requestContext: RequestContext = { authToken };
-  const url = `${import.meta.env.VITE_KONTENT_URL}/api/project-management/${environmentId}`;
+  const url = `https://app.${import.meta.env.VITE_KONTENT_URL}/api/project-management/${environmentId}`;
 
   return get(url, requestContext)
     .then(async (res) => {
@@ -64,7 +64,8 @@ export const getPreviewApiTokenSeed = (
   const requestContext: RequestContext = {
     authToken: authToken,
   };
-  const url = `${import.meta.env.VITE_KONTENT_URL}/api/project-container/${projectContainerId}/keys/listing`;
+  const url =
+    `https://app.${import.meta.env.VITE_KONTENT_URL}/api/project-container/${projectContainerId}/keys/listing`;
   const data = {
     query: "",
     api_key_types: ["delivery-api"],
@@ -97,7 +98,8 @@ export const getKeyForTokenSeed = (
   const requestContext: RequestContext = {
     authToken: authToken,
   };
-  const url = `${import.meta.env.VITE_KONTENT_URL}/api/project-container/${projectContainerId}/keys/${tokenSeed}`;
+  const url =
+    `https://app.${import.meta.env.VITE_KONTENT_URL}/api/project-container/${projectContainerId}/keys/${tokenSeed}`;
 
   return get(url, requestContext).then(res => res.json());
 };

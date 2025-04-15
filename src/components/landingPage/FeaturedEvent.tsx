@@ -20,8 +20,8 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
     ? (
       <FeaturedComponentBase
         image={{
-          url: event.elements.image?.value[0].url ?? "",
-          alt: event.elements.image?.value[0].description ?? "",
+          url: event.elements.image?.value[0]?.url ?? "",
+          alt: event.elements.image?.value[0]?.description ?? "",
         }}
         type="event"
         displayFeatured={true}

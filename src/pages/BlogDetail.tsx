@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
 import { BlogPost } from "../model";
@@ -12,6 +12,8 @@ import { defaultPortableRichTextResolvers } from "../utils/richtext";
 const BlogDetail: React.FC = () => {
   const { environmentId, apiKey } = useAppContext();
   const { slug } = useParams();
+  const [searchParams] = useSearchParams();
+  const isPreview = searchParams.get("preview") === "true";
 
   const createTag = (tag: string) => (
     <div className="w-fit text-small border tracking-wider font-[700] text-grey border-azure px-4 py-2 rounded-lg uppercase">
@@ -22,7 +24,7 @@ const BlogDetail: React.FC = () => {
   const blogPost = useQuery({
     queryKey: [`blog-post_${slug}`],
     queryFn: () =>
-      createClient(environmentId, apiKey)
+      createClient(environmentId, apiKey, isPreview)
         .items<BlogPost>()
         .equalsFilter("elements.url_slug", slug ?? "")
         .toPromise()
@@ -52,8 +54,8 @@ const BlogDetail: React.FC = () => {
           <img
             width={670}
             height={440}
-            src={blogPost.data.elements.image?.value[0].url}
-            alt={blogPost.data.elements.image?.value[0].description ?? ""}
+            src={blogPost.data.elements.image?.value[0]?.url ?? ""}
+            alt={blogPost.data.elements.image?.value[0]?.description ?? ""}
             className="rounded-lg"
           />
         </div>

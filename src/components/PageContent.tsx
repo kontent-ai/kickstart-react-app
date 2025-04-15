@@ -38,7 +38,7 @@ const createPortableTextComponents = (
       }
 
       if (isDisclaimer(item)) {
-        return item.elements.type.value[0].codename === "promotional"
+        return item.elements.type.value[0]?.codename === "promotional"
           ? <PromotionalDisclaimer title={item.elements.headline.value} text={item.elements.subheadline.value} />
           : <InformationalDisclaimer title={item.elements.headline.value} text={item.elements.subheadline.value} />;
       }
@@ -48,10 +48,10 @@ const createPortableTextComponents = (
           title={item.elements.headline.value}
           description={item.elements.subheadline.value}
           buttonText={item.elements.button_label.value}
-          buttonHref={item.elements.button_link.linkedItems[0].elements.url.value}
-          imageSrc={item.elements.image.value[0].url}
-          imageAlt={item.elements.image.value[0].description ?? "alt"}
-          imagePosition={item.elements.image_position.value[0].codename}
+          buttonHref={item.elements.button_link.linkedItems[0]?.elements.url.value ?? ""}
+          imageSrc={item.elements.image.value[0]?.url ?? ""}
+          imageAlt={item.elements.image.value[0]?.description ?? "alt"}
+          imagePosition={item.elements.image_position.value[0]?.codename ?? "left"}
         />
       );
     },

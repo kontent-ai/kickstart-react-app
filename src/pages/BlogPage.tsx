@@ -7,14 +7,17 @@ import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import BlogList from "../components/blog/BlogList";
 import { BlogPost } from "../model";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
+import { useSearchParams } from "react-router-dom";
 
 const BlogPage: React.FC = () => {
   const { environmentId, apiKey } = useAppContext();
+  const [searchParams] = useSearchParams();
+  const isPreview = searchParams.get("preview") === "true";
 
   const blogs = useQuery({
     queryKey: ["blog_posts"],
     queryFn: () =>
-      createClient(environmentId, apiKey)
+      createClient(environmentId, apiKey, isPreview)
         .items<BlogPost>()
         .type("blog_post")
         .toPromise()
@@ -46,7 +49,7 @@ const BlogPage: React.FC = () => {
       <div className="pt-[98px]">
         <BlogList
           blogs={blogs.data.map(b => ({
-            imageSrc: b.elements.image?.value[0].url,
+            imageSrc: b.elements.image?.value[0]?.url ?? "",
             title: b.elements.title?.value,
             description: transformToPortableText(b.elements.body?.value),
             readMoreLink: b.elements.url_slug.value,

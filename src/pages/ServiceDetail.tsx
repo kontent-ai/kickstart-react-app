@@ -51,11 +51,13 @@ const TeamMemberCard: React.FC<{
 const ServiceDetail: React.FC = () => {
   const { environmentId, apiKey } = useAppContext();
   const { slug } = useParams();
+  const [searchParams] = useSearchParams();
+  const isPreview = searchParams.get("preview") === "true";
 
   const serviceData = useQuery({
     queryKey: [`service-detail_${slug}`],
     queryFn: () =>
-      createClient(environmentId, apiKey)
+      createClient(environmentId, apiKey, isPreview)
         .items<Service>()
         .equalsFilter("elements.url_slug", slug ?? "")
         .toPromise()
@@ -93,8 +95,8 @@ const ServiceDetail: React.FC = () => {
             <img
               width={670}
               height={440}
-              src={service.elements.image.value[0].url}
-              alt={service.elements.image.value[0].description ?? ""}
+              src={service.elements.image.value[0]?.url ?? ""}
+              alt={service.elements.image.value[0]?.description ?? ""}
               className="rounded-lg w-[670px] h-[440px]"
             />
           </div>

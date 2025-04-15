@@ -6,16 +6,19 @@ import { createClient } from "../utils/client";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import TeamMemberList from "../components/team/TeamMemberList";
 import { Page, Person } from "../model/content-types";
+import { useSearchParams } from "react-router-dom";
 
 const OurTeamPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();
+  const [searchParams] = useSearchParams();
+  const isPreview = searchParams.get("preview") === "true";
 
   const [teamPage, teamMembers] = useSuspenseQueries({
     queries: [
       {
         queryKey: ["team_page"],
         queryFn: () =>
-          createClient(environmentId, apiKey)
+          createClient(environmentId, apiKey, isPreview)
             .item<Page>("our_team")
             .toPromise()
             .then(res => res.data)
@@ -29,7 +32,7 @@ const OurTeamPage: FC = () => {
       {
         queryKey: ["team_members"],
         queryFn: () =>
-          createClient(environmentId, apiKey)
+          createClient(environmentId, apiKey, isPreview)
             .items<Person>()
             .type("person")
             .toPromise()
@@ -64,8 +67,8 @@ const OurTeamPage: FC = () => {
             <img
               width={670}
               height={440}
-              src={teamPage.data.item.elements.hero_image?.value[0].url ?? ""}
-              alt={teamPage.data.item.elements.hero_image?.value[0].description ?? ""}
+              src={teamPage.data.item.elements.hero_image?.value[0]?.url ?? "https://placehold.co/670x440"}
+              alt={teamPage.data.item.elements.hero_image?.value[0]?.description ?? ""}
               className="rounded-lg"
             />
           </div>
@@ -76,8 +79,8 @@ const OurTeamPage: FC = () => {
           <TeamMemberList
             teamMembers={teamMembers.data.map(member => ({
               image: {
-                url: member.elements.image.value[0].url,
-                alt: member.elements.image.value[0].description
+                url: member.elements.image.value[0]?.url ?? "",
+                alt: member.elements.image.value[0]?.description
                   ?? member.elements.first_name.value + " " + member.elements.last_name.value,
               },
               prefix: member.elements.prefix.value,

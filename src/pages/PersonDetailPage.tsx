@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
 import { Person } from "../model";
@@ -13,11 +13,13 @@ import PageSection from "../components/PageSection";
 const PersonDetailPage: React.FC = () => {
   const { environmentId, apiKey } = useAppContext();
   const { slug } = useParams();
+  const [searchParams] = useSearchParams();
+  const isPreview = searchParams.get("preview") === "true";
 
   const personData = useQuery({
     queryKey: [`person-detail_${slug}`],
     queryFn: () =>
-      createClient(environmentId, apiKey)
+      createClient(environmentId, apiKey, isPreview)
         .item<Person>(slug ?? "")
         .toPromise()
         .then(res => res.data.item)
