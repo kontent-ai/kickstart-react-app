@@ -10,30 +10,13 @@ import { useSuspenseQueries } from "@tanstack/react-query";
 import { FC } from "react";
 import { useAppContext } from "../context/AppContext";
 import { Replace } from "../utils/types";
-import RenderElement from "../components/RenderElement";
 import FeaturedContent from "../components/landingPage/FeaturedContent";
-import KontentComponentErrorMessage from "../components/KontentComponentErrorMessage";
-import { landingPageLink } from "../constants/links";
 
 const LandingPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();
 
-  const [landingPageType, landingPage] = useSuspenseQueries({
+  const [landingPage] = useSuspenseQueries({
     queries: [
-      {
-        queryKey: ["landing_page_type"],
-        queryFn: () =>
-          createClient(environmentId, apiKey)
-            .type("landing_page")
-            .toPromise()
-            .then(res => res.data)
-            .catch((err) => {
-              if (err instanceof DeliveryError) {
-                return null;
-              }
-              throw err;
-            }),
-      },
       {
         queryKey: ["landing_page"],
         queryFn: () =>
@@ -55,28 +38,6 @@ const LandingPage: FC = () => {
     ],
   });
 
-  if (!landingPageType.data) {
-    return (
-      <div className="flex-grow">
-        <PageSection color="white">
-          <KontentComponentErrorMessage>
-            Missing a content type with the codename{"  "}
-            <b>
-              <i>{"landing_page"}</i>
-            </b>. Please create the{"  "}
-            <a
-              href="https://kontent.ai/learn/try-kontent-ai/build-the-foundation/create-a-landing-page-structure#a-create-a-landing-page-content-type"
-              className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-            >
-              Landing Page content type
-            </a>{" "}
-            according to the instructions.
-          </KontentComponentErrorMessage>
-        </PageSection>
-      </div>
-    );
-  }
-
   if (!landingPage.data || !Object.entries(landingPage.data.elements).length) {
     return <div className="flex-grow" />;
   }
@@ -92,28 +53,10 @@ const LandingPage: FC = () => {
           }}
         />
       </PageSection>
-      <RenderElement
-        element={landingPage.data.elements.body_copy}
-        elementCodename="body_copy"
-        requiredElementType="rich_text"
-        errorMessageClassName="container"
-        typeCodename={"landing_page"}
-        link={landingPageLink}
-      >
-        <PageSection color="bg-white">
-          <PageContent body={landingPage.data.elements.body_copy!} />
-        </PageSection>
-      </RenderElement>
-      <RenderElement
-        element={landingPage.data.elements.featured_content}
-        elementCodename="featured_content"
-        requiredElementType="modular_content"
-        errorMessageClassName="container"
-        typeCodename={"landing_page"}
-        link={landingPageLink}
-      >
-        <FeaturedContent featuredContent={landingPage.data.elements.featured_content!}></FeaturedContent>
-      </RenderElement>
+      <PageSection color="bg-white">
+        <PageContent body={landingPage.data.elements.body_copy!} />
+      </PageSection>
+      <FeaturedContent featuredContent={landingPage.data.elements.featured_content!}></FeaturedContent>
     </div>
   );
 };

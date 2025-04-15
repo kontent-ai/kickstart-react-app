@@ -5,8 +5,6 @@ import { formatDate } from "../../utils/date";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../../utils/richtext";
 import { Replace } from "../../utils/types";
-import RenderElement from "../RenderElement";
-import { eventLink } from "../../constants/links";
 import { PortableText } from "@kontent-ai/rich-text-resolver/utils/react";
 import Tags from "../Tags";
 import Link from "../Link";
@@ -30,58 +28,32 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
       >
         <>
           <div>
-            <RenderElement
-              element={event.elements.name}
-              elementCodename="name"
-              requiredElementType="text"
-              link={eventLink}
-              typeCodename={"event"}
-            >
-              <h2 className="text-center lg:text-left text-5xl font-semibold text-burgundy">
-                {event.elements.name?.value}
-              </h2>
-            </RenderElement>
-            <RenderElement
-              element={event.elements.start_date}
-              elementCodename="start_date"
-              requiredElementType="date_time"
-              link={eventLink}
-              typeCodename={"event"}
-            >
-              <p className="text-center lg:text-left text-gray-light mt-6 text-lg">
-                {`${
-                  event.elements.start_date?.value?.length
-                    ? formatDate(event.elements.start_date?.value as string)
-                    : ""
-                }${
-                  event.elements.end_date?.value?.length
-                    ? ` - ${formatDate(event.elements.end_date?.value as string)}`
-                    : ""
-                }`}
-              </p>
-            </RenderElement>
+            <h2 className="text-center lg:text-left text-5xl font-semibold text-burgundy">
+              {event.elements.name?.value}
+            </h2>
+            <p className="text-center lg:text-left text-gray-light mt-6 text-lg">
+              {`${
+                event.elements.start_date?.value?.length
+                  ? formatDate(event.elements.start_date?.value as string)
+                  : ""
+              }${
+                event.elements.end_date?.value?.length
+                  ? ` - ${formatDate(event.elements.end_date?.value as string)}`
+                  : ""
+              }`}
+            </p>
             <Tags
               tags={[...event.elements.event_type?.value ?? [], ...event.elements.event_topic?.value ?? []].map(t =>
                 t.name
               )}
               className="mt-4"
             />
-            <RenderElement
-              element={event.elements.description}
-              elementCodename="description"
-              requiredElementType="rich_text"
-              typeCodename={"event"}
-              link={eventLink}
-              children={() => (
-                <div className="mt-4">
-                  <PortableText
-                    value={transformToPortableText(event.elements.description?.value ?? "")}
-                    components={defaultPortableRichTextResolvers}
-                  />
-                </div>
-              )}
-            >
-            </RenderElement>
+            <div className="mt-4">
+              <PortableText
+                value={transformToPortableText(event.elements.description?.value ?? "")}
+                components={defaultPortableRichTextResolvers}
+              />
+            </div>
           </div>
           {event.elements.description?.value !== "<p><br></p>" && <Link href={"#"} text="Read more" className="mt-6" />}
         </>
