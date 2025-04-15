@@ -26,7 +26,8 @@ const HeroImageAuthorCard: React.FC<{
     alt: string;
   };
   codename: string;
-}> = ({ prefix, firstName, lastName, suffix, publishDate, image, codename }) => {
+  language: LanguageCodenames;
+}> = ({ prefix, firstName, lastName, suffix, publishDate, image, codename, language }) => {
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
 
@@ -35,7 +36,7 @@ const HeroImageAuthorCard: React.FC<{
       <img src={image.url} alt={image.alt} className="w-[50px] h-[50px] object-cover rounded-full" />
       <div className="flex flex-col">
         <div className="flex items-center">
-          <span className="text-white text-body-md">By&nbsp;</span>
+          <span className="text-white text-body-md">{language === "es-ES" ? "Por" : "By"}&nbsp;</span>
           <NavLink
             to={createPreviewLink(`/our-team/${codename}`, isPreview)}
             className="text-white text-body-md font-bold hover:text-burgundy underline"
@@ -47,7 +48,7 @@ const HeroImageAuthorCard: React.FC<{
         </div>
         {publishDate && (
           <p className="text-body-md text-white">
-            Published on {publishDate}
+            {language === "es-ES" ? "Publicado en" : "Published on"} {publishDate}
           </p>
         )}
       </div>
@@ -115,11 +116,14 @@ const ArticleDetailPage: React.FC = () => {
   const article = articleData.data;
 
   const formattedDate = article.elements.publish_date.value
-    ? new Date(article.elements.publish_date.value).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    })
+    ? new Date(article.elements.publish_date.value).toLocaleDateString(
+      article.system.language === "es-ES" ? "es-ES" : "en-US",
+      {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      },
+    )
     : "";
 
   return (
@@ -128,7 +132,7 @@ const ArticleDetailPage: React.FC = () => {
         <div className="azure-theme flex flex-col-reverse gap-16 lg:flex-row items-center pt-[104px] pb-[160px]">
           <div className="flex flex-col flex-1 gap-6">
             <div className="w-fit text-xs text-body-color border tracking-wider font-[700] border-tag-border-color px-4 py-2 rounded-lg uppercase">
-              Article
+              {article.system.language === "es-ES" ? "Artículo" : "Article"}
             </div>
             <h1 className="text-heading-1 leading-[84%] text-heading-1-color">
               {article.elements.title.value}
@@ -148,13 +152,16 @@ const ArticleDetailPage: React.FC = () => {
                     }`,
                 }}
                 codename={article.elements.author.linkedItems[0].system.codename}
+                language={article.system.language}
               />
             )}
-            <Tags
-              tags={article.elements.topics.value.map(topic => topic.name)}
-              orientation="horizontal"
-              className="mt-4"
-            />
+            {article.elements.topics.value.length > 0 && article.system.language === "default" && (
+              <Tags
+                tags={article.elements.topics.value.map(topic => topic.name)}
+                orientation="horizontal"
+                className="mt-4"
+              />
+            )}
           </div>
           <div className="flex-1">
             <img
