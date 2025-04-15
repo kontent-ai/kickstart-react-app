@@ -15,7 +15,7 @@ const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent }) => {
     (item) => {
       if (isArticle(item)) {
         return (
-          <PageSection color="bg-creme">
+          <PageSection color="bg-creme" key={item.system.codename}>
             <FeaturedArticle
               article={{
                 image: {
@@ -36,14 +36,14 @@ const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent }) => {
 
       if (isEvent(item)) {
         return (
-          <PageSection color="bg-creme">
+          <PageSection color="bg-creme" key={item.system.codename}>
             <FeaturedEvent event={item} />
           </PageSection>
         );
       }
 
       return (
-        <PageSection color="bg-burgundy">
+        <PageSection color="bg-burgundy" key={item.system.codename}>
           <div className="pt-24 pb-40">
             <CallToAction
               title={item.elements.headline.value}
@@ -59,7 +59,9 @@ const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent }) => {
         </PageSection>
       );
     },
-  ).flatMap((item, index) => index === featuredContent.linkedItems.length - 1 ? [item] : [item, <Divider />]);
+  ).flatMap((item, index) =>
+    index === featuredContent.linkedItems.length - 1 ? [item] : [item, <Divider key={`divider-${index}`} />]
+  );
 
   return (
     linkedItems.map(item => item)

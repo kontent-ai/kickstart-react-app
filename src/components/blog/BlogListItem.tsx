@@ -20,13 +20,13 @@ const BlogListItem: React.FC<BlogListItemProps> = ({
 }) => {
   return (
     <div className={`flex flex-col md:flex-row gap-16 w-full ${className}`}>
-      <div className="md:w-1/3">
+      <div className="">
         <img
           width={440}
           height={288}
           src={imageSrc}
           alt={title}
-          className="w-full  object-cover rounded-md"
+          className=" w-[440px] h-[288px] object-cover rounded-md"
         />
       </div>
       <div className="md:w-2/3 flex flex-col justify-center gap-5">

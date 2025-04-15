@@ -21,7 +21,7 @@ const ServiceListItem: React.FC<ServiceListItemProps> = ({
   slug,
 }) => {
   return (
-    <div className="flex flex-col xl:flex-row gap-16 justify-center items-center">
+    <div className="flex flex-col lg:flex-row gap-16 justify-center items-center">
       <div className="flex-1 flex flex-col">
         <img
           width={440}
@@ -32,7 +32,7 @@ const ServiceListItem: React.FC<ServiceListItemProps> = ({
         />
       </div>
       <div className="flex-1">
-        <h2 className="text-left text-heading-2 font-semibold text-azure">
+        <h2 className="text-center lg:text-left text-heading-2 font-semibold text-azure">
           {name}
         </h2>
         <div className="mt-6">
@@ -45,9 +45,10 @@ const ServiceListItem: React.FC<ServiceListItemProps> = ({
           </p>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-8 flex justify-center lg:justify-start">
           <ButtonLink
             href={slug}
+            className=""
           >
             Learn more
           </ButtonLink>

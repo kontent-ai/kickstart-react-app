@@ -150,7 +150,7 @@ const ArticlesListingPage: FC = () => {
   return (
     <div className="flex flex-col">
       <PageSection color="bg-creme">
-        <div className="flex flex-row items-center pt-[104px] pb-[160px]">
+        <div className="flex flex-col-reverse gap-16 lg:gap-0 lg:flex-row items-center py-16 lg:py-0 lg:pt-[104px] lg:pb-[160px]">
           <div className="flex flex-col flex-1 gap-6 ">
             <h1 className="text-heading-1 text-heading-1-color">
               {articlesPage.data.item.elements.headline.value}

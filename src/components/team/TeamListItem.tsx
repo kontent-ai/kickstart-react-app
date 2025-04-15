@@ -20,9 +20,12 @@ export const TeamListItem: FC<TeamListItemProps> = ({ image, prefix, suffix, fir
       <div className="w-[300px] h-[300px] rounded-full overflow-hidden">
         <img src={image.url} alt={image.alt} className="w-full h-full object-cover" />
       </div>
-      <h3 className="text-heading-3 text-burgundy">{prefix} {firstName} {lastName}{suffix && `, ${suffix}`}</h3>
-      <p className="text-grey-600 text-body-lg">{title}</p>
-      <ButtonLink href={link} style="transparent">
+      <h3 className="flex-none text-heading-3 text-burgundy">
+        {prefix} {firstName} {lastName}
+        {suffix && `, ${suffix}`}
+      </h3>
+      <p className="text-grey-600 text-body-lg mt-auto">{title}</p>
+      <ButtonLink href={link} style="transparent" className="mt-auto">
         Show bio
       </ButtonLink>
     </div>

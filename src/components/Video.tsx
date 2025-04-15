@@ -42,7 +42,7 @@ const Video: FC<VideoProps> = ({ video }) => {
       >
         {video.elements.video_link?.value
           ? (
-            <figure className="pt-20">
+            <figure className="pt-20 w-full">
               <iframe
                 className="m-auto w-full lg:w-[900px]"
                 title={video.elements.headline?.value ?? "Video Title"}
