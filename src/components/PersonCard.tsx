@@ -1,4 +1,5 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useSearchParams } from "react-router-dom";
+import { createPreviewLink } from "../utils/link";
 
 const PersonCard: React.FC<{
   prefix?: string;
@@ -11,12 +12,15 @@ const PersonCard: React.FC<{
     alt: string;
   };
 }> = ({ prefix, firstName, lastName, suffix, jobTitle, image }) => {
+  const [searchParams] = useSearchParams();
+  const isPreview = searchParams.get("preview") === "true";
+
   return (
     <div className="flex gap-4 items-center">
       <img src={image.url} alt={image.alt} className="w-[95px] h-[95px] object-cover rounded-full" />
       <div className="flex flex-col gap-2 items-start max-w-[325px]">
         <NavLink
-          to={`/team/${firstName}-${lastName}`}
+          to={createPreviewLink(`/team/${firstName}-${lastName}`, isPreview)}
           className="text-heading-4 underline text-burgundy hover:text-azure"
         >
           {prefix && <span>{prefix}</span>}

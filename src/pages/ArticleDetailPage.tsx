@@ -13,6 +13,7 @@ import Tags from "../components/Tags";
 import { NavLink, useSearchParams } from "react-router";
 import PersonCard from "../components/PersonCard";
 import ArticleList from "../components/articles/ArticleList";
+import { createPreviewLink } from "../utils/link";
 
 const HeroImageAuthorCard: React.FC<{
   prefix?: string;
@@ -24,7 +25,11 @@ const HeroImageAuthorCard: React.FC<{
     url: string;
     alt: string;
   };
-}> = ({ prefix, firstName, lastName, suffix, publishDate, image }) => {
+  codename: string;
+}> = ({ prefix, firstName, lastName, suffix, publishDate, image, codename }) => {
+  const [searchParams] = useSearchParams();
+  const isPreview = searchParams.get("preview") === "true";
+
   return (
     <div className="flex items-center gap-4">
       <img src={image.url} alt={image.alt} className="w-[50px] h-[50px] object-cover rounded-full" />
@@ -32,7 +37,7 @@ const HeroImageAuthorCard: React.FC<{
         <div className="flex items-center">
           <span className="text-white text-body-md">By&nbsp;</span>
           <NavLink
-            to={`/team/${firstName}-${lastName}`}
+            to={createPreviewLink(`/our-team/${codename}`, isPreview)}
             className="text-white text-body-md font-bold hover:text-burgundy underline"
           >
             {prefix && <span>{prefix}</span>}
@@ -142,6 +147,7 @@ const ArticleDetailPage: React.FC = () => {
                       article.elements.author.linkedItems[0].elements.last_name?.value
                     }`,
                 }}
+                codename={article.elements.author.linkedItems[0].system.codename}
               />
             )}
             <Tags

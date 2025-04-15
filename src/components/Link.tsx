@@ -1,4 +1,5 @@
-import { NavLink } from "react-router";
+import { NavLink, useSearchParams } from "react-router";
+import { createPreviewLink } from "../utils/link";
 
 type LinkProps = Readonly<{
   href: string;
@@ -7,9 +8,12 @@ type LinkProps = Readonly<{
 }>;
 
 const Link = ({ href, text, className = "" }: LinkProps) => {
+  const [searchParams] = useSearchParams();
+  const isPreview = searchParams.get("preview") === "true";
+
   return (
     <NavLink
-      to={href}
+      to={createPreviewLink(href, isPreview)}
       className={`inline-block text-link-color text-body-lg underline hover:text-link-hover-color ${className}`}
     >
       {text}

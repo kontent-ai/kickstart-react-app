@@ -10,7 +10,8 @@ import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
 import PageSection from "../components/PageSection";
 import Tags from "../components/Tags";
-import { NavLink } from "react-router";
+import { NavLink, useSearchParams } from "react-router";
+import { createPreviewLink } from "../utils/link";
 
 const TeamMemberCard: React.FC<{
   prefix?: string;
@@ -22,13 +23,17 @@ const TeamMemberCard: React.FC<{
     url: string;
     alt: string;
   };
-}> = ({ prefix, firstName, lastName, suffix, jobTitle, image }) => {
+  codename: string;
+}> = ({ prefix, firstName, lastName, suffix, jobTitle, image, codename }) => {
+  const [searchParams] = useSearchParams();
+  const isPreview = searchParams.get("preview") === "true";
+
   return (
     <div className="flex gap-4 items-center">
       <img src={image.url} alt={image.alt} className="w-[95px] h-[95px] object-cover rounded-full" />
       <div className="flex flex-col gap-2 items-start">
         <NavLink
-          to={`/team/${firstName}-${lastName}`}
+          to={createPreviewLink(`/our-team/${codename}`, isPreview)}
           className="text-heading-4 underline text-burgundy hover:text-azure"
         >
           {prefix && <span>{prefix}</span>}
@@ -133,6 +138,7 @@ const ServiceDetail: React.FC = () => {
                         alt: person.elements.image?.value[0]?.description
                           || `Photo of ${person.elements.first_name?.value} ${person.elements.last_name?.value}`,
                       }}
+                      codename={person.system.codename}
                     />
                   ))}
                 </div>
