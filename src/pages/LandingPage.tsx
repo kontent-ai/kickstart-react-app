@@ -7,11 +7,13 @@ import "../index.css";
 import { type LandingPage } from "../model";
 import { createClient } from "../utils/client";
 import { useSuspenseQueries } from "@tanstack/react-query";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { useAppContext } from "../context/AppContext";
 import { Replace } from "../utils/types";
 import FeaturedContent from "../components/landingPage/FeaturedContent";
 import { useSearchParams } from "react-router-dom";
+import { useCustomRefresh } from "../context/SmartLinkContext";
+import { IRefreshMessageData, IRefreshMessageMetadata } from "@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes";
 
 const LandingPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();
@@ -42,6 +44,16 @@ const LandingPage: FC = () => {
       },
     ],
   });
+
+  const onRefresh = useCallback((data: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
+    if(metadata.manualRefresh ) {
+      originalRefresh();
+    } else {
+      landingPage.refetch();
+    }
+  }, [landingPage]);
+
+  useCustomRefresh(onRefresh);
 
   if (!landingPage.data || !Object.entries(landingPage.data.elements).length) {
     return <div className="flex-grow" />;

@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import React, { useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
@@ -13,8 +14,9 @@ import { NavLink, useSearchParams } from "react-router";
 import PersonCard from "../components/PersonCard";
 import ArticleList from "../components/articles/ArticleList";
 import { createPreviewLink } from "../utils/link";
+import { IRefreshMessageData } from "@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes";
 import { useCustomRefresh } from "../context/SmartLinkContext";
-import { IRefreshMessageData, IRefreshMessageMetadata } from "@kontent-ai/smart-link";
+import { IRefreshMessageMetadata } from "@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes";
 
 const HeroImageAuthorCard: React.FC<{
   prefix?: string;
@@ -60,112 +62,70 @@ const HeroImageAuthorCard: React.FC<{
 const ArticleDetailPage: React.FC = () => {
   const { environmentId, apiKey } = useAppContext();
   const { slug } = useParams();
+
   const [searchParams] = useSearchParams();
 
   const lang = searchParams.get("lang");
   const isPreview = searchParams.get("preview") === "true";
 
-  const [articleSystem, setArticleSystem] = useState<Article | null>(null);
-  const [article, setArticle] = useState<Article | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const articleSystem = useQuery({
+    queryKey: [`article-detail_${slug}-system`],
+    queryFn: () =>
+      createClient(environmentId, apiKey, isPreview)
+        .items<Article>()
+        .equalsFilter("elements.url_slug", slug ?? "")
+        .toPromise()
+        .then((res) => res.data.items[0])
+        .catch((err) => {
+          if (err instanceof DeliveryError) {
+            return null;
+          }
+          throw err;
+        }),
+  });
 
-  // Fetch article system data
-  useEffect(() => {
-    const fetchArticleSystem = async () => {
-      try {
-        const response = await createClient(environmentId, apiKey, isPreview)
-          .items<Article>()
-          .equalsFilter("elements.url_slug", slug ?? "")
-          .toPromise();
+  const articleCodename = articleSystem.data?.system.codename;
 
-        const firstItem = response.data.items[0] ?? null;
-        setArticleSystem(firstItem);
-        setError(null);
-      } catch (err) {
-        if (err instanceof DeliveryError) {
-          setArticleSystem(null);
-        } else {
-          setError(err as Error);
-        }
-      }
-    };
-
-    if (slug) {
-      fetchArticleSystem();
-    }
-  }, [environmentId, apiKey, isPreview, slug]);
-
-  // Fetch article data with language
-  useEffect(() => {
-    const fetchArticleData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await createClient(environmentId, apiKey, isPreview)
-          .items<Article>()
-          .equalsFilter("system.codename", articleSystem?.system.codename ?? "")
-          .languageParameter((lang ?? "default") as LanguageCodenames)
-          .depthParameter(1)
-          .toPromise();
-
-        const firstItem = response.data.items[0] ?? null;
-        setArticle(firstItem);
-        setError(null);
-      } catch (err) {
-        if (err instanceof DeliveryError) {
-          setArticle(null);
-        } else {
-          setError(err as Error);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (articleSystem?.system.codename) {
-      fetchArticleData();
-    }
-  }, [environmentId, apiKey, isPreview, articleSystem?.system.codename, lang]);
-
+  const articleData = useQuery({
+    queryKey: ["article-detail", slug, lang],
+    queryFn: () =>
+      createClient(environmentId, apiKey, isPreview)
+        .items<Article>()
+        .equalsFilter("system.codename", articleCodename ?? "")
+        .languageParameter((lang ?? "default") as LanguageCodenames)
+        .depthParameter(1)
+        .toPromise()
+        .then((res) => {
+          console.log("res", res.data.items);
+          return res.data.items[0];
+        })
+        .catch((err) => {
+          if (err instanceof DeliveryError) {
+            return null;
+          }
+          throw err;
+        }),
+    enabled: !!articleCodename,
+  });
+  
   const onRefresh = useCallback(
-    async (
-      data: IRefreshMessageData,
-      metadata: IRefreshMessageMetadata,
-      originalRefresh: () => void,
-    ) => {
-      console.log("onRefresh", data, metadata);
-      if (metadata.manualRefresh) {
-        console.log("manual refresh");
+    (data: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
+      if(metadata.manualRefresh ) {
         originalRefresh();
       } else {
-        console.log("refetching article");
-        const response = await createClient(environmentId, apiKey, isPreview)
-          .items<Article>()
-          .equalsFilter("system.codename", articleSystem?.system.codename ?? "")
-          .languageParameter((lang ?? "default") as LanguageCodenames)
-          .depthParameter(1)
-          .toPromise();
-
-        const firstItem = response.data.items[0] ?? null;
-        setArticle(firstItem);
+        articleData.refetch();
       }
     },
-    [apiKey, articleSystem?.system.codename, environmentId, isPreview, lang],
+    [articleData],
   );
 
   useCustomRefresh(onRefresh);
 
-  if (isLoading) {
-    return <div className="flex-grow">Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="flex-grow">Error: {error.message}</div>;
-  }
-
-  if (!article) {
+  if (!articleData.data) {
     return <div className="flex-grow" />;
   }
+
+  const article = articleData.data;
 
   const formattedDate = article.elements.publish_date.value
     ? new Date(article.elements.publish_date.value).toLocaleDateString(
@@ -179,7 +139,7 @@ const ArticleDetailPage: React.FC = () => {
     : "";
 
   return (
-    <div className="flex flex-col gap-12" data-kontent-item-id={article.system.id}>
+    <div className="flex flex-col gap-12">
       <PageSection color="bg-azure">
         <div className="azure-theme flex flex-col-reverse gap-16 lg:flex-row items-center pt-[104px] pb-[160px]">
           <div className="flex flex-col flex-1 gap-6">
@@ -219,7 +179,7 @@ const ArticleDetailPage: React.FC = () => {
             <img
               width={670}
               height={440}
-              src={article.elements.image.value[0]?.url ?? undefined}
+              src={article.elements.image.value[0]?.url ?? ""}
               alt={article.elements.image.value[0]?.description ?? ""}
               className="rounded-lg w-[670px] h-[440px] object-cover"
             />
@@ -229,10 +189,7 @@ const ArticleDetailPage: React.FC = () => {
 
       <PageSection color="bg-white">
         <div className="flex flex-col gap-12 mx-auto items-center max-w-fit">
-          <p
-            className="text-body-xl text-body-color font-[600] w-[728px] max-w-[728px]"
-            data-kontent-element-codename="introduction"
-          >
+          <p className="text-body-xl text-body-color font-[600] w-[728px] max-w-[728px]">
             {article.elements.introduction.value}
           </p>
           <div className="rich-text-body flex mx-auto flex-col gap-5 items-center max-w-[728px]">
