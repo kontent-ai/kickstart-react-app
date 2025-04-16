@@ -17,6 +17,7 @@ import PersonDetailPage from "./pages/PersonDetailPage.tsx";
 import Auth0ProviderWithRedirect from "./components/auth/AuthProviderWithRedirect.tsx";
 import { ErrorBoundary } from "react-error-boundary";
 import Loader from "./components/Loader.tsx";
+import { SmartLinkContextComponent } from "./context/SmartLinkContext.tsx";
 
 const queryClient = new QueryClient();
 
@@ -66,11 +67,7 @@ const BaseRouting: RouteObject[] = [
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <AppContextComponent>
-        <Layout />
-      </AppContextComponent>
-    ),
+    element: <Layout />,
     children: BaseRouting,
   },
   {
@@ -91,9 +88,7 @@ const router = createBrowserRouter([
               </div>
             }
           >
-            <AppContextComponent>
-              <Layout />
-            </AppContextComponent>
+            <Layout />
           </Suspense>
         </ErrorBoundary>
       </Auth0ProviderWithRedirect>
@@ -108,7 +103,11 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <AppContextComponent>
+        <SmartLinkContextComponent>
+          <RouterProvider router={router} />
+        </SmartLinkContextComponent>
+      </AppContextComponent>
     </QueryClientProvider>
   </StrictMode>,
 );
