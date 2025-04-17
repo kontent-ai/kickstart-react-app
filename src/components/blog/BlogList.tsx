@@ -17,7 +17,7 @@ type BlogListProps = Readonly<{
 
 const BlogList: React.FC<BlogListProps> = ({ blogs }) => {
   const blogItems = blogs.map((blog, index) => (
-    <>
+    <div key={index}>
       <PageSection key={index} color="bg-white">
         <div className="max-w-6xl mx-auto">
           <BlogListItem
@@ -31,7 +31,7 @@ const BlogList: React.FC<BlogListProps> = ({ blogs }) => {
         </div>
       </PageSection>
       <Divider key={`divider-${index}`} />
-    </>
+    </div>
   ));
 
   return (
