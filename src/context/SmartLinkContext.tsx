@@ -1,9 +1,6 @@
 import { createContext, FC, PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
-import KontentSmartLink, {
-  KontentSmartLinkEvent,
-} from "@kontent-ai/smart-link";
+import KontentSmartLink, { IRefreshMessageData, IRefreshMessageMetadata, IUpdateMessageData, KontentSmartLinkEvent } from "@kontent-ai/smart-link";
 import { useAppContext } from "./AppContext";
-import { IRefreshMessageData, IRefreshMessageMetadata, IUpdateMessageData } from "@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes";
 
 interface SmartLinkContextValue {
   readonly smartLink?: KontentSmartLink | null;
@@ -20,7 +17,6 @@ export const SmartLinkContextComponent: FC<PropsWithChildren> = ({ children }) =
   const [smartLink, setSmartLink] = useState<KontentSmartLink | null>(null);
 
   useEffect(() => {
-    console.log("initialize SmartLinkContext", environmentId);
     const instance = KontentSmartLink.initialize({
       defaultDataAttributes: {
         projectId: environmentId,
@@ -31,7 +27,6 @@ export const SmartLinkContextComponent: FC<PropsWithChildren> = ({ children }) =
     setSmartLink(instance);
 
     return () => {
-      console.log("destroy SmartLinkContext", instance);
       smartLink?.destroy();
       setSmartLink(null);
     };
@@ -58,12 +53,10 @@ export const useCustomRefresh = (
   const smartLink = useSmartLink();
 
   useEffect(() => {
-    console.log("useCustomRefresh", smartLink);
     if (smartLink) {
       smartLink.on(KontentSmartLinkEvent.Refresh, callback);
 
       return () => {
-        console.log("destroy useCustomRefresh", smartLink);
         smartLink.off(KontentSmartLinkEvent.Refresh, callback);
       };
     }

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
@@ -12,6 +12,8 @@ import PageSection from "../components/PageSection";
 import Tags from "../components/Tags";
 import { NavLink, useSearchParams } from "react-router";
 import { createPreviewLink } from "../utils/link";
+import { useCustomRefresh } from "../context/SmartLinkContext";
+import { IRefreshMessageData, IRefreshMessageMetadata } from "@kontent-ai/smart-link";
 
 const TeamMemberCard: React.FC<{
   prefix?: string;
@@ -69,6 +71,19 @@ const ServiceDetail: React.FC = () => {
           throw err;
         }),
   });
+
+  const onRefresh = useCallback(
+    (data: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
+      if(metadata.manualRefresh ) {
+        originalRefresh();
+      } else {
+        serviceData.refetch();
+      }
+    },
+    [serviceData],
+  );
+
+  useCustomRefresh(onRefresh);
 
   if (!serviceData.data) {
     return <div className="flex-grow" />;

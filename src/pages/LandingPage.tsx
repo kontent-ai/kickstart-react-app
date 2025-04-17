@@ -13,7 +13,7 @@ import { Replace } from "../utils/types";
 import FeaturedContent from "../components/landingPage/FeaturedContent";
 import { useSearchParams } from "react-router-dom";
 import { useCustomRefresh } from "../context/SmartLinkContext";
-import { IRefreshMessageData, IRefreshMessageMetadata } from "@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes";
+import { IRefreshMessageData, IRefreshMessageMetadata } from "@kontent-ai/smart-link";
 
 const LandingPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();

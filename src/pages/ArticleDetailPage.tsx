@@ -14,9 +14,8 @@ import { NavLink, useSearchParams } from "react-router";
 import PersonCard from "../components/PersonCard";
 import ArticleList from "../components/articles/ArticleList";
 import { createPreviewLink } from "../utils/link";
-import { IRefreshMessageData } from "@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes";
 import { useCustomRefresh } from "../context/SmartLinkContext";
-import { IRefreshMessageMetadata } from "@kontent-ai/smart-link/types/lib/IFrameCommunicatorTypes";
+import { IRefreshMessageData, IRefreshMessageMetadata } from "@kontent-ai/smart-link";
 
 const HeroImageAuthorCard: React.FC<{
   prefix?: string;

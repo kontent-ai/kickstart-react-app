@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useCallback } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
@@ -8,6 +8,8 @@ import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import { PortableText } from "@portabletext/react";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
+import { IRefreshMessageData, IRefreshMessageMetadata } from "@kontent-ai/smart-link";
+import { useCustomRefresh } from "../context/SmartLinkContext";
 
 const BlogDetail: React.FC = () => {
   const { environmentId, apiKey } = useAppContext();
@@ -36,6 +38,19 @@ const BlogDetail: React.FC = () => {
           throw err;
         }),
   });
+
+  const onRefresh = useCallback(
+    (data: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
+      if(metadata.manualRefresh ) {
+        originalRefresh();
+      } else {
+        blogPost.refetch();
+      }
+    },
+    [blogPost],
+  );
+
+  useCustomRefresh(onRefresh);
 
   if (!blogPost.data) {
     return <div className="flex-grow" />;
