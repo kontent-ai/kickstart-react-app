@@ -28,7 +28,7 @@ const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent }) => {
                 topics: item.elements.topics.value.map(t => t.name),
               }}
               displayFeatured={true}
-              urlSlug={`/articles/${item.elements.url_slug.value}`}
+              urlSlug={`articles/${item.elements.url_slug.value}`}
             />
           </PageSection>
         );

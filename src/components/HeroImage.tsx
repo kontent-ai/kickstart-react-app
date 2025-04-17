@@ -8,9 +8,10 @@ type HeroImageProps = Readonly<{
     subheadline?: Elements.TextElement;
     heroImage?: Elements.AssetsElement;
   };
+  buttonLink?: string;
 }>;
 
-const HeroImage: FC<HeroImageProps> = ({ data }) => {
+const HeroImage: FC<HeroImageProps> = ({ data, buttonLink }) => {
   return (
     <div className="burgundy-theme flex flex-col py-10 lg:py-0 lg:flex-row lg:gap-32">
       <div className="lg:basis-1/2 pt-10 lg:pt-[104px] pb-10 lg:pb-[160px] flex flex-col items-center lg:items-start gap-10">
@@ -19,7 +20,7 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
         </h1>
         <p className="text-center lg:text-left font-sans text-xl text-body-color">{data.subheadline?.value}</p>
 
-        <ButtonLink href={"/services"}>
+        <ButtonLink href={buttonLink ?? "services"}>
           <p>Explore our services</p>
         </ButtonLink>
       </div>
