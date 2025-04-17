@@ -6,7 +6,7 @@ type CallToActionProps = Readonly<{
   description: string;
   buttonText: string;
   buttonHref: string;
-  imageSrc: string;
+  imageSrc?: string;
   imageAlt: string;
   imagePosition?: "left" | "right" | "center";
   style?: "burgundy" | "default";

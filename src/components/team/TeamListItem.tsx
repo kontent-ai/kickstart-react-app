@@ -3,7 +3,7 @@ import ButtonLink from "../ButtonLink";
 
 type TeamListItemProps = {
   image: {
-    url: string;
+    url?: string;
     alt: string;
   };
   prefix: string;

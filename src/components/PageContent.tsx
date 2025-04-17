@@ -49,7 +49,7 @@ const createPortableTextComponents = (
           description={item.elements.subheadline.value}
           buttonText={item.elements.button_label.value}
           buttonHref={item.elements.button_link.linkedItems[0]?.elements.url.value ?? ""}
-          imageSrc={item.elements.image.value[0]?.url ?? ""}
+          imageSrc={item.elements.image.value[0]?.url}
           imageAlt={item.elements.image.value[0]?.description ?? "alt"}
           imagePosition={item.elements.image_position.value[0]?.codename ?? "left"}
         />

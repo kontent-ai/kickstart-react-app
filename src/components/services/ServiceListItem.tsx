@@ -4,7 +4,7 @@ import Tags from "../Tags";
 
 type ServiceListItemProps = Readonly<{
   image: Readonly<{
-    url: string;
+    url?: string;
     alt: string;
   }>;
   name: string;
@@ -26,7 +26,7 @@ const ServiceListItem: React.FC<ServiceListItemProps> = ({
         <img
           width={440}
           height={300}
-          src={`${image.url}?auto=format&w=600`}
+          src={image.url ? `${image.url}?auto=format&w=600` : undefined}
           alt={image.alt}
           className="object-cover rounded-lg self-end w-[440px] h-[300px]"
         />

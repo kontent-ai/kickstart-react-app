@@ -106,10 +106,10 @@ const ArticleDetailPage: React.FC = () => {
         }),
     enabled: !!articleCodename,
   });
-  
+
   const onRefresh = useCallback(
-    (data: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
-      if(metadata.manualRefresh ) {
+    (_: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
+      if (metadata.manualRefresh) {
         originalRefresh();
       } else {
         articleData.refetch();

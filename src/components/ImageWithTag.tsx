@@ -2,7 +2,7 @@ import { FC } from "react";
 
 type ImageWithTagProps = Readonly<{
   image: Readonly<{
-    url: string;
+    url?: string;
     alt: string;
     width: number;
     height: number;

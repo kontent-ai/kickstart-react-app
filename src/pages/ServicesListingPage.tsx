@@ -66,7 +66,7 @@ const ServicesListingPage: FC = () => {
             <img
               width={670}
               height={440}
-              src={servicesPage.data.item.elements.hero_image?.value[0]?.url ?? "https://placehold.co/670x440"}
+              src={servicesPage.data.item.elements.hero_image?.value[0]?.url}
               alt={servicesPage.data.item.elements.hero_image?.value[0]?.description ?? ""}
               className="rounded-lg"
             />

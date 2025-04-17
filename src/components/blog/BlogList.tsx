@@ -5,7 +5,7 @@ import PageSection from "../PageSection";
 import { PortableTextObject } from "@kontent-ai/rich-text-resolver";
 
 type Blog = Readonly<{
-  imageSrc: string;
+  imageSrc?: string;
   title: string;
   description: PortableTextObject[];
   readMoreLink: string;

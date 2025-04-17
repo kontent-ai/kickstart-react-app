@@ -49,7 +49,7 @@ const BlogPage: React.FC = () => {
       <div className="pt-[98px]">
         <BlogList
           blogs={blogs.data.map(b => ({
-            imageSrc: b.elements.image?.value[0]?.url ?? "",
+            imageSrc: b.elements.image?.value[0]?.url,
             title: b.elements.title?.value,
             description: transformToPortableText(b.elements.body?.value),
             readMoreLink: b.elements.url_slug.value,

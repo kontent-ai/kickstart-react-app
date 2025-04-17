@@ -164,7 +164,7 @@ const ArticlesListingPage: FC = () => {
             <img
               width={670}
               height={440}
-              src={articlesPage.data.item.elements.hero_image?.value[0]?.url ?? "https://placehold.co/670x440"}
+              src={articlesPage.data.item.elements.hero_image?.value[0]?.url}
               alt={articlesPage.data.item.elements.hero_image?.value[0]?.description ?? ""}
               className="rounded-lg"
             />

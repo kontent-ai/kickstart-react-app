@@ -40,8 +40,8 @@ const BlogDetail: React.FC = () => {
   });
 
   const onRefresh = useCallback(
-    (data: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
-      if(metadata.manualRefresh ) {
+    (_: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
+      if (metadata.manualRefresh) {
         originalRefresh();
       } else {
         blogPost.refetch();
@@ -69,7 +69,7 @@ const BlogDetail: React.FC = () => {
           <img
             width={670}
             height={440}
-            src={blogPost.data.elements.image?.value[0]?.url ?? ""}
+            src={blogPost.data.elements.image?.value[0]?.url}
             alt={blogPost.data.elements.image?.value[0]?.description ?? ""}
             className="rounded-lg"
           />

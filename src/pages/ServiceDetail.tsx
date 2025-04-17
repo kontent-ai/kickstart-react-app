@@ -22,7 +22,7 @@ const TeamMemberCard: React.FC<{
   suffix?: string;
   jobTitle: string;
   image: {
-    url: string;
+    url?: string;
     alt: string;
   };
   codename: string;
@@ -73,8 +73,8 @@ const ServiceDetail: React.FC = () => {
   });
 
   const onRefresh = useCallback(
-    (data: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
-      if(metadata.manualRefresh ) {
+    (_: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
+      if (metadata.manualRefresh) {
         originalRefresh();
       } else {
         serviceData.refetch();

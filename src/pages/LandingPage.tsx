@@ -45,13 +45,16 @@ const LandingPage: FC = () => {
     ],
   });
 
-  const onRefresh = useCallback((data: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
-    if(metadata.manualRefresh ) {
-      originalRefresh();
-    } else {
-      landingPage.refetch();
-    }
-  }, [landingPage]);
+  const onRefresh = useCallback(
+    (_: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
+      if (metadata.manualRefresh) {
+        originalRefresh();
+      } else {
+        landingPage.refetch();
+      }
+    },
+    [landingPage],
+  );
 
   useCustomRefresh(onRefresh);
 

@@ -4,7 +4,7 @@ import { PortableText } from "@portabletext/react";
 import { PortableTextObject } from "@kontent-ai/rich-text-resolver";
 
 type BlogListItemProps = Readonly<{
-  imageSrc: string;
+  imageSrc?: string;
   title: string;
   description: PortableTextObject[];
   readMoreLink: string;

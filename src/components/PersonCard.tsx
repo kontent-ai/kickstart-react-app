@@ -8,7 +8,7 @@ const PersonCard: React.FC<{
   suffix?: string;
   jobTitle: string;
   image: {
-    url: string;
+    url?: string;
     alt: string;
   };
 }> = ({ prefix, firstName, lastName, suffix, jobTitle, image }) => {
