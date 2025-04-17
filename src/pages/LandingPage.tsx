@@ -20,8 +20,6 @@ const LandingPage: FC = () => {
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
 
-  console.log("isPreview", isPreview);
-
   const [landingPage] = useSuspenseQueries({
     queries: [
       {

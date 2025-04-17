@@ -1,8 +1,6 @@
 import { createDeliveryClient } from "@kontent-ai/delivery-sdk";
 import { CoreClientTypes } from "../model";
 
-console.log("createClient", import.meta.env.VITE_KONTENT_URL);
-
 const url = !import.meta.env.VITE_KONTENT_URL ? "kontent.ai" : import.meta.env.VITE_KONTENT_URL;
 
 export const createClient = (environmentId: string, previewApiKey: string, usePreviewMode: boolean) =>

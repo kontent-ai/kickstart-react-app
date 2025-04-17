@@ -75,11 +75,9 @@ export const useLivePreview = (callback: (data: IUpdateMessageData) => void): vo
 
   useEffect(() => {
     if (smartLink) {
-      console.log("useLivePreview", smartLink);
       smartLink.on(KontentSmartLinkEvent.Update, callback);
 
       return () => {
-        console.log("destroy useLivePreview", smartLink);
         smartLink.off(KontentSmartLinkEvent.Update, callback);
       };
     }

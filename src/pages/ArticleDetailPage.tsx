@@ -95,7 +95,6 @@ const ArticleDetailPage: React.FC = () => {
         .depthParameter(1)
         .toPromise()
         .then((res) => {
-          console.log("res", res.data.items);
           return res.data.items[0];
         })
         .catch((err) => {
