@@ -1,7 +1,6 @@
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import LandingPage from "./pages/LandingPage.tsx";
-import { AppContextComponent } from "./context/AppContext.tsx";
 import { createBrowserRouter, RouteObject, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import BlogPage from "./pages/BlogPage.tsx";
@@ -17,7 +16,6 @@ import PersonDetailPage from "./pages/PersonDetailPage.tsx";
 import Auth0ProviderWithRedirect from "./components/auth/AuthProviderWithRedirect.tsx";
 import { ErrorBoundary } from "react-error-boundary";
 import Loader from "./components/Loader.tsx";
-import { SmartLinkContextComponent } from "./context/SmartLinkContext.tsx";
 
 const queryClient = new QueryClient();
 
@@ -103,11 +101,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <AppContextComponent>
-        <SmartLinkContextComponent>
-          <RouterProvider router={router} />
-        </SmartLinkContextComponent>
-      </AppContextComponent>
+      <RouterProvider router={router} />
     </QueryClientProvider>
   </StrictMode>,
 );

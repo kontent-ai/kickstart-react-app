@@ -49,7 +49,7 @@ const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent }) => {
               title={item.elements.headline.value}
               description={item.elements.subheadline.value}
               buttonText={item.elements.button_label.value}
-              buttonHref={item.elements.button_link.value[0] ?? "https://place-hold.it/800x600"}
+              buttonHref={item.elements.button_link.value[0] ?? ""}
               imageSrc={item.elements.image.value[0]?.url ?? ""}
               imageAlt={item.elements.image.value[0]?.description ?? "alt"}
               imagePosition={item.elements.image_position.value[0]?.codename ?? "left"}

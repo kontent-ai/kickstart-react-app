@@ -1,5 +1,10 @@
 import { createContext, FC, PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
-import KontentSmartLink, { IRefreshMessageData, IRefreshMessageMetadata, IUpdateMessageData, KontentSmartLinkEvent } from "@kontent-ai/smart-link";
+import KontentSmartLink, {
+  IRefreshMessageData,
+  IRefreshMessageMetadata,
+  IUpdateMessageData,
+  KontentSmartLinkEvent,
+} from "@kontent-ai/smart-link";
 import { useAppContext } from "./AppContext";
 
 interface SmartLinkContextValue {
@@ -27,7 +32,7 @@ export const SmartLinkContextComponent: FC<PropsWithChildren> = ({ children }) =
     setSmartLink(instance);
 
     return () => {
-      smartLink?.destroy();
+      // instance?.destroy();
       setSmartLink(null);
     };
   }, [environmentId, smartLink]);
