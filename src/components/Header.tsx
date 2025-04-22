@@ -42,7 +42,12 @@ const Header: React.FC = () => {
                   />
                 }
                 isSelected={lang === "es-ES"}
-                onClick={() => setSearchParams({ lang: "es-ES" })}
+                onClick={() => {
+                  setSearchParams(prev => {
+                    prev.set("lang", "es-ES");
+                    return prev;
+                  });
+                }}
               />
             </div>
           )}
