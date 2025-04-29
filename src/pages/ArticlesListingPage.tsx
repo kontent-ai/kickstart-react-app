@@ -11,6 +11,9 @@ import { useSearchParams } from "react-router-dom";
 import ImageWithTag from "../components/ImageWithTag";
 import Tags from "../components/Tags";
 import ButtonLink from "../components/ButtonLink";
+import { PortableText } from "@portabletext/react";
+import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
+import { defaultPortableRichTextResolvers, isEmptyRichText } from "../utils/richtext";
 
 type FeaturedArticleProps = Readonly<{
   image: {
@@ -196,6 +199,16 @@ const ArticlesListingPage: FC = () => {
           </div>
         )}
       </PageSection>
+      {!isEmptyRichText(articlesPage.data.item.elements.body.value) && (
+        <PageSection color="bg-white">
+          <div className="flex flex-col pt-10 mx-auto gap-6">
+            <PortableText
+              value={transformToPortableText(articlesPage.data.item.elements.body.value)}
+              components={defaultPortableRichTextResolvers}
+            />
+          </div>
+        </PageSection>
+      )}
       <PageSection color="bg-white">
         <div className="flex flex-row gap-6 pt-16">
           <Selector

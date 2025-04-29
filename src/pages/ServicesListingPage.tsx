@@ -7,6 +7,9 @@ import { Page, Service } from "../model";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import ServiceList from "../components/services/ServiceList";
 import { useSearchParams } from "react-router-dom";
+import { defaultPortableRichTextResolvers, isEmptyRichText } from "../utils/richtext";
+import { PortableText } from "@portabletext/react";
+import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 const ServicesListingPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();
   const [searchParams] = useSearchParams();
@@ -73,6 +76,16 @@ const ServicesListingPage: FC = () => {
           </div>
         </div>
       </PageSection>
+      {!isEmptyRichText(servicesPage.data.item.elements.body.value) && (
+        <PageSection color="bg-white">
+          <div className="flex flex-col pt-16 mx-auto gap-6">
+            <PortableText
+              value={transformToPortableText(servicesPage.data.item.elements.body.value)}
+              components={defaultPortableRichTextResolvers}
+            />
+          </div>
+        </PageSection>
+      )}
       <PageSection color="bg-white">
         <ServiceList
           services={services.data.map(service => ({

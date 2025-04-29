@@ -7,6 +7,9 @@ import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import TeamMemberList from "../components/team/TeamMemberList";
 import { Page, Person } from "../model/content-types";
 import { useSearchParams } from "react-router-dom";
+import { defaultPortableRichTextResolvers, isEmptyRichText } from "../utils/richtext";
+import { PortableText } from "@portabletext/react";
+import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 
 const OurTeamPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();
@@ -74,6 +77,17 @@ const OurTeamPage: FC = () => {
           </div>
         </div>
       </PageSection>
+
+      {!isEmptyRichText(teamPage.data.item.elements.body.value) && (
+        <PageSection color="bg-white">
+          <div className="flex flex-col pt-10 mx-auto gap-6">
+            <PortableText
+              value={transformToPortableText(teamPage.data.item.elements.body.value)}
+              components={defaultPortableRichTextResolvers}
+            />
+          </div>
+        </PageSection>
+      )}
       <PageSection color="bg-white">
         <div className="pb-[160px] pt-[104px]">
           <TeamMemberList

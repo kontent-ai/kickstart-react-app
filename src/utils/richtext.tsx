@@ -3,8 +3,8 @@ import Link from "../components/Link";
 
 export const defaultPortableRichTextResolvers = {
   list: {
-    bullet: ({ children }) => <ul className="text-xl text-gray-700 list-disc ml-8 max-w-[728px]">{children}</ul>,
-    number: ({ children }) => <ol className="text-xl text-gray-700 list-decimal ml-8 max-w-[728px]">{children}</ol>,
+    bullet: ({ children }) => <ul className="text-xl text-gray-700 list-disc ml-8 ">{children}</ul>,
+    number: ({ children }) => <ol className="text-xl text-gray-700 list-decimal ml-8">{children}</ol>,
   },
   types: {
     image: ({ value }) => (
@@ -34,3 +34,5 @@ export const defaultPortableRichTextResolvers = {
     normal: ({ children }) => <p className="text-body-lg text-body-color w-full">{children}</p>,
   },
 } as const satisfies PortableTextReactResolvers;
+
+export const isEmptyRichText = (value: string) => value === "<p><br></p>";

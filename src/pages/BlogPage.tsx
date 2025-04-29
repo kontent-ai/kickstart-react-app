@@ -1,36 +1,56 @@
 import React from "react";
 import PageSection from "../components/PageSection";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQueries } from "@tanstack/react-query";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import BlogList from "../components/blog/BlogList";
-import { BlogPost } from "../model";
+import { BlogPost, Page } from "../model";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { useSearchParams } from "react-router-dom";
+import { PortableText } from "@portabletext/react";
+import { defaultPortableRichTextResolvers, isEmptyRichText } from "../utils/richtext";
 
 const BlogPage: React.FC = () => {
   const { environmentId, apiKey } = useAppContext();
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
 
-  const blogs = useQuery({
-    queryKey: ["blog_posts"],
-    queryFn: () =>
-      createClient(environmentId, apiKey, isPreview)
-        .items<BlogPost>()
-        .type("blog_post")
-        .toPromise()
-        .then(res => res.data.items)
-        .catch((err) => {
-          if (err instanceof DeliveryError) {
-            return [];
-          }
-          throw err;
-        }),
+  const [blogPage, blogs] = useSuspenseQueries({
+    queries: [
+      {
+        queryKey: ["blog_page"],
+        queryFn: () =>
+          createClient(environmentId, apiKey, isPreview)
+            .item<Page>("blog")
+            .toPromise()
+            .then(res => res.data)
+            .catch((err) => {
+              if (err instanceof DeliveryError) {
+                return null;
+              }
+              throw err;
+            }),
+      },
+      {
+        queryKey: ["blog_posts"],
+        queryFn: () =>
+          createClient(environmentId, apiKey, isPreview)
+            .items<BlogPost>()
+            .type("blog_post")
+            .toPromise()
+            .then(res => res.data.items)
+            .catch((err) => {
+              if (err instanceof DeliveryError) {
+                return [];
+              }
+              throw err;
+            }),
+      },
+    ],
   });
 
-  if (!blogs.data) {
+  if (!blogPage.data || !blogs.data) {
     return <div className="flex-grow" />;
   }
 
@@ -45,8 +65,18 @@ const BlogPage: React.FC = () => {
             the healthcare industry.
           </p>
         </div>
-      </PageSection>
-      <div className="pt-[98px]">
+      </PageSection>=
+      {!isEmptyRichText(blogPage.data.item.elements.body.value) && (
+        <PageSection color="bg-white">
+          <div className="flex flex-col pt-16 mx-auto gap-6">
+            <PortableText
+              value={transformToPortableText(blogPage.data.item.elements.body.value)}
+              components={defaultPortableRichTextResolvers}
+            />
+          </div>
+        </PageSection>
+      )}
+      <div className="pt-[72px]">
         <BlogList
           blogs={blogs.data.map(b => ({
             imageSrc: b.elements.image?.value[0]?.url,
