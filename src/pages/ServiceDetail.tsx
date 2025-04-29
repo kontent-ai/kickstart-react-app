@@ -61,6 +61,7 @@ const ServiceDetail: React.FC = () => {
     queryFn: () =>
       createClient(environmentId, apiKey, isPreview)
         .items<Service>()
+        .type("service")
         .equalsFilter("elements.url_slug", slug ?? "")
         .toPromise()
         .then((res) => res.data.items[0])

@@ -72,6 +72,7 @@ const ArticleDetailPage: React.FC = () => {
     queryFn: () =>
       createClient(environmentId, apiKey, isPreview)
         .items<Article>()
+        .type("article")
         .equalsFilter("elements.url_slug", slug ?? "")
         .toPromise()
         .then((res) => res.data.items[0])
@@ -90,6 +91,7 @@ const ArticleDetailPage: React.FC = () => {
     queryFn: () =>
       createClient(environmentId, apiKey, isPreview)
         .items<Article>()
+        .type("article")
         .equalsFilter("system.codename", articleCodename ?? "")
         .languageParameter((lang ?? "default") as LanguageCodenames)
         .depthParameter(1)
