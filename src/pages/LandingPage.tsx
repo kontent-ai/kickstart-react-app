@@ -68,13 +68,14 @@ const LandingPage: FC = () => {
             headline: landingPage.data.elements.headline,
             subheadline: landingPage.data.elements.subheadline,
             heroImage: landingPage.data.elements.hero_image,
+            itemId: landingPage.data.system.id
           }}
         />
       </PageSection>
       <PageSection color="bg-white">
-        <PageContent body={landingPage.data.elements.body_copy!} />
+        <PageContent body={landingPage.data.elements.body_copy!} itemId={landingPage.data.system.id}/>
       </PageSection>
-      <FeaturedContent featuredContent={landingPage.data.elements.featured_content!}></FeaturedContent>
+      <FeaturedContent featuredContent={landingPage.data.elements.featured_content!} parentId={landingPage.data.system.id}></FeaturedContent>
     </div>
   );
 };

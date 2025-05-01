@@ -10,6 +10,10 @@ import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
 import { IRefreshMessageData, IRefreshMessageMetadata } from "@kontent-ai/smart-link";
 import { useCustomRefresh } from "../context/SmartLinkContext";
+import {
+  createElementSmartLink,
+  createItemSmartLink,
+} from "../utils/smartlink";
 
 const BlogDetail: React.FC = () => {
   const { environmentId, apiKey } = useAppContext();
@@ -62,7 +66,10 @@ const BlogDetail: React.FC = () => {
       <div className="flex flex-row items-center pt-[104px] pb-[160px]">
         <div className="flex flex-col flex-1 gap-6 ">
           {createTag("Blog Post")}
-          <h1 className="text-heading-1 text-heading-1-color mb-6 max-w-[12ch]">
+          <h1 className="text-heading-1 text-heading-1-color mb-6 max-w-[12ch]"
+          {...createItemSmartLink(blogPost.data.system.id)}
+          {...createElementSmartLink("title")}
+          >
             {blogPost.data.elements.title?.value}
           </h1>
         </div>
@@ -76,7 +83,9 @@ const BlogDetail: React.FC = () => {
           />
         </div>
       </div>
-      <div className="rich-text-body max-w-3xl mx-auto flex flex-col gap-5">
+      <div className="rich-text-body max-w-3xl mx-auto flex flex-col gap-5"
+      {...createItemSmartLink(blogPost.data.system.id)}
+      {...createElementSmartLink("body")}>
         <PortableText
           value={transformToPortableText(blogPost.data.elements.body?.value)}
           components={defaultPortableRichTextResolvers}

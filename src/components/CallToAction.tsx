@@ -1,5 +1,6 @@
 import React from "react";
 import ButtonLink from "./ButtonLink";
+import { createItemSmartLink, createElementSmartLink, createComponentSmartLink } from "../utils/smartlink";
 
 type CallToActionProps = Readonly<{
   title: string;
@@ -10,6 +11,8 @@ type CallToActionProps = Readonly<{
   imageAlt: string;
   imagePosition?: "left" | "right" | "center";
   style?: "burgundy" | "default";
+  parentId: string;
+  componentId: string | null;
 }>;
 
 const CallToAction: React.FC<CallToActionProps> = ({
@@ -21,6 +24,8 @@ const CallToAction: React.FC<CallToActionProps> = ({
   imageAlt,
   imagePosition = "left",
   style = "default",
+  parentId,
+  componentId,
 }) => {
   const calculateLayout = (imagePosition: "left" | "right" | "center") => {
     if (imagePosition === "left") {
@@ -48,9 +53,19 @@ const CallToAction: React.FC<CallToActionProps> = ({
       </div>
 
       <div className={`flex lg:flex-1 flex-col gap-5 ${imagePosition === "center" ? "items-center" : ""}`}>
-        <h2 className={`flex w-fit text-6xl font-bold text-heading-2-color`}>{title}</h2>
+        <h2 className={`flex w-fit text-6xl font-bold text-heading-2-color`}
+        {...createItemSmartLink(parentId)}
+        {...createElementSmartLink("headline")}
+        {...(componentId && createComponentSmartLink(componentId))}
+        >
+          {title}
+        </h2>
 
-        <p className={`flex text-xl text-body-color line-clamp-5`}>
+        <p className={`flex text-xl text-body-color line-clamp-5`}
+        {...createItemSmartLink(parentId)}
+        {...createElementSmartLink("subheadline")}
+        {...(componentId && createComponentSmartLink(componentId))}
+        >
           {description}
         </p>
 

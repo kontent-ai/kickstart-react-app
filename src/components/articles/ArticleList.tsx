@@ -35,7 +35,7 @@ const ArticleList: React.FC<ArticleListProps> = ({ articles }) => {
                   title: article.title,
                   introduction: article.introduction,
                   publishDate: article.publishDate,
-                  topics: article.topics,
+                  topics: article.topics
                 }}
                 urlSlug={article.urlSlug}
               />

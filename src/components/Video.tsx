@@ -1,15 +1,20 @@
 import { FC } from "react";
 import { Video as VideoType } from "../model";
 import { Replace } from "../utils/types";
+import { createComponentSmartLink, createItemSmartLink } from "../utils/smartlink";
 
 type VideoProps = {
   video: Replace<VideoType, { elements: Partial<VideoType["elements"]> }>;
+  parentId: string;
+  componentId: string | null;
 };
 
-const Video: FC<VideoProps> = ({ video }) => {
+const Video: FC<VideoProps> = ({ video, parentId, componentId }) => {
   return (
     <div className="flex flex-col items-center">
-      <h2 className="text-azure text-[40px] md:text-[64px] leading-[54px] w-2/4 text-center">
+      <h2 className="text-azure text-[40px] md:text-[64px] leading-[54px] w-2/4 text-center"
+      {...createItemSmartLink(parentId)}
+      {...(componentId && createComponentSmartLink(componentId))}>
         {video.elements.headline?.value}
       </h2>
       <p className="w-4/6 text-center text-xl pt-6 text-gray">
