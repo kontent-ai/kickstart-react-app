@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { createElementSmartLink, createItemSmartLink } from "../utils/smartlink";
 
 type TagProps = Readonly<{
   text: string;
@@ -18,14 +19,17 @@ type TagsProps = Readonly<{
   tags: ReadonlyArray<string>;
   orientation?: "horizontal" | "vertical";
   className?: string;
+  itemId?: string;
+  elementCodename?: string;
 }>;
 
-const Tags: FC<TagsProps> = ({ tags, orientation = "horizontal", className = "" }) => (
+const Tags: FC<TagsProps> = ({ tags, orientation = "horizontal", className = "", itemId, elementCodename, }) => (
   <div
     className={`flex gap-2 justify-center lg:justify-normal ${
       orientation === "vertical" ? "flex-col" : ""
     } ${className}`}
-  >
+    {...createItemSmartLink(itemId)}
+    {...elementCodename && createElementSmartLink(elementCodename)}>
     {tags.map(tag => <Tag key={tag} text={tag} />)}
   </div>
 );

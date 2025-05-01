@@ -16,6 +16,7 @@ import ArticleList from "../components/articles/ArticleList";
 import { createPreviewLink } from "../utils/link";
 import { useCustomRefresh } from "../context/SmartLinkContext";
 import { IRefreshMessageData, IRefreshMessageMetadata } from "@kontent-ai/smart-link";
+import { createElementSmartLink, createItemSmartLink } from "../utils/smartlink";
 
 const HeroImageAuthorCard: React.FC<{
   prefix?: string;
@@ -146,7 +147,10 @@ const ArticleDetailPage: React.FC = () => {
             <div className="w-fit text-xs text-body-color border tracking-wider font-[700] border-tag-border-color px-4 py-2 rounded-lg uppercase">
               {article.system.language === "es-ES" ? "Artículo" : "Article"}
             </div>
-            <h1 className="text-heading-1 leading-[84%] text-heading-1-color">
+            <h1 className="text-heading-1 leading-[84%] text-heading-1-color"
+            {...createItemSmartLink(article.system.id)}
+            {...createElementSmartLink("title")}
+            >
               {article.elements.title.value}
             </h1>
             {article.elements.author?.linkedItems[0] && (
@@ -172,6 +176,8 @@ const ArticleDetailPage: React.FC = () => {
                 tags={article.elements.topics.value.map(topic => topic.name)}
                 orientation="horizontal"
                 className="mt-4"
+                itemId={article.system.id}
+                elementCodename="topics"
               />
             )}
           </div>
@@ -189,10 +195,16 @@ const ArticleDetailPage: React.FC = () => {
 
       <PageSection color="bg-white">
         <div className="flex flex-col gap-12 mx-auto items-center max-w-fit">
-          <p className="text-body-xl text-body-color font-[600] w-[728px] max-w-[728px]">
+          <p className="text-body-xl text-body-color font-[600] w-[728px] max-w-[728px]"
+          {...createItemSmartLink(article.system.id)}
+          {...createElementSmartLink("introduction")}
+          >
             {article.elements.introduction.value}
           </p>
-          <div className="rich-text-body flex mx-auto flex-col gap-5 items-center max-w-[728px]">
+          <div className="rich-text-body flex mx-auto flex-col gap-5 items-center max-w-[728px]"
+          {...createItemSmartLink(article.system.id)}
+          {...createElementSmartLink("body_copy")}
+          >
             <PortableText
               value={transformToPortableText(article.elements.body_copy?.value)}
               components={defaultPortableRichTextResolvers}

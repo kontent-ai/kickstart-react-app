@@ -2,6 +2,7 @@ import React from "react";
 import FeaturedComponentBase from "./FeaturedComponentBase";
 import Tags from "../Tags";
 import Link from "../Link";
+import { createItemSmartLink } from "../../utils/smartlink";
 
 type FeaturedArticleProps = Readonly<{
   article: Readonly<{
@@ -13,6 +14,7 @@ type FeaturedArticleProps = Readonly<{
     publishDate: string;
     introduction: string;
     topics: ReadonlyArray<string>;
+    itemId?: string;
   }>;
   displayFeatured?: boolean;
   urlSlug: string;
@@ -29,7 +31,9 @@ const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article, displayFeatu
       displayFeatured={displayFeatured}
     >
       <>
-        <div>
+        <div
+        {...createItemSmartLink(article.itemId)}
+        >
           <h2 className="text-center lg:text-left text-heading-2 font-semibold text-burgundy">
             {article.title}
           </h2>

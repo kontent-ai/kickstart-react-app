@@ -26,6 +26,7 @@ const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent }) => {
                 publishDate: item.elements.publish_date.value ?? "",
                 introduction: item.elements.introduction.value,
                 topics: item.elements.topics.value.map(t => t.name),
+                itemId: item.system.id,
               }}
               displayFeatured={true}
               urlSlug={`articles/${item.elements.url_slug.value}`}
@@ -54,6 +55,8 @@ const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent }) => {
               imageAlt={item.elements.image.value[0]?.description ?? "alt"}
               imagePosition={item.elements.image_position.value[0]?.codename ?? "left"}
               style="burgundy"
+              parentId={item.system.id}
+              componentId={null}
             />
           </div>
         </PageSection>

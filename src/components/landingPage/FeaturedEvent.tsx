@@ -8,6 +8,7 @@ import { Replace } from "../../utils/types";
 import { PortableText } from "@kontent-ai/rich-text-resolver/utils/react";
 import Tags from "../Tags";
 import Link from "../Link";
+import { createItemSmartLink } from "../../utils/smartlink";
 
 type FeaturedEventProps = Readonly<{
   event: Replace<Event, { elements: Partial<Event["elements"]> }>;
@@ -27,7 +28,9 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
         displayFeatured={true}
       >
         <>
-          <div>
+          <div
+          {...createItemSmartLink(event.system.id)}
+          >
             <h2 className="text-center lg:text-left text-5xl font-semibold text-burgundy">
               {event.elements.name?.value}
             </h2>
