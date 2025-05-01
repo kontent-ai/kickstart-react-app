@@ -5,12 +5,14 @@ import FeaturedArticle from "./FeaturedArticle";
 import FeaturedEvent from "./FeaturedEvent";
 import Divider from "../Divider";
 import CallToAction from "../CallToAction";
+import { createElementSmartLink, createFixedAddSmartLink, createItemSmartLink } from "../../utils/smartlink";
 
 type FeaturedContentProps = {
   featuredContent: LandingPage["elements"]["featured_content"];
+  parentId: string;
 };
 
-const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent }) => {
+const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent, parentId }) => {
   const linkedItems = featuredContent.linkedItems.map(
     (item) => {
       if (isArticle(item)) {
@@ -67,7 +69,13 @@ const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent }) => {
   );
 
   return (
-    linkedItems.map(item => item)
+    <div
+    {...createItemSmartLink(parentId)}
+    {...createElementSmartLink("featured_content")}
+    {...createFixedAddSmartLink("end", "bottom")}
+    >
+      {linkedItems.map(item => item)}
+    </div>
   );
 };
 

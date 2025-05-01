@@ -75,7 +75,7 @@ const LandingPage: FC = () => {
       <PageSection color="bg-white">
         <PageContent body={landingPage.data.elements.body_copy!} itemId={landingPage.data.system.id}/>
       </PageSection>
-      <FeaturedContent featuredContent={landingPage.data.elements.featured_content!}></FeaturedContent>
+      <FeaturedContent featuredContent={landingPage.data.elements.featured_content!} parentId={landingPage.data.system.id}></FeaturedContent>
     </div>
   );
 };
