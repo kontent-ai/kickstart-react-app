@@ -3,7 +3,7 @@ import React from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
-import { Person } from "../model";
+import { LanguageCodenames, Person } from "../model";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import { PortableText } from "@portabletext/react";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
@@ -16,11 +16,14 @@ const PersonDetailPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
 
+  const lang = searchParams.get("lang");
+
   const personData = useQuery({
     queryKey: [`person-detail_${slug}`],
     queryFn: () =>
       createClient(environmentId, apiKey, isPreview)
         .item<Person>(slug ?? "")
+        .languageParameter((lang ?? "default") as LanguageCodenames)
         .toPromise()
         .then(res => res.data.item)
         .catch((err) => {

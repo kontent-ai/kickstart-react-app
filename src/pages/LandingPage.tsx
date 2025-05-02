@@ -4,7 +4,7 @@ import HeroImage from "../components/HeroImage";
 import PageContent from "../components/PageContent";
 import PageSection from "../components/PageSection";
 import "../index.css";
-import { type LandingPage } from "../model";
+import { LanguageCodenames, type LandingPage } from "../model";
 import { createClient } from "../utils/client";
 import { useSuspenseQueries } from "@tanstack/react-query";
 import { FC, useCallback } from "react";
@@ -20,6 +20,8 @@ const LandingPage: FC = () => {
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
 
+  const lang = searchParams.get("lang");
+
   const [landingPage] = useSuspenseQueries({
     queries: [
       {
@@ -29,6 +31,7 @@ const LandingPage: FC = () => {
             .items()
             .type("landing_page")
             .limitParameter(1)
+            .languageParameter((lang ?? "default") as LanguageCodenames)
             .toPromise()
             .then(res =>
               res.data.items[0] as Replace<LandingPage, { elements: Partial<LandingPage["elements"]> }> ?? null

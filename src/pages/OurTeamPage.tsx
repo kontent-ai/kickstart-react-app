@@ -10,11 +10,14 @@ import { useSearchParams } from "react-router-dom";
 import { defaultPortableRichTextResolvers, isEmptyRichText } from "../utils/richtext";
 import { PortableText } from "@portabletext/react";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
+import { LanguageCodenames } from "../model";
 
 const OurTeamPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
+
+  const lang = searchParams.get("lang");
 
   const [teamPage, teamMembers] = useSuspenseQueries({
     queries: [
@@ -23,6 +26,7 @@ const OurTeamPage: FC = () => {
         queryFn: () =>
           createClient(environmentId, apiKey, isPreview)
             .item<Page>("our_team")
+            .languageParameter((lang ?? "default") as LanguageCodenames)
             .toPromise()
             .then(res => res.data)
             .catch((err) => {
@@ -38,6 +42,7 @@ const OurTeamPage: FC = () => {
           createClient(environmentId, apiKey, isPreview)
             .items<Person>()
             .type("person")
+            .languageParameter((lang ?? "default") as LanguageCodenames)
             .toPromise()
             .then(res => res.data.items)
             .catch((err) => {

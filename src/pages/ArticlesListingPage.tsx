@@ -3,7 +3,7 @@ import PageSection from "../components/PageSection";
 import { useAppContext } from "../context/AppContext";
 import { useSuspenseQueries } from "@tanstack/react-query";
 import { createClient } from "../utils/client";
-import { Page, Article, isArticleType, isGeneralHealthcareTopics } from "../model";
+import { Page, Article, isArticleType, isGeneralHealthcareTopics, LanguageCodenames } from "../model";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import ArticleList from "../components/articles/ArticleList";
 import Selector, { SelectorOption } from "../components/Selector";
@@ -65,6 +65,8 @@ const ArticlesListingPage: FC = () => {
   const articleTopicCodename = searchParams.get("topic");
   const isPreview = searchParams.get("preview") === "true";
 
+  const lang = searchParams.get("lang");
+
   const [articlesPage, articlesTypes, articlesTopics, articles] = useSuspenseQueries({
     queries: [
       {
@@ -72,6 +74,7 @@ const ArticlesListingPage: FC = () => {
         queryFn: () =>
           createClient(environmentId, apiKey, isPreview)
             .item<Page>("research")
+            .languageParameter((lang ?? "default") as LanguageCodenames)
             .toPromise()
             .then(res => res.data)
             .catch((err) => {

@@ -5,7 +5,7 @@ import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import BlogList from "../components/blog/BlogList";
-import { BlogPost, Page } from "../model";
+import { BlogPost, LanguageCodenames, Page } from "../model";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { useSearchParams } from "react-router-dom";
 import { PortableText } from "@portabletext/react";
@@ -16,6 +16,8 @@ const BlogPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
 
+  const lang = searchParams.get("lang");
+
   const [blogPage, blogs] = useSuspenseQueries({
     queries: [
       {
@@ -23,6 +25,7 @@ const BlogPage: React.FC = () => {
         queryFn: () =>
           createClient(environmentId, apiKey, isPreview)
             .item<Page>("blog")
+            .languageParameter((lang ?? "default") as LanguageCodenames)
             .toPromise()
             .then(res => res.data)
             .catch((err) => {
@@ -38,6 +41,7 @@ const BlogPage: React.FC = () => {
           createClient(environmentId, apiKey, isPreview)
             .items<BlogPost>()
             .type("blog_post")
+            .languageParameter((lang ?? "default") as LanguageCodenames)
             .toPromise()
             .then(res => res.data.items)
             .catch((err) => {
