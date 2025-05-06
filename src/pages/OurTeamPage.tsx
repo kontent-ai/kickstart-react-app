@@ -1,7 +1,6 @@
-import { FC } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import PageSection from "../components/PageSection";
 import { useAppContext } from "../context/AppContext";
-import { useSuspenseQueries } from "@tanstack/react-query";
 import { createClient } from "../utils/client";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import TeamMemberList from "../components/team/TeamMemberList";
@@ -11,51 +10,119 @@ import { defaultPortableRichTextResolvers, isEmptyRichText } from "../utils/rich
 import { PortableText } from "@portabletext/react";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { LanguageCodenames } from "../model";
+import { IUpdateMessageData, applyUpdateOnItemAndLoadLinkedItems } from "@kontent-ai/smart-link";
+import { useLivePreview } from "../context/SmartLinkContext";
+import { createElementSmartLink, createItemSmartLink } from "../utils/smartlink";
 
-const OurTeamPage: FC = () => {
+const useTeamPage = (isPreview: boolean, lang: string | null) => {
   const { environmentId, apiKey } = useAppContext();
+  const [page, setPage] = useState<Page | null>(null);
+
+  const handleLiveUpdate = useCallback((data: IUpdateMessageData) => {
+    if (page && data.item.codename === page.system.codename) {
+      // Use applyUpdateOnItemAndLoadLinkedItems to ensure all linked content is updated
+      applyUpdateOnItemAndLoadLinkedItems(
+        page,
+        data,
+        (codenamesToFetch) => createClient(environmentId, apiKey, isPreview)
+          .items()
+          .inFilter("system.codename", [...codenamesToFetch])
+          .toPromise()
+          .then(res => res.data.items)
+      ).then((updatedItem) => {
+        if (updatedItem) {
+          setPage(updatedItem as Page);
+        }
+      });
+    }
+  }, [page, environmentId, apiKey, isPreview]);
+
+  useEffect(() => {
+    createClient(environmentId, apiKey, isPreview)
+      .item<Page>("our_team")
+      .languageParameter((lang ?? "default") as LanguageCodenames)
+      .toPromise()
+      .then(res => {
+        setPage(res.data.item);
+      })
+      .catch((err) => {
+        if (err instanceof DeliveryError) {
+          setPage(null);
+        } else {
+          throw err;
+        }
+      });
+  }, [environmentId, apiKey, isPreview, lang]);
+
+  useLivePreview(handleLiveUpdate);
+
+  return page;
+};
+
+const useTeamMembers = (isPreview: boolean, lang: string | null) => {
+  const { environmentId, apiKey } = useAppContext();
+  const [teamMembers, setTeamMembers] = useState<Person[]>([]);
+
+  const handleLiveUpdate = useCallback((data: IUpdateMessageData) => {
+    // Update the specific team member in the list
+    setTeamMembers(prevMembers => {
+      return prevMembers.map(member => {
+        if (member.system.codename === data.item.codename) {
+          // Apply the update and handle the Promise
+          applyUpdateOnItemAndLoadLinkedItems(
+            member,
+            data,
+            (codenamesToFetch) => createClient(environmentId, apiKey, isPreview)
+              .items()
+              .inFilter("system.codename", [...codenamesToFetch])
+              .toPromise()
+              .then(res => res.data.items)
+          ).then((updatedItem) => {
+            if (updatedItem) {
+              setTeamMembers(prev => prev.map(m => 
+                m.system.codename === data.item.codename ? updatedItem as Person : m
+              ));
+            }
+          });
+          return member; // Return the current member while waiting for the update
+        }
+        return member;
+      });
+    });
+  }, [environmentId, apiKey, isPreview]);
+
+  useEffect(() => {
+    createClient(environmentId, apiKey, isPreview)
+      .items<Person>()
+      .type("person")
+      .languageParameter((lang ?? "default") as LanguageCodenames)
+      .toPromise()
+      .then(res => {
+        setTeamMembers(res.data.items);
+      })
+      .catch((err) => {
+        if (err instanceof DeliveryError) {
+          setTeamMembers([]);
+        } else {
+          throw err;
+        }
+      });
+  }, [environmentId, apiKey, isPreview, lang]);
+
+  useLivePreview(handleLiveUpdate);
+
+  return teamMembers;
+};
+
+const OurTeamPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
-
   const lang = searchParams.get("lang");
 
-  const [teamPage, teamMembers] = useSuspenseQueries({
-    queries: [
-      {
-        queryKey: ["team_page"],
-        queryFn: () =>
-          createClient(environmentId, apiKey, isPreview)
-            .item<Page>("our_team")
-            .languageParameter((lang ?? "default") as LanguageCodenames)
-            .toPromise()
-            .then(res => res.data)
-            .catch((err) => {
-              if (err instanceof DeliveryError) {
-                return null;
-              }
-              throw err;
-            }),
-      },
-      {
-        queryKey: ["team_members"],
-        queryFn: () =>
-          createClient(environmentId, apiKey, isPreview)
-            .items<Person>()
-            .type("person")
-            .languageParameter((lang ?? "default") as LanguageCodenames)
-            .toPromise()
-            .then(res => res.data.items)
-            .catch((err) => {
-              if (err instanceof DeliveryError) {
-                return null;
-              }
-              throw err;
-            }),
-      },
-    ],
-  });
+  const teamPage = useTeamPage(isPreview, lang);
+  const teamMembers = useTeamMembers(isPreview, lang);
 
-  if (!teamPage.data || !teamMembers.data) {
+  if (!teamPage || !teamMembers) {
     return <div className="flex-grow" />;
   }
 
@@ -64,39 +131,49 @@ const OurTeamPage: FC = () => {
       <PageSection color="bg-creme">
         <div className="flex flex-col-reverse gap-16 lg:gap-0 lg:flex-row items-center py-16 lg:py-0 lg:pt-[104px] lg:pb-[160px]">
           <div className="flex flex-col flex-1 gap-6">
-            <h1 className="text-heading-1 text-heading-1-color">
-              {teamPage.data.item.elements.headline.value}
+            <h1 className="text-heading-1 text-heading-1-color"
+            {...createItemSmartLink(teamPage.system.id)}
+            {...createElementSmartLink("headline")}
+            >
+              {teamPage.elements.headline.value}
             </h1>
-            <p className="text-body-lg text-body-color">
-              {teamPage.data.item.elements.subheadline.value}
+            <p className="text-body-lg text-body-color"
+            {...createItemSmartLink(teamPage.system.id)}
+            {...createElementSmartLink("subheadline")}
+            >
+              {teamPage.elements.subheadline.value}
             </p>
           </div>
           <div className="flex flex-col flex-1">
             <img
               width={670}
               height={440}
-              src={teamPage.data.item.elements.hero_image?.value[0]?.url}
-              alt={teamPage.data.item.elements.hero_image?.value[0]?.description ?? ""}
+              src={teamPage.elements.hero_image?.value[0]?.url}
+              alt={teamPage.elements.hero_image?.value[0]?.description ?? ""}
               className="rounded-lg"
             />
           </div>
         </div>
       </PageSection>
 
-      {!isEmptyRichText(teamPage.data.item.elements.body.value) && (
+      {!isEmptyRichText(teamPage.elements.body.value) && (
         <PageSection color="bg-white">
-          <div className="flex flex-col pt-10 mx-auto gap-6">
+          <div className="flex flex-col pt-10 mx-auto gap-6"
+          {...createItemSmartLink(teamPage.system.id)}
+          {...createElementSmartLink("body")}
+          >
             <PortableText
-              value={transformToPortableText(teamPage.data.item.elements.body.value)}
+              value={transformToPortableText(teamPage.elements.body.value)}
               components={defaultPortableRichTextResolvers}
             />
           </div>
         </PageSection>
       )}
+      
       <PageSection color="bg-white">
         <div className="pb-[160px] pt-[104px]">
           <TeamMemberList
-            teamMembers={teamMembers.data.map(member => ({
+            teamMembers={teamMembers.map(member => ({
               image: {
                 url: member.elements.image.value[0]?.url ?? "",
                 alt: member.elements.image.value[0]?.description
