@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
@@ -9,41 +8,82 @@ import { PortableText } from "@portabletext/react";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
 import PageSection from "../components/PageSection";
+import { applyUpdateOnItemAndLoadLinkedItems, IUpdateMessageData } from "@kontent-ai/smart-link";
+import { useLivePreview } from "../context/SmartLinkContext";
+
+const usePersona = (slug: string | undefined, isPreview: boolean, lang: string | null) => {
+  const { environmentId, apiKey } = useAppContext();
+  const [persona, setPersona] = useState<Person | null>(null);
+
+  const handleLiveUpdate = useCallback((data: IUpdateMessageData) => {
+    if (persona && data.item.codename === persona.system.codename) {
+      // Use applyUpdateOnItemAndLoadLinkedItems to ensure all linked content is updated
+      applyUpdateOnItemAndLoadLinkedItems(
+        persona,
+        data,
+        (codenamesToFetch) => createClient(environmentId, apiKey, isPreview)
+          .items()
+          .inFilter("system.codename", [...codenamesToFetch])
+          .toPromise()
+          .then(res => res.data.items as Person[])
+      ).then((updatedItem) => {
+        if (updatedItem) {
+          setPersona(updatedItem as Person);
+        }
+      });
+    }
+  }, [persona, environmentId, apiKey, isPreview]);
+
+  useEffect(() => {
+    console.log("slug", slug);
+    if (slug) {
+      createClient(environmentId, apiKey, isPreview)
+        .item<Person>(slug ?? "")
+        .languageParameter((lang ?? "default") as LanguageCodenames)
+        .toPromise()
+        .then((res) => {
+          const item = res.data.item;
+          console.log("item", item);
+          if (item) {
+            setPersona(item);
+          } else {
+            setPersona(null);
+          }
+        })
+        .catch((err) => {
+          if (err instanceof DeliveryError) {
+            setPersona(null);
+          } else {
+            throw err;
+          }
+        });
+    }
+  }, [slug, environmentId, apiKey, isPreview, lang]);
+
+  useLivePreview(handleLiveUpdate);
+
+  return persona;
+};
 
 const PersonDetailPage: React.FC = () => {
-  const { environmentId, apiKey } = useAppContext();
   const { slug } = useParams();
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
 
   const lang = searchParams.get("lang");
 
-  const personData = useQuery({
-    queryKey: [`person-detail_${slug}`],
-    queryFn: () =>
-      createClient(environmentId, apiKey, isPreview)
-        .item<Person>(slug ?? "")
-        .languageParameter((lang ?? "default") as LanguageCodenames)
-        .toPromise()
-        .then(res => res.data.item)
-        .catch((err) => {
-          if (err instanceof DeliveryError) {
-            return null;
-          }
-          throw err;
-        }),
-  });
+  const persona = usePersona(slug, isPreview, lang);
 
-  if (!personData.data) {
+  if (!persona) {
     return <div className="flex-grow" />;
   }
 
-  const person = personData.data;
+  const person = persona;
 
   return (
     <div className="flex flex-col">
       <PageSection color="bg-azure">
-        <div className="azure-theme flex flex-col lg:flex-row justify-between items-start gap-16 pt-[104px] pb-[160px] items-center">
+        <div className="azure-theme flex flex-col lg:flex-row justify-between items-start gap-16 pt-[104px] pb-[160px]">
           <div className="flex flex-col gap-6 max-w-[728px]">
             <div className="w-fit text-body-xs text-white border border-white px-4 py-2 rounded-lg uppercase tracking-wider font-bold">
               Person

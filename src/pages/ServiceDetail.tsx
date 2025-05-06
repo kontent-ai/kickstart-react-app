@@ -1,6 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import React, { useCallback } from "react";
-import { useParams } from "react-router-dom";
+import React, { useCallback, useState, useEffect } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
 import { Service, Person, LanguageCodenames } from "../model";
@@ -10,10 +9,11 @@ import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
 import PageSection from "../components/PageSection";
 import Tags from "../components/Tags";
-import { NavLink, useSearchParams } from "react-router";
+import { NavLink } from "react-router";
 import { createPreviewLink } from "../utils/link";
-import { useCustomRefresh } from "../context/SmartLinkContext";
-import { IRefreshMessageData, IRefreshMessageMetadata } from "@kontent-ai/smart-link";
+import { IUpdateMessageData, applyUpdateOnItemAndLoadLinkedItems } from "@kontent-ai/smart-link";
+import { useLivePreview } from "../context/SmartLinkContext";
+import { createElementSmartLink, createItemSmartLink } from "../utils/smartlink";
 
 const TeamMemberCard: React.FC<{
   prefix?: string;
@@ -50,50 +50,100 @@ const TeamMemberCard: React.FC<{
   );
 };
 
-const ServiceDetail: React.FC = () => {
+const useService = (slug: string | undefined, isPreview: boolean, lang: string | null) => {
   const { environmentId, apiKey } = useAppContext();
-  const { slug } = useParams();
-  const [searchParams] = useSearchParams();
-  const isPreview = searchParams.get("preview") === "true";
+  const [service, setService] = useState<Service | null>(null);
+  const [serviceCodename, setServiceCodename] = useState<string | null>(null);
 
-  const lang = searchParams.get("lang");
+  const handleLiveUpdate = useCallback((data: IUpdateMessageData) => {
+    if (service && data.item.codename === service.system.codename) {
+      // Use applyUpdateOnItemAndLoadLinkedItems to ensure all linked content is updated
+      applyUpdateOnItemAndLoadLinkedItems(
+        service,
+        data,
+        (codenamesToFetch) => createClient(environmentId, apiKey, isPreview)
+          .items()
+          .inFilter("system.codename", [...codenamesToFetch])
+          .toPromise()
+          .then(res => res.data.items)
+      ).then((updatedItem) => {
+        if (updatedItem) {
+          setService(updatedItem as Service);
+        }
+      });
+    }
+  }, [service, environmentId, apiKey, isPreview]);
 
-  const serviceData = useQuery({
-    queryKey: [`service-detail_${slug}`],
-    queryFn: () =>
+  // First fetch to get the service codename
+  useEffect(() => {
+    if (slug) {
       createClient(environmentId, apiKey, isPreview)
         .items<Service>()
         .type("service")
-        .equalsFilter("elements.url_slug", slug ?? "")
-        .languageParameter((lang ?? "default") as LanguageCodenames)
+        .equalsFilter("elements.url_slug", slug)
         .toPromise()
-        .then((res) => res.data.items[0])
+        .then((res) => {
+          const item = res.data.items[0];
+          if (item) {
+            setServiceCodename(item.system.codename);
+          } else {
+            setServiceCodename(null);
+          }
+        })
         .catch((err) => {
           if (err instanceof DeliveryError) {
-            return null;
+            setServiceCodename(null);
+          } else {
+            throw err;
           }
-          throw err;
-        }),
-  });
+        });
+    }
+  }, [slug, environmentId, apiKey, isPreview]);
 
-  const onRefresh = useCallback(
-    (_: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
-      if (metadata.manualRefresh) {
-        originalRefresh();
-      } else {
-        serviceData.refetch();
-      }
-    },
-    [serviceData],
-  );
+  // Second fetch to get the full service data with language
+  useEffect(() => {
+    if (serviceCodename) {
+      createClient(environmentId, apiKey, isPreview)
+        .items<Service>()
+        .type("service")
+        .equalsFilter("system.codename", serviceCodename)
+        .languageParameter((lang ?? "default") as LanguageCodenames)
+        .depthParameter(1)
+        .toPromise()
+        .then((res) => {
+          const item = res.data.items[0];
+          if (item) {
+            setService(item);
+          } else {
+            setService(null);
+          }
+        })
+        .catch((err) => {
+          if (err instanceof DeliveryError) {
+            setService(null);
+          } else {
+            throw err;
+          }
+        });
+    }
+  }, [serviceCodename, environmentId, apiKey, isPreview, lang]);
 
-  useCustomRefresh(onRefresh);
+  useLivePreview(handleLiveUpdate);
 
-  if (!serviceData.data) {
+  return service;
+};
+
+const ServiceDetail: React.FC = () => {
+  const { slug } = useParams();
+  const [searchParams] = useSearchParams();
+  const isPreview = searchParams.get("preview") === "true";
+  const lang = searchParams.get("lang");
+
+  const service = useService(slug, isPreview, lang);
+
+  if (!service) {
     return <div className="flex-grow" />;
   }
-
-  const service = serviceData.data;
 
   return (
     <div className="flex flex-col gap-12">
@@ -103,10 +153,16 @@ const ServiceDetail: React.FC = () => {
             <div className="w-fit text-small text-body-color border tracking-wider font-[700] border-white px-4 py-2 rounded-lg uppercase">
               Service
             </div>
-            <h1 className="text-heading-1 text-heading-1-color max-w-[12ch]">
+            <h1 className="text-heading-1 text-heading-1-color max-w-[12ch]"
+            {...createItemSmartLink(service.system.id)}
+            {...createElementSmartLink("name")}
+            >
               {service.elements.name.value}
             </h1>
-            <p className="text-body-lg text-body-color text-[32px] leading-[130%]">
+            <p className="text-body-lg text-body-color text-[32px] leading-[130%]"
+            {...createItemSmartLink(service.system.id)}
+            {...createElementSmartLink("summary")}
+            >
               {service.elements.summary.value}
             </p>
           </div>
@@ -124,7 +180,10 @@ const ServiceDetail: React.FC = () => {
 
       <PageSection color="bg-white">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-32 max-w-6xl mx-auto">
-          <div className="rich-text-body lg:basis-2/3 flex-mx-auto flex flex-col gap-5">
+          <div className="rich-text-body lg:basis-2/3 flex-mx-auto flex flex-col gap-5"
+          {...createItemSmartLink(service.system.id)}
+          {...createElementSmartLink("description")}
+          >
             <PortableText
               value={transformToPortableText(service.elements.description?.value)}
               components={defaultPortableRichTextResolvers}
@@ -139,10 +198,12 @@ const ServiceDetail: React.FC = () => {
               <Tags
                 tags={service.elements.medical_specialties.value.map(specialty => specialty.name)}
                 orientation="vertical"
+                itemId={service.system.id}
+                elementCodename="medical_specialties"
               />
             </div>
 
-            {service.elements.team?.value.length > 0 && (
+            {service.elements.team.linkedItems.length > 0 && (
               <div className="max-w-3xl">
                 <h2 className="text-heading-2 text-burgundy mb-10">Team</h2>
                 <div className="flex flex-col gap-6">
