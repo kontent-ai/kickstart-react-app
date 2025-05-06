@@ -1,6 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import React, { useCallback } from "react";
-import { useParams } from "react-router-dom";
+import React, { useCallback, useState, useEffect } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
 import { Article, LanguageCodenames } from "../model";
@@ -10,12 +9,12 @@ import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
 import PageSection from "../components/PageSection";
 import Tags from "../components/Tags";
-import { NavLink, useSearchParams } from "react-router";
+import { NavLink } from "react-router";
 import PersonCard from "../components/PersonCard";
 import ArticleList from "../components/articles/ArticleList";
 import { createPreviewLink } from "../utils/link";
-import { useCustomRefresh } from "../context/SmartLinkContext";
-import { IRefreshMessageData, IRefreshMessageMetadata } from "@kontent-ai/smart-link";
+import { IUpdateMessageData, applyUpdateOnItemAndLoadLinkedItems } from "@kontent-ai/smart-link";
+import { useLivePreview } from "../context/SmartLinkContext";
 import { createElementSmartLink, createItemSmartLink } from "../utils/smartlink";
 
 const HeroImageAuthorCard: React.FC<{
@@ -59,74 +58,100 @@ const HeroImageAuthorCard: React.FC<{
   );
 };
 
-const ArticleDetailPage: React.FC = () => {
+const useArticle = (slug: string | undefined, isPreview: boolean, lang: string | null) => {
   const { environmentId, apiKey } = useAppContext();
-  const { slug } = useParams();
+  const [article, setArticle] = useState<Article | null>(null);
+  const [articleCodename, setArticleCodename] = useState<string | null>(null);
 
-  const [searchParams] = useSearchParams();
+  const handleLiveUpdate = useCallback((data: IUpdateMessageData) => {
+    if (article && data.item.codename === article.system.codename) {
+      // Use applyUpdateOnItemAndLoadLinkedItems to ensure all linked content is updated
+      applyUpdateOnItemAndLoadLinkedItems(
+        article,
+        data,
+        (codenamesToFetch) => createClient(environmentId, apiKey, isPreview)
+          .items()
+          .inFilter("system.codename", [...codenamesToFetch])
+          .toPromise()
+          .then(res => res.data.items)
+      ).then((updatedItem) => {
+        if (updatedItem) {
+          setArticle(updatedItem as Article);
+        }
+      });
+    }
+  }, [article, environmentId, apiKey, isPreview]);
 
-  const lang = searchParams.get("lang");
-  const isPreview = searchParams.get("preview") === "true";
-
-  const articleSystem = useQuery({
-    queryKey: [`article-detail_${slug}-system`],
-    queryFn: () =>
+  // First fetch to get the article codename
+  useEffect(() => {
+    if (slug) {
       createClient(environmentId, apiKey, isPreview)
         .items<Article>()
         .type("article")
-        .equalsFilter("elements.url_slug", slug ?? "")
+        .equalsFilter("elements.url_slug", slug)
         .toPromise()
-        .then((res) => res.data.items[0])
+        .then((res) => {
+          const item = res.data.items[0];
+          if (item) {
+            setArticleCodename(item.system.codename);
+          } else {
+            setArticleCodename(null);
+          }
+        })
         .catch((err) => {
           if (err instanceof DeliveryError) {
-            return null;
+            setArticleCodename(null);
+          } else {
+            throw err;
           }
-          throw err;
-        }),
-  });
+        });
+    }
+  }, [slug, environmentId, apiKey, isPreview]);
 
-  const articleCodename = articleSystem.data?.system.codename;
-
-  const articleData = useQuery({
-    queryKey: ["article-detail", slug, lang],
-    queryFn: () =>
+  // Second fetch to get the full article data with language
+  useEffect(() => {
+    if (articleCodename) {
       createClient(environmentId, apiKey, isPreview)
         .items<Article>()
         .type("article")
-        .equalsFilter("system.codename", articleCodename ?? "")
+        .equalsFilter("system.codename", articleCodename)
         .languageParameter((lang ?? "default") as LanguageCodenames)
         .depthParameter(1)
         .toPromise()
         .then((res) => {
-          return res.data.items[0];
+          const item = res.data.items[0];
+          if (item) {
+            setArticle(item);
+          } else {
+            setArticle(null);
+          }
         })
         .catch((err) => {
           if (err instanceof DeliveryError) {
-            return null;
+            setArticle(null);
+          } else {
+            throw err;
           }
-          throw err;
-        }),
-    enabled: !!articleCodename,
-  });
+        });
+    }
+  }, [articleCodename, environmentId, apiKey, isPreview, lang]);
 
-  const onRefresh = useCallback(
-    (_: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
-      if (metadata.manualRefresh) {
-        originalRefresh();
-      } else {
-        articleData.refetch();
-      }
-    },
-    [articleData],
-  );
+  useLivePreview(handleLiveUpdate);
 
-  useCustomRefresh(onRefresh);
+  return article;
+};
 
-  if (!articleData.data) {
+const ArticleDetailPage: React.FC = () => {
+  const { slug } = useParams();
+  const [searchParams] = useSearchParams();
+  const isPreview = searchParams.get("preview") === "true";
+  const lang = searchParams.get("lang");
+
+  const article = useArticle(slug, isPreview, lang);
+
+  if (!article) {
     return <div className="flex-grow" />;
   }
-
-  const article = articleData.data;
 
   const formattedDate = article.elements.publish_date.value
     ? new Date(article.elements.publish_date.value).toLocaleDateString(
@@ -138,6 +163,9 @@ const ArticleDetailPage: React.FC = () => {
       },
     )
     : "";
+
+  const author = article.elements.author.linkedItems[0];
+  const authorName = author ? `${author.elements.first_name?.value || ""} ${author.elements.last_name?.value || ""}`.trim() : "";
 
   return (
     <div className="flex flex-col gap-12">
@@ -153,21 +181,18 @@ const ArticleDetailPage: React.FC = () => {
             >
               {article.elements.title.value}
             </h1>
-            {article.elements.author?.linkedItems[0] && (
+            {author && (
               <HeroImageAuthorCard
-                prefix={article.elements.author.linkedItems[0].elements.prefix?.value}
-                firstName={article.elements.author.linkedItems[0].elements.first_name?.value || ""}
-                lastName={article.elements.author.linkedItems[0].elements.last_name?.value || ""}
-                suffix={article.elements.author.linkedItems[0].elements.suffixes?.value}
+                prefix={author.elements.prefix?.value}
+                firstName={author.elements.first_name?.value || ""}
+                lastName={author.elements.last_name?.value || ""}
+                suffix={author.elements.suffixes?.value}
                 publishDate={formattedDate}
                 image={{
-                  url: article.elements.author.linkedItems[0].elements.image?.value[0]?.url || "",
-                  alt: article.elements.author.linkedItems[0].elements.image?.value[0]?.description
-                    || `Photo of ${article.elements.author.linkedItems[0].elements.first_name?.value} ${
-                      article.elements.author.linkedItems[0].elements.last_name?.value
-                    }`,
+                  url: author.elements.image?.value[0]?.url || "",
+                  alt: author.elements.image?.value[0]?.description || `Photo of ${authorName}`,
                 }}
-                codename={article.elements.author.linkedItems[0].system.codename}
+                codename={author.system.codename}
                 language={article.system.language}
               />
             )}
@@ -213,7 +238,7 @@ const ArticleDetailPage: React.FC = () => {
         </div>
       </PageSection>
 
-      {article.elements.author?.linkedItems[0] && (
+      {author && (
         <PageSection color="bg-creme">
           <div className="creme-theme flex gap-24 max-w-[728px] mx-auto py-[104px] items-center ">
             <h2 className="text-heading-2 text-heading-2-color">
@@ -221,17 +246,14 @@ const ArticleDetailPage: React.FC = () => {
             </h2>
             <div className="text-body-lg text-body-color">
               <PersonCard
-                prefix={article.elements.author.linkedItems[0].elements.prefix?.value}
-                firstName={article.elements.author.linkedItems[0].elements.first_name?.value || ""}
-                lastName={article.elements.author.linkedItems[0].elements.last_name?.value || ""}
-                suffix={article.elements.author.linkedItems[0].elements.suffixes?.value}
-                jobTitle={article.elements.author.linkedItems[0].elements.job_title?.value || ""}
+                prefix={author.elements.prefix?.value}
+                firstName={author.elements.first_name?.value || ""}
+                lastName={author.elements.last_name?.value || ""}
+                suffix={author.elements.suffixes?.value}
+                jobTitle={author.elements.job_title?.value || ""}
                 image={{
-                  url: article.elements.author.linkedItems[0].elements.image?.value[0]?.url || "",
-                  alt: article.elements.author.linkedItems[0].elements.image?.value[0]?.description
-                    || `Photo of ${article.elements.author.linkedItems[0].elements.first_name?.value} ${
-                      article.elements.author.linkedItems[0].elements.last_name?.value
-                    }`,
+                  url: author.elements.image?.value[0]?.url || "",
+                  alt: author.elements.image?.value[0]?.description || `Photo of ${authorName}`,
                 }}
               />
             </div>
