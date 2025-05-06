@@ -11,8 +11,9 @@ import { useAppContext } from "../context/AppContext";
 import { Replace } from "../utils/types";
 import FeaturedContent from "../components/landingPage/FeaturedContent";
 import { useSearchParams } from "react-router-dom";
-import { useLivePreview } from "../context/SmartLinkContext";
-import { IUpdateMessageData, applyUpdateOnItemAndLoadLinkedItems } from "@kontent-ai/smart-link";
+import { useCustomRefresh, useLivePreview } from "../context/SmartLinkContext";
+import { IRefreshMessageData, IRefreshMessageMetadata, IUpdateMessageData, applyUpdateOnItemAndLoadLinkedItems } from "@kontent-ai/smart-link";
+import { useSuspenseQueries } from "@tanstack/react-query";
 
 const useLandingPage = (isPreview: boolean, lang: string | null) => {
   const { environmentId, apiKey } = useAppContext();
@@ -67,11 +68,48 @@ const useLandingPage = (isPreview: boolean, lang: string | null) => {
 };
 
 const LandingPage: FC = () => {
+  const { environmentId, apiKey } = useAppContext();
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
   const lang = searchParams.get("lang");
 
   const landingPage = useLandingPage(isPreview, lang);
+
+  const [landingPageData] = useSuspenseQueries({
+    queries: [
+      {
+        queryKey: ["landing_page"],
+        queryFn: () =>
+          createClient(environmentId, apiKey, isPreview)
+            .items()
+            .type("landing_page")
+            .limitParameter(1)
+            .toPromise()
+            .then(res =>
+              res.data.items[0] as Replace<LandingPage, { elements: Partial<LandingPage["elements"]> }> ?? null
+            )
+            .catch((err) => {
+              if (err instanceof DeliveryError) {
+                return null;
+              }
+              throw err;
+            }),
+      },
+    ],
+  });
+
+  const onRefresh = useCallback(
+    (_: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
+      if (metadata.manualRefresh) {
+        originalRefresh();
+      } else {
+        landingPageData.refetch();
+      }
+    },
+    [landingPage],
+  );
+
+  useCustomRefresh(onRefresh);
 
   if (!landingPage || !Object.entries(landingPage.elements).length) {
     return <div className="flex-grow" />;

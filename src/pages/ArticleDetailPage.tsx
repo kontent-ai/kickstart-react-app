@@ -13,9 +13,10 @@ import { NavLink } from "react-router";
 import PersonCard from "../components/PersonCard";
 import ArticleList from "../components/articles/ArticleList";
 import { createPreviewLink } from "../utils/link";
-import { IUpdateMessageData, applyUpdateOnItemAndLoadLinkedItems } from "@kontent-ai/smart-link";
-import { useLivePreview } from "../context/SmartLinkContext";
+import { IRefreshMessageData, IRefreshMessageMetadata, IUpdateMessageData, applyUpdateOnItemAndLoadLinkedItems } from "@kontent-ai/smart-link";
+import { useCustomRefresh, useLivePreview } from "../context/SmartLinkContext";
 import { createElementSmartLink, createItemSmartLink } from "../utils/smartlink";
+import { useQuery } from "@tanstack/react-query";
 
 const HeroImageAuthorCard: React.FC<{
   prefix?: string;
@@ -142,12 +143,67 @@ const useArticle = (slug: string | undefined, isPreview: boolean, lang: string |
 };
 
 const ArticleDetailPage: React.FC = () => {
+  const { environmentId, apiKey } = useAppContext();
   const { slug } = useParams();
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
   const lang = searchParams.get("lang");
 
   const article = useArticle(slug, isPreview, lang);
+
+  const articleSystem = useQuery({
+    queryKey: [`article-detail_${slug}-system`],
+    queryFn: () =>
+      createClient(environmentId, apiKey, isPreview)
+        .items<Article>()
+        .type("article")
+        .equalsFilter("elements.url_slug", slug ?? "")
+        .toPromise()
+        .then((res) => res.data.items[0])
+        .catch((err) => {
+          if (err instanceof DeliveryError) {
+            return null;
+          }
+          throw err;
+        }),
+  });
+
+  const articleCodename = articleSystem.data?.system.codename;
+  
+  const articleData = useQuery({
+    queryKey: ["article-detail", slug, lang],
+    queryFn: () =>
+      createClient(environmentId, apiKey, isPreview)
+        .items<Article>()
+        .type("article")
+        .equalsFilter("system.codename", articleCodename ?? "")
+        .languageParameter((lang ?? "default") as LanguageCodenames)
+        .depthParameter(1)
+        .toPromise()
+        .then((res) => {
+          return res.data.items[0];
+        })
+        .catch((err) => {
+          if (err instanceof DeliveryError) {
+            return null;
+          }
+          throw err;
+        }),
+    enabled: !!articleCodename,
+  });
+
+  const onRefresh = useCallback(
+    (_: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
+      if (metadata.manualRefresh) {
+        originalRefresh();
+      } else {
+        articleData.refetch();
+      }
+    },
+    [articleData],
+  );
+
+  useCustomRefresh(onRefresh);
 
   if (!article) {
     return <div className="flex-grow" />;

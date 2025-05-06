@@ -11,9 +11,10 @@ import PageSection from "../components/PageSection";
 import Tags from "../components/Tags";
 import { NavLink } from "react-router";
 import { createPreviewLink } from "../utils/link";
-import { IUpdateMessageData, applyUpdateOnItemAndLoadLinkedItems } from "@kontent-ai/smart-link";
-import { useLivePreview } from "../context/SmartLinkContext";
+import { IRefreshMessageData, IRefreshMessageMetadata, IUpdateMessageData, applyUpdateOnItemAndLoadLinkedItems } from "@kontent-ai/smart-link";
+import { useCustomRefresh, useLivePreview } from "../context/SmartLinkContext";
 import { createElementSmartLink, createItemSmartLink } from "../utils/smartlink";
+import { useQuery } from "@tanstack/react-query";
 
 const TeamMemberCard: React.FC<{
   prefix?: string;
@@ -134,10 +135,41 @@ const useService = (slug: string | undefined, isPreview: boolean, lang: string |
 };
 
 const ServiceDetail: React.FC = () => {
+  const { environmentId, apiKey } = useAppContext();
   const { slug } = useParams();
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
   const lang = searchParams.get("lang");
+
+  const serviceData = useQuery({
+    queryKey: [`service-detail_${slug}`],
+    queryFn: () =>
+      createClient(environmentId, apiKey, isPreview)
+        .items<Service>()
+        .type("service")
+        .equalsFilter("elements.url_slug", slug ?? "")
+        .toPromise()
+        .then((res) => res.data.items[0])
+        .catch((err) => {
+          if (err instanceof DeliveryError) {
+            return null;
+          }
+          throw err;
+        }),
+  });
+
+  const onRefresh = useCallback(
+    (_: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
+      if (metadata.manualRefresh) {
+        originalRefresh();
+      } else {
+        serviceData.refetch();
+      }
+    },
+    [serviceData],
+  );
+
+  useCustomRefresh(onRefresh);
 
   const service = useService(slug, isPreview, lang);
 

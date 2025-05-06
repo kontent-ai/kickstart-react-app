@@ -7,12 +7,13 @@ import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import { PortableText } from "@portabletext/react";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
-import { IUpdateMessageData, applyUpdateOnItemAndLoadLinkedItems } from "@kontent-ai/smart-link";
-import { useLivePreview } from "../context/SmartLinkContext";
+import { IRefreshMessageData, IRefreshMessageMetadata, IUpdateMessageData, applyUpdateOnItemAndLoadLinkedItems } from "@kontent-ai/smart-link";
+import { useCustomRefresh, useLivePreview } from "../context/SmartLinkContext";
 import {
   createElementSmartLink,
   createItemSmartLink,
 } from "../utils/smartlink";
+import { useQuery } from "@tanstack/react-query";
 
 const useBlogPost = (slug: string | undefined, isPreview: boolean, lang: string | null) => {
   const { environmentId, apiKey } = useAppContext();
@@ -69,6 +70,7 @@ const useBlogPost = (slug: string | undefined, isPreview: boolean, lang: string 
 };
 
 const BlogDetail: React.FC = () => {
+  const { environmentId, apiKey } = useAppContext();
   const { slug } = useParams();
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
@@ -81,6 +83,36 @@ const BlogDetail: React.FC = () => {
       {tag}
     </div>
   );
+
+  const blogPostData = useQuery({
+    queryKey: [`blog-post_${slug}`],
+    queryFn: () =>
+      createClient(environmentId, apiKey, isPreview)
+        .items<BlogPost>()
+        .type("blog_post")
+        .equalsFilter("elements.url_slug", slug ?? "")
+        .toPromise()
+        .then((res) => res.data.items[0])
+        .catch((err) => {
+          if (err instanceof DeliveryError) {
+            return null;
+          }
+          throw err;
+        }),
+  });
+
+  const onRefresh = useCallback(
+    (_: IRefreshMessageData, metadata: IRefreshMessageMetadata, originalRefresh: () => void) => {
+      if (metadata.manualRefresh) {
+        originalRefresh();
+      } else {
+        blogPostData.refetch();
+      }
+    },
+    [blogPostData],
+  );
+
+  useCustomRefresh(onRefresh);
 
   if (!blogPost) {
     return <div className="flex-grow" />;
