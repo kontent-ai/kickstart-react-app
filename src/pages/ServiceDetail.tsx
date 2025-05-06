@@ -3,7 +3,7 @@ import React, { useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
-import { Service, Person } from "../model";
+import { Service, Person, LanguageCodenames } from "../model";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import { PortableText } from "@portabletext/react";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
@@ -56,6 +56,8 @@ const ServiceDetail: React.FC = () => {
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
 
+  const lang = searchParams.get("lang");
+
   const serviceData = useQuery({
     queryKey: [`service-detail_${slug}`],
     queryFn: () =>
@@ -63,6 +65,7 @@ const ServiceDetail: React.FC = () => {
         .items<Service>()
         .type("service")
         .equalsFilter("elements.url_slug", slug ?? "")
+        .languageParameter((lang ?? "default") as LanguageCodenames)
         .toPromise()
         .then((res) => res.data.items[0])
         .catch((err) => {

@@ -3,7 +3,7 @@ import React, { useCallback } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
-import { BlogPost } from "../model";
+import { BlogPost, LanguageCodenames } from "../model";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import { PortableText } from "@portabletext/react";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
@@ -21,6 +21,8 @@ const BlogDetail: React.FC = () => {
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
 
+  const lang = searchParams.get("lang");
+
   const createTag = (tag: string) => (
     <div className="w-fit text-small border tracking-wider font-[700] text-grey border-azure px-4 py-2 rounded-lg uppercase">
       {tag}
@@ -34,6 +36,7 @@ const BlogDetail: React.FC = () => {
         .items<BlogPost>()
         .type("blog_post")
         .equalsFilter("elements.url_slug", slug ?? "")
+        .languageParameter((lang ?? "default") as LanguageCodenames)
         .toPromise()
         .then((res) => res.data.items[0])
         .catch((err) => {

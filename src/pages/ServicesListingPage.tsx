@@ -3,17 +3,20 @@ import PageSection from "../components/PageSection";
 import { useAppContext } from "../context/AppContext";
 import { useSuspenseQueries } from "@tanstack/react-query";
 import { createClient } from "../utils/client";
-import { Page, Service } from "../model";
+import { LanguageCodenames, Page, Service } from "../model";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
 import ServiceList from "../components/services/ServiceList";
 import { useSearchParams } from "react-router-dom";
 import { defaultPortableRichTextResolvers, isEmptyRichText } from "../utils/richtext";
 import { PortableText } from "@portabletext/react";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
+
 const ServicesListingPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();
   const [searchParams] = useSearchParams();
   const isPreview = searchParams.get("preview") === "true";
+
+  const lang = searchParams.get("lang");
 
   const [servicesPage, services] = useSuspenseQueries({
     queries: [
@@ -22,6 +25,7 @@ const ServicesListingPage: FC = () => {
         queryFn: () =>
           createClient(environmentId, apiKey, isPreview)
             .item<Page>("services")
+            .languageParameter((lang ?? "default") as LanguageCodenames)
             .toPromise()
             .then(res => res.data)
             .catch((err) => {
@@ -37,6 +41,7 @@ const ServicesListingPage: FC = () => {
           createClient(environmentId, apiKey, isPreview)
             .items<Service>()
             .type("service")
+            .languageParameter((lang ?? "default") as LanguageCodenames)
             .toPromise()
             .then(res => res.data.items)
             .catch((err) => {
