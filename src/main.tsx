@@ -4,7 +4,6 @@ import LandingPage from "./pages/LandingPage.tsx";
 import { AppContextComponent } from "./context/AppContext.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Auth0ProviderWithRedirect from "./components/auth/AuthProviderWithRedirect.tsx";
 import Loader from "./components/Loader.tsx";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -24,29 +23,27 @@ const router = createBrowserRouter([
   {
     path: "/:envId",
     element: (
-      <Auth0ProviderWithRedirect>
-        <QueryClientProvider client={queryClient}>
-          <ErrorBoundary
-            fallbackRender={({ error }) => (
-              <div>
-                There was an error! <pre>{error.message}</pre>
+      <QueryClientProvider client={queryClient}>
+        <ErrorBoundary
+          fallbackRender={({ error }) => (
+            <div>
+              There was an error! <pre>{error.message}</pre>
+            </div>
+          )}
+        >
+          <Suspense
+            fallback={
+              <div className="flex w-screen h-screen justify-center">
+                <Loader />
               </div>
-            )}
+            }
           >
-            <Suspense
-              fallback={
-                <div className="flex w-screen h-screen justify-center">
-                  <Loader />
-                </div>
-              }
-            >
-              <AppContextComponent>
-                <LandingPage />
-              </AppContextComponent>
-            </Suspense>
-          </ErrorBoundary>
-        </QueryClientProvider>
-      </Auth0ProviderWithRedirect>
+            <AppContextComponent>
+              <LandingPage />
+            </AppContextComponent>
+          </Suspense>
+        </ErrorBoundary>
+      </QueryClientProvider>
     ),
   },
 ]);
