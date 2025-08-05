@@ -11,29 +11,14 @@ import { FC } from "react";
 import { useAppContext } from "../context/AppContext";
 import { Replace } from "../utils/types";
 import FeaturedContent from "../components/FeaturedContent";
-import KontentComponentErrorMessage from "../components/KontentComponentErrorMessage";
 import Layout from "../components/Layout";
 import SolutionList from "../components/SolutionListItem";
 
 const LandingPage: FC = () => {
   const { environmentId, apiKey } = useAppContext();
 
-  const [landingPageType, landingPage] = useSuspenseQueries({
+  const landingPage = useSuspenseQueries({
     queries: [
-      {
-        queryKey: ["landing_page_type"],
-        queryFn: () =>
-          createClient(environmentId, apiKey)
-            .type("landing_page")
-            .toPromise()
-            .then(res => res.data)
-            .catch((err) => {
-              if (err instanceof DeliveryError) {
-                return null;
-              }
-              throw err;
-            }),
-      },
       {
         queryKey: ["landing_page"],
         queryFn: () =>
@@ -53,31 +38,7 @@ const LandingPage: FC = () => {
             }),
       },
     ],
-  });
-
-  if (!landingPageType.data) {
-    return (
-      <Layout>
-        <div className="flex-grow">
-          <PageSection color="white">
-            <KontentComponentErrorMessage>
-              Missing a content type with the codename{"  "}
-              <b>
-                <i>{"landing_page"}</i>
-              </b>. Please create the{"  "}
-              <a
-                href="https://kontent.ai/learn/try-kontent-ai/build-the-foundation/create-a-landing-page-structure#a-create-a-landing-page-content-type"
-                className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-              >
-                Landing Page content type
-              </a>{" "}
-              according to the instructions.
-            </KontentComponentErrorMessage>
-          </PageSection>
-        </div>
-      </Layout>
-    );
-  }
+  })[0];
 
   if (!landingPage.data || !Object.entries(landingPage.data.elements).length) {
     return (
