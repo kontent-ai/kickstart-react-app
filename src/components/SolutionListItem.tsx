@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import RenderElement from "./RenderElement";
-import { articleLink } from "../constants/links";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
 import { Solution } from "../model/content-types/solution";
@@ -49,56 +47,32 @@ const SolutionListItem: React.FC<SolutionListItemProps> = ({ solution }) => {
   return shouldRender && (
     <div className="flex flex-col xl:flex-row pt-4 pb-4 gap-10 justify-center items-center">
       <div className="pr-4">
-        <RenderElement
-          element={solution.elements.image}
-          elementCodename="image"
-          requiredElementType="asset"
-          typeCodename={"solution"}
-          link={articleLink}
-        >
-          {solution.elements.image && (
-            <>
-              <img
-                width={640}
-                height={420}
-                src={solution.elements.image.value[0]?.url
-                  ? `${solution.elements.image.value[0]?.url}?auto=format&w=800`
-                  : ""}
-                alt={solution.elements.image.value[0].description ?? "image alt"}
-                className="object-cover rounded-lg static"
-              />
-            </>
-          )}
-        </RenderElement>
+        {solution.elements.image && solution.elements.image.value[0]?.url && (
+          <img
+            width={640}
+            height={420}
+            src={`${solution.elements.image.value[0].url}?auto=format&w=800`}
+            alt={solution.elements.image.value[0].description ?? "image alt"}
+            className="object-cover rounded-lg static"
+          />
+        )}
       </div>
       <div className="xl:w-1/2">
-        <RenderElement
-          element={solution.elements.headline}
-          elementCodename="headline"
-          requiredElementType="text"
-          typeCodename={"solution"}
-          link={articleLink}
-        >
+        {solution.elements.headline && (
           <h2 className="text-left text-5xl font-semibold text-burgundy">
-            {solution.elements.headline?.value}
+            {solution.elements.headline.value}
           </h2>
-        </RenderElement>
-        <RenderElement
-          element={solution.elements.introduction}
-          elementCodename="introduction"
-          requiredElementType="text"
-          typeCodename={"solution"}
-          link={articleLink}
-        >
-          <p className="text-left text-gray-700 mt-4 text-xl">
-            {solution.elements.introduction?.value}
+        )}
+        {solution.elements.introduction && (
+          <div className="text-left text-gray-700 mt-4 text-xl">
+            {solution.elements.introduction.value}
             <p>
               <a href="#" className="text-burgundy text-xl mt-6 font-semibold underline">
                 Read more
               </a>
             </p>
-          </p>
-        </RenderElement>
+          </div>
+        )}
       </div>
     </div>
   );

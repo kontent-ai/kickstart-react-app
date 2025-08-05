@@ -10,11 +10,9 @@ import { useSuspenseQueries } from "@tanstack/react-query";
 import { FC } from "react";
 import { useAppContext } from "../context/AppContext";
 import { Replace } from "../utils/types";
-import RenderElement from "../components/RenderElement";
 import FeaturedContent from "../components/FeaturedContent";
 import KontentComponentErrorMessage from "../components/KontentComponentErrorMessage";
 import Layout from "../components/Layout";
-import { landingPageLink } from "../constants/links";
 import SolutionList from "../components/SolutionListItem";
 
 const LandingPage: FC = () => {
@@ -104,28 +102,14 @@ const LandingPage: FC = () => {
         <PageSection color="bg-white">
           <SolutionList />
         </PageSection>
-        <RenderElement
-          element={landingPage.data.elements.body_copy}
-          elementCodename="body_copy"
-          requiredElementType="rich_text"
-          errorMessageClassName="container"
-          typeCodename={"landing_page"}
-          link={landingPageLink}
-        >
+        {landingPage.data.elements.body_copy && (
           <PageSection color="bg-white">
-            <PageContent body={landingPage.data.elements.body_copy!} />
+            <PageContent body={landingPage.data.elements.body_copy} />
           </PageSection>
-        </RenderElement>
-        <RenderElement
-          element={landingPage.data.elements.featured_content}
-          elementCodename="featured_content"
-          requiredElementType="modular_content"
-          errorMessageClassName="container"
-          typeCodename={"landing_page"}
-          link={landingPageLink}
-        >
-          <FeaturedContent featuredContent={landingPage.data.elements.featured_content!}></FeaturedContent>
-        </RenderElement>
+        )}
+        {landingPage.data.elements.featured_content && (
+          <FeaturedContent featuredContent={landingPage.data.elements.featured_content} />
+        )}
       </div>
     </Layout>
   );

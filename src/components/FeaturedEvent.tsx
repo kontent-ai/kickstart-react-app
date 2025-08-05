@@ -5,8 +5,6 @@ import { formatDate } from "../utils/date";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
 import { Replace } from "../utils/types";
-import RenderElement from "./RenderElement";
-import { eventLink } from "../constants/links";
 import { PortableText } from "@kontent-ai/rich-text-resolver/utils/react";
 
 type FeaturedEventProps = Readonly<{
@@ -27,56 +25,36 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
       <FeaturedComponentBase image={event.elements.image} type="event">
         <>
           <div>
-            <RenderElement
-              element={event.elements.name}
-              elementCodename="name"
-              requiredElementType="text"
-              link={eventLink}
-              typeCodename={"event"}
-            >
+            {event.elements.name && (
               <h2 className="text-center xl:text-left text-5xl font-semibold text-burgundy">
-                {event.elements.name?.value}
+                {event.elements.name.value}
               </h2>
-            </RenderElement>
-            <RenderElement
-              element={event.elements.start_date}
-              elementCodename="start_date"
-              requiredElementType="date_time"
-              link={eventLink}
-              typeCodename={"event"}
-            >
+            )}
+            {event.elements.start_date && (
               <p className="text-center xl:text-left text-gray-light mt-6 text-lg">
                 {`${
-                  event.elements.start_date?.value?.length
-                    ? formatDate(event.elements.start_date?.value as string)
+                  event.elements.start_date.value?.length
+                    ? formatDate(event.elements.start_date.value as string)
                     : ""
                 }${
                   event.elements.end_date?.value?.length
-                    ? ` - ${formatDate(event.elements.end_date?.value as string)}`
+                    ? ` - ${formatDate(event.elements.end_date.value as string)}`
                     : ""
                 }`}
               </p>
-            </RenderElement>
+            )}
             <div className="flex mt-6 gap-2 justify-center xl:justify-normal">
               {event.elements.event_type?.value.map(t => createTag(t.name.toUpperCase()))}
               {event.elements.event_topic?.value.map(t => createTag(t.name.toUpperCase()))}
             </div>
-            <RenderElement
-              element={event.elements.description}
-              elementCodename="description"
-              requiredElementType="rich_text"
-              typeCodename={"event"}
-              link={eventLink}
-              children={() => (
-                <div className="mt-4">
-                  <PortableText
-                    value={transformToPortableText(event.elements.description?.value ?? "")}
-                    components={defaultPortableRichTextResolvers}
-                  />
-                </div>
-              )}
-            >
-            </RenderElement>
+            {event.elements.description && (
+              <div className="mt-4">
+                <PortableText
+                  value={transformToPortableText(event.elements.description.value ?? "")}
+                  components={defaultPortableRichTextResolvers}
+                />
+              </div>
+            )}
           </div>
           {event.elements.description?.value !== "<p><br></p>" && (
             <a href="#" className="text-center xl:text-left text-burgundy text-xl mt-6 font-semibold underline">
