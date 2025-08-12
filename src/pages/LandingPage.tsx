@@ -84,14 +84,14 @@ const LandingPage: FC = () => {
   if (!landingPage.data || !Object.entries(landingPage.data.elements).length) {
     return (
       <Layout>
-        <div className="flex-grow" />
+        <div className="grow" />
       </Layout>
     );
   }
 
   return (
     <Layout>
-      <div className="flex-grow">
+      <div className="grow">
         <PageSection color="bg-creme">
           <HeroImage
             data={{

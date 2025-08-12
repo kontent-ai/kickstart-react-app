@@ -22,7 +22,7 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
           typeCodename={"landing_page"}
           link={landingPageLink}
         >
-          <h1 className="text-center xl:text-left font-libre text-[64px] md:text-[94px] text-burgundy font-bold leading-[64px] md:leading-[78px]">
+          <h1 className="text-center xl:text-left font-family-libre text-[64px] md:text-[94px] text-burgundy font-bold leading-[64px] md:leading-[78px]">
             {data.headline?.value}
           </h1>
         </RenderElement>
@@ -33,7 +33,7 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
           typeCodename={"landing_page"}
           link={landingPageLink}
         >
-          <p className="text-center xl:text-left font-sans text-xl text-gray">{data.subheadline?.value}</p>
+          <p className="text-center xl:text-left font-family-sans text-xl text-gray">{data.subheadline?.value}</p>
         </RenderElement>
       </div>
       <div className="xl:basis-1/2">

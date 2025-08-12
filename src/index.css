@@ -1,3 +1,65 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --color-burgundy: #993265;
+  --color-azure: #009edb;
+  --color-white: #ffffff;
+  --color-gray-light: #8e8e8e;
+  --color-gray: #3b3b3b;
+  --color-creme: #fff7e7;
+
+  --font-family-sans: 'Source Sans 3', Arial, sans-serif;
+  --font-family-libre: 'Abhaya Libre', Arial;
+
+  --default-font-family: var(--font-family-sans);
+}
+
+@utility container {
+  margin-inline: auto;
+
+  @variant sm {
+    max-width: 640px;
+  }
+
+  @variant md {
+    max-width: 768px;
+  }
+
+  @variant lg {
+    max-width: 1024px;
+  }
+
+  @variant xl {
+    max-width: 1280px;
+  }
+
+  @variant 2xl {
+    max-width: 1536px;
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+  
+  p {
+    font-family: var(--font-family-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-libre);
+  }
+}

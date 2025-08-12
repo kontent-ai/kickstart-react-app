@@ -6,7 +6,7 @@ export const defaultPortableRichTextResolvers: PortableTextReactResolvers = {
     number: ({ children }) => <ol className="text-xl text-gray-700 list-decimal ml-8">{children}</ol>,
   },
   block: {
-    h1: ({ children }) => <h1 className="text-8xl font-libre text-azure">{children}</h1>,
+    h1: ({ children }) => <h1 className="text-8xl font-family-libre text-azure">{children}</h1>,
     h2: ({ children }) => <h2 className="text-6xl text-azure">{children}</h2>,
     h3: ({ children }) => <h3 className="text-4xl text-azure">{children}</h3>,
     normal: ({ children }) => <p className="text-left text-gray-700 text-xl">{children}</p>,
