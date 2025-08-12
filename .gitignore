@@ -26,3 +26,6 @@ dist-ssr
 .env
 
 tsconfig.*.tsbuildinfo
+
+test-results
+playwright-report
