@@ -14,12 +14,12 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
     <div className="flex flex-col xl:flex-row pt-10 xl:pt-[104px] pb-10 xl:pb-[160px] gap-5">
       <div className="xl:basis-1/2">
         {data.headline && (
-          <h1 className="text-center xl:text-left font-libre text-[64px] md:text-[94px] text-burgundy font-bold leading-[64px] md:leading-[78px]">
+          <h1 className="text-center xl:text-left font-family-libre text-[64px] md:text-[94px] text-burgundy font-bold leading-[64px] md:leading-[78px]">
             {data.headline.value}
           </h1>
         )}
         {data.subheadline && (
-          <p className="text-center xl:text-left font-sans text-xl text-gray">{data.subheadline.value}</p>
+          <p className="text-center xl:text-left font-family-sans text-xl text-gray">{data.subheadline.value}</p>
         )}
       </div>
       <div className="xl:basis-1/2">
