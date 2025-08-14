@@ -1,11 +1,9 @@
-import { StrictMode, Suspense } from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import LandingPage from "./pages/LandingPage.tsx";
 import { AppContextComponent } from "./context/AppContext.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Loader from "./components/Loader.tsx";
-import { ErrorBoundary } from "react-error-boundary";
 
 const queryClient = new QueryClient();
 
@@ -17,32 +15,6 @@ const router = createBrowserRouter([
         <AppContextComponent>
           <LandingPage />
         </AppContextComponent>
-      </QueryClientProvider>
-    ),
-  },
-  {
-    path: "/:envId",
-    element: (
-      <QueryClientProvider client={queryClient}>
-        <ErrorBoundary
-          fallbackRender={({ error }) => (
-            <div>
-              There was an error! <pre>{error.message}</pre>
-            </div>
-          )}
-        >
-          <Suspense
-            fallback={
-              <div className="flex w-screen h-screen justify-center">
-                <Loader />
-              </div>
-            }
-          >
-            <AppContextComponent>
-              <LandingPage />
-            </AppContextComponent>
-          </Suspense>
-        </ErrorBoundary>
       </QueryClientProvider>
     ),
   },
