@@ -1,8 +1,8 @@
-import { FC, PropsWithChildren } from "react";
+import { ParentComponent } from "solid-js";
 
-const Container: FC<PropsWithChildren> = ({ children }) => (
-  <div className="container">
-    {children}
+const Container: ParentComponent = (props) => (
+  <div class="container">
+    {props.children}
   </div>
 );
 

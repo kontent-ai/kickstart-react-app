@@ -1,16 +1,14 @@
-import { FC, PropsWithChildren } from "react";
+import { ParentProps, ParentComponent } from "solid-js";
 import Container from "./Container";
 
-type PageSectionProps = PropsWithChildren<
-  Readonly<{
-    color: string;
-  }>
->;
+type PageSectionProps = ParentProps<{
+  color: string;
+}>;
 
-const PageSection: FC<PageSectionProps> = ({ children, color }) => (
-  <div className={color}>
+const PageSection: ParentComponent<PageSectionProps> = (props) => (
+  <div class={props.color}>
     <Container>
-      {children}
+      {props.children}
     </Container>
   </div>
 );

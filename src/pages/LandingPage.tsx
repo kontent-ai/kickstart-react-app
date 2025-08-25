@@ -6,72 +6,71 @@ import PageSection from "../components/PageSection";
 import "../index.css";
 import { type LandingPage } from "../model";
 import { createClient } from "../utils/client";
-import { useSuspenseQueries } from "@tanstack/react-query";
-import { FC } from "react";
+import { createQuery } from "@tanstack/solid-query";
+import { Component, Show, Suspense } from "solid-js";
 import { useAppContext } from "../context/AppContext";
 import { Replace } from "../utils/types";
 import FeaturedContent from "../components/FeaturedContent";
 import Layout from "../components/Layout";
 import SolutionList from "../components/SolutionListItem";
 
-const LandingPage: FC = () => {
+const LandingPageContent: Component = () => {
   const { environmentId, apiKey } = useAppContext();
 
-  const landingPage = useSuspenseQueries({
-    queries: [
-      {
-        queryKey: ["landing_page"],
-        queryFn: () =>
-          createClient(environmentId, apiKey)
-            .items()
-            .type("landing_page")
-            .limitParameter(1)
-            .toPromise()
-            .then(res =>
-              res.data.items[0] as Replace<LandingPage, { elements: Partial<LandingPage["elements"]> }> ?? null
-            )
-            .catch((err) => {
-              if (err instanceof DeliveryError) {
-                return null;
-              }
-              throw err;
-            }),
-      },
-    ],
-  })[0];
-
-  if (!landingPage.data || !Object.entries(landingPage.data.elements).length) {
-    return (
-      <Layout>
-        <div className="grow" />
-      </Layout>
-    );
-  }
+  const landingPageQuery = createQuery(() => ({
+    queryKey: ["landing_page"],
+    queryFn: () =>
+      createClient(environmentId, apiKey)
+        .items()
+        .type("landing_page")
+        .limitParameter(1)
+        .toPromise()
+        .then(res => res.data.items[0] as Replace<LandingPage, { elements: Partial<LandingPage["elements"]> }> ?? null)
+        .catch((err) => {
+          if (err instanceof DeliveryError) {
+            return null;
+          }
+          throw err;
+        }),
+  }));
 
   return (
-    <Layout>
-      <div className="grow">
+    <Show
+      when={landingPageQuery.data && Object.entries(landingPageQuery.data.elements).length}
+      fallback={<div class="grow" />}
+    >
+      <div class="grow">
         <PageSection color="bg-creme">
           <HeroImage
             data={{
-              headline: landingPage.data.elements.headline,
-              subheadline: landingPage.data.elements.subheadline,
-              heroImage: landingPage.data.elements.hero_image,
+              headline: landingPageQuery.data!.elements.headline,
+              subheadline: landingPageQuery.data!.elements.subheadline,
+              heroImage: landingPageQuery.data!.elements.hero_image,
             }}
           />
         </PageSection>
         <PageSection color="bg-white">
           <SolutionList />
         </PageSection>
-        {landingPage.data.elements.body_copy && (
+        <Show when={landingPageQuery.data!.elements.body_copy}>
           <PageSection color="bg-white">
-            <PageContent body={landingPage.data.elements.body_copy} />
+            <PageContent body={landingPageQuery.data!.elements.body_copy!} />
           </PageSection>
-        )}
-        {landingPage.data.elements.featured_content && (
-          <FeaturedContent featuredContent={landingPage.data.elements.featured_content} />
-        )}
+        </Show>
+        <Show when={landingPageQuery.data!.elements.featured_content}>
+          <FeaturedContent featuredContent={landingPageQuery.data!.elements.featured_content!} />
+        </Show>
       </div>
+    </Show>
+  );
+};
+
+const LandingPage: Component = () => {
+  return (
+    <Layout>
+      <Suspense fallback={<div class="grow" />}>
+        <LandingPageContent />
+      </Suspense>
     </Layout>
   );
 };

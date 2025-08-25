@@ -1,16 +1,18 @@
-import { FC } from "react";
+import { Component, For } from "solid-js";
 
-const Navigation: FC = () => {
-  const createMenuLink = (name: string) => (
-    <li key={name}>
-      <a href="#" className="text-xl leading-5 text-gray w-fit block hover:text-burgundy">{name}</a>
-    </li>
-  );
+const Navigation: Component = () => {
+  const menuItems = ["Solutions", "Products", "Pricing", "Contact", "Our Company"];
 
   return (
     <nav>
-      <menu className="flex flex-col lg:flex-row gap-5 lg:gap-[60px] items-center list-none">
-        {["Solutions", "Products", "Pricing", "Contact", "Our Company"].map(createMenuLink)}
+      <menu class="flex flex-col lg:flex-row gap-5 lg:gap-[60px] items-center list-none">
+        <For each={menuItems}>
+          {(name) => (
+            <li>
+              <a href="#" class="text-xl leading-5 text-gray w-fit block hover:text-burgundy">{name}</a>
+            </li>
+          )}
+        </For>
       </menu>
     </nav>
   );

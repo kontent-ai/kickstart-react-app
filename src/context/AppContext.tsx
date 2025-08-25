@@ -1,23 +1,23 @@
-import { createContext, FC, PropsWithChildren, useContext } from "react";
+import { createContext, ParentComponent, useContext } from "solid-js";
 
-type AppContext = {
+type AppContextType = {
   environmentId: string;
   apiKey: string;
 };
 
-const defaultAppContext: AppContext = {
+const defaultAppContext: AppContextType = {
   environmentId: import.meta.env.VITE_ENVIRONMENT_ID!,
   apiKey: import.meta.env.VITE_DELIVERY_API_KEY!,
 };
 
-const AppContext = createContext<AppContext>(defaultAppContext);
+const AppContext = createContext<AppContextType>(defaultAppContext);
 
 export const useAppContext = () => useContext(AppContext);
 
-export const AppContextComponent: FC<PropsWithChildren> = ({ children }) => {
+export const AppContextComponent: ParentComponent = (props) => {
   return (
     <AppContext.Provider value={defaultAppContext}>
-      {children}
+      {props.children}
     </AppContext.Provider>
   );
 };

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { Component, Show } from "solid-js";
 import { Video as VideoType } from "../model";
 import { Replace } from "../utils/types";
 
@@ -6,39 +6,39 @@ type VideoProps = {
   video: Replace<VideoType, { elements: Partial<VideoType["elements"]> }>;
 };
 
-const Video: FC<VideoProps> = ({ video }) => {
+const Video: Component<VideoProps> = (props) => {
   return (
-    <div className="flex flex-col items-center">
-      {video.elements.headline && (
-        <h2 className="text-azure text-[40px] md:text-[64px] leading-[54px] w-2/4 text-center">
-          {video.elements.headline.value}
+    <div class="flex flex-col items-center">
+      <Show when={props.video.elements.headline}>
+        <h2 class="text-azure text-[40px] md:text-[64px] leading-[54px] w-2/4 text-center">
+          {props.video.elements.headline!.value}
         </h2>
-      )}
-      {video.elements.description && (
-        <p className="w-4/6 text-center text-xl pt-6 text-gray">
-          {video.elements.description.value}
+      </Show>
+      <Show when={props.video.elements.description}>
+        <p class="w-4/6 text-center text-xl pt-6 text-gray">
+          {props.video.elements.description!.value}
         </p>
-      )}
-      {video.elements.video_link?.value && (
-        <figure className="pt-20">
+      </Show>
+      <Show when={props.video.elements.video_link?.value}>
+        <figure class="pt-20">
           <iframe
-            className="m-auto w-full lg:w-[900px]"
-            title={video.elements.headline?.value ?? "Video Title"}
+            class="m-auto w-full lg:w-[900px]"
+            title={props.video.elements.headline?.value ?? "Video Title"}
             width={900}
             height={590}
-            src={`${video.elements.video_link.value}${
-              video.elements.autoplay?.value[0]?.codename === "true" ? "&autoplay=1&mute=1" : ""
+            src={`${props.video.elements.video_link!.value}${
+              props.video.elements.autoplay?.value[0]?.codename === "true" ? "&autoplay=1&mute=1" : ""
             }`}
             referrerPolicy="strict-origin-when-cross-origin"
             allow={"autoplay"}
           />
-          {video.elements.caption && (
-            <figcaption className="text-gray-light block m-auto w-fit text-xl pt-6">
-              {video.elements.caption.value}
+          <Show when={props.video.elements.caption}>
+            <figcaption class="text-gray-light block m-auto w-fit text-xl pt-6">
+              {props.video.elements.caption!.value}
             </figcaption>
-          )}
+          </Show>
         </figure>
-      )}
+      </Show>
     </div>
   );
 };

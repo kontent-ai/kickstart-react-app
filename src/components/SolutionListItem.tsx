@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { Component, createSignal, createEffect, For, Show } from "solid-js";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
 import { Solution } from "../model/content-types/solution";
 import { Replace } from "../utils/types";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
 
-const SolutionList: React.FC = () => {
+const SolutionList: Component = () => {
   const { environmentId, apiKey } = useAppContext();
 
-  const [solutions, setSolutions] = useState<ReadonlyArray<Solution> | null>(null);
+  const [solutions, setSolutions] = createSignal<ReadonlyArray<Solution> | null>(null);
 
-  useEffect(() => {
+  createEffect(() => {
     createClient(environmentId, apiKey)
       .items<Solution>()
       .type("solution")
@@ -22,59 +22,60 @@ const SolutionList: React.FC = () => {
         }
         throw err;
       });
-  }, [environmentId, apiKey]);
-
-  if (!solutions || solutions.length === 0) {
-    return null;
-  }
+  });
 
   return (
-    <>
-      <h2 className="text-azure text-[40px] md:text-[64px] leading-[54px] w-full p-8 text-center">
+    <Show when={solutions() && solutions()!.length > 0}>
+      <h2 class="text-azure text-[40px] md:text-[64px] leading-[54px] w-full p-8 text-center">
         Solutions Tailored to You
       </h2>
-      {solutions.map(solution => <SolutionListItem key={solution.system.id} solution={solution} />)}
-    </>
+      <For each={solutions()}>
+        {(solution) => <SolutionListItem solution={solution} />}
+      </For>
+    </Show>
   );
 };
 
-type SolutionListItemProps = Readonly<{
+type SolutionListItemProps = {
   solution: Replace<Solution, { elements: Partial<Solution["elements"]> }>;
-}>;
+};
 
-const SolutionListItem: React.FC<SolutionListItemProps> = ({ solution }) => {
-  const shouldRender = Object.entries(solution).length > 0;
-  return shouldRender && (
-    <div className="flex flex-col xl:flex-row pt-4 pb-4 gap-10 justify-center items-center">
-      <div className="pr-4">
-        {solution.elements.image && solution.elements.image.value[0]?.url && (
-          <img
-            width={640}
-            height={420}
-            src={`${solution.elements.image.value[0].url}?auto=format&w=800`}
-            alt={solution.elements.image.value[0].description ?? "image alt"}
-            className="object-cover rounded-lg static"
-          />
-        )}
+const SolutionListItem: Component<SolutionListItemProps> = (props) => {
+  const shouldRender = () => Object.entries(props.solution).length > 0;
+
+  return (
+    <Show when={shouldRender()}>
+      <div class="flex flex-col xl:flex-row pt-4 pb-4 gap-10 justify-center items-center">
+        <div class="pr-4">
+          <Show when={props.solution.elements.image && props.solution.elements.image.value[0]?.url}>
+            <img
+              width={640}
+              height={420}
+              src={`${props.solution.elements.image!.value[0].url}?auto=format&w=800`}
+              alt={props.solution.elements.image!.value[0].description ?? "image alt"}
+              class="object-cover rounded-lg static"
+            />
+          </Show>
+        </div>
+        <div class="xl:w-1/2">
+          <Show when={props.solution.elements.headline}>
+            <h2 class="text-left text-5xl font-semibold text-burgundy">
+              {props.solution.elements.headline!.value}
+            </h2>
+          </Show>
+          <Show when={props.solution.elements.introduction}>
+            <div class="text-left text-gray-700 mt-4 text-xl">
+              {props.solution.elements.introduction!.value}
+              <p>
+                <a href="#" class="text-burgundy text-xl mt-6 font-semibold underline">
+                  Read more
+                </a>
+              </p>
+            </div>
+          </Show>
+        </div>
       </div>
-      <div className="xl:w-1/2">
-        {solution.elements.headline && (
-          <h2 className="text-left text-5xl font-semibold text-burgundy">
-            {solution.elements.headline.value}
-          </h2>
-        )}
-        {solution.elements.introduction && (
-          <div className="text-left text-gray-700 mt-4 text-xl">
-            {solution.elements.introduction.value}
-            <p>
-              <a href="#" className="text-burgundy text-xl mt-6 font-semibold underline">
-                Read more
-              </a>
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
+    </Show>
   );
 };
 

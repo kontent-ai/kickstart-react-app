@@ -1,5 +1,5 @@
-import { FC } from "react";
+import { Component } from "solid-js";
 
-const Divider: FC = () => <hr className="w-full border-t border-[#D1D1D1]" />;
+const Divider: Component = () => <hr class="w-full border-t border-[#D1D1D1]" />;
 
 export default Divider;

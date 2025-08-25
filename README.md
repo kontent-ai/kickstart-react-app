@@ -1,4 +1,4 @@
-# Kontent.ai Kickstart Sample React App
+# Kontent.ai Kickstart Sample SolidJS App
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -7,7 +7,7 @@
 [![MIT License][license-shield]][license-url]
 [![Discord][discord-shield]][discord-url]
 
-This repository contains the solution for the Kontent.ai Kickstart Sample React App. It serves as a learning resource for those starting new projects with Kontent.ai, providing a foundational template to build upon.
+This repository contains the solution for the Kontent.ai Kickstart Sample SolidJS App. It serves as a learning resource for those starting new projects with Kontent.ai using SolidJS, providing a foundational template to build upon.
 
 If you'd like to explore a fully set up Kontent.ai project, you can import content from one of the backups located in the `./scripts/backups` folder.
 
@@ -34,7 +34,7 @@ This project adheres to a [Code of Conduct](https://github.com/kontent-ai/.githu
 
 - Run `npm ci` to install packages.
 - Create a `.env` file from `.env.template` and fill out all necessary variables.
-- Run `npm run dev` to run the application in developer mode.
+- Run `npm run dev` to run the SolidJS application in developer mode.
 
 ### Regenerating model
 After updating the Kickstart application's content model, the TypeScript models must also be regenerated. We've provided a script to automate this process using the [Kontent.ai Model Generator](https://github.com/kontent-ai/model-generator-js).

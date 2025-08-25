@@ -1,11 +1,11 @@
-import { FC, PropsWithChildren } from "react";
+import { ParentComponent } from "solid-js";
 import Footer from "./Footer";
 import Header from "./Header";
 
-const Layout: FC<PropsWithChildren> = ({ children }) => (
-  <div className="flex flex-col min-h-screen">
+const Layout: ParentComponent = (props) => (
+  <div class="flex flex-col min-h-screen">
     <Header />
-    {children}
+    {props.children}
     <Footer />
   </div>
 );
