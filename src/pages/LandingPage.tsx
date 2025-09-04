@@ -2,7 +2,6 @@ import HeroImage from "../components/HeroImage";
 import PageContent from "../components/PageContent";
 import PageSection from "../components/PageSection";
 import "../index.css";
-import { type LandingPage } from "../model";
 import { useQuery } from "@tanstack/react-query";
 import { FC } from "react";
 import FeaturedContent from "../components/FeaturedContent";
