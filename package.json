@@ -11,9 +11,6 @@
     "fmt:check": "dprint check",
     "model:import": "npx tsx ./scripts/importProject.ts",
     "preview": "vite preview",
-    "test:visual": "playwright test",
-    "test:visual:update": "playwright test --update-snapshots",
-    "test:visual:report": "playwright show-report",
     "codegen": "graphql-codegen --config codegen.ts",
     "codegen:watch": "graphql-codegen --config codegen.ts --watch",
     "codegen:check": "graphql-codegen --config codegen.ts --check"
@@ -41,7 +38,6 @@
     "@graphql-codegen/introspection": "^4.0.3",
     "@kontent-ai/data-ops": "^2.3.9",
     "@parcel/watcher": "^2.5.1",
-    "@playwright/test": "^1.54.2",
     "@types/node": "^22.14.1",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
