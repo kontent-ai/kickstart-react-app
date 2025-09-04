@@ -1,4 +1,4 @@
-# Kontent.ai Kickstart Sample React App
+# Kontent.ai Kickstart Sample React App with GraphQL
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -7,7 +7,7 @@
 [![MIT License][license-shield]][license-url]
 [![Discord][discord-shield]][discord-url]
 
-This repository contains the solution for the Kontent.ai Kickstart Sample React App. It serves as a learning resource for those starting new projects with Kontent.ai, providing a foundational template to build upon.
+This repository contains the solution for the Kontent.ai Kickstart Sample React App using GraphQL. It demonstrates how to fetch content from Kontent.ai using the GraphQL API, providing type-safe queries and efficient data fetching.
 
 If you'd like to explore a fully set up Kontent.ai project, you can import content from one of the backups located in the `./scripts/backups` folder.
 
@@ -34,16 +34,39 @@ This project adheres to a [Code of Conduct](https://github.com/kontent-ai/.githu
 
 - Run `npm ci` to install packages.
 - Create a `.env` file from `.env.template` and fill out all necessary variables.
+- Run `npm run codegen` to generate TypeScript types from the GraphQL schema.
 - Run `npm run dev` to run the application in developer mode.
 
-### Regenerating model
-After updating the Kickstart application's content model, the TypeScript models must also be regenerated. We've provided a script to automate this process using the [Kontent.ai Model Generator](https://github.com/kontent-ai/model-generator-js).
+> [!IMPORTANT]
+> Always run `npm run codegen` after modifying GraphQL queries to regenerate TypeScript types.
+
+### Regenerating GraphQL Types
+After updating GraphQL queries in your components or when the Kontent.ai schema changes, you must regenerate the TypeScript types:
 
 ```bash
-npm run model:generate
+npm run codegen
 ```
+
+This command uses [GraphQL Code Generator](https://the-guild.dev/graphql/codegen) to:
+- Connect to your Kontent.ai GraphQL endpoint
+- Generate TypeScript types in the `src/graphql/` directory
+- Ensure type safety for all GraphQL operations
+
 > [!NOTE]
-> Ensure that the `.env` file contains the `VITE_ENVIRONMENT_ID` and `VITE_MANAGEMENT_API_KEY` variables for proper model generation.
+> Ensure that the `.env` file contains:
+> - `VITE_ENVIRONMENT_ID` (required) - Your Kontent.ai environment ID
+> - `VITE_DELIVERY_API_KEY` (optional) - When provided, uses the preview GraphQL endpoint; otherwise uses production
+
+### GraphQL Development Workflow
+
+This application uses GraphQL for all data fetching from Kontent.ai:
+
+1. **Writing Queries**: GraphQL queries are embedded directly in component files using the `graphql` tag
+2. **Type Generation**: After modifying any GraphQL query, run `npm run codegen` to update TypeScript types
+3. **Generated Files**: All generated types and helpers are located in `src/graphql/` - do not manually edit these files
+4. **Endpoint Selection**: The GraphQL endpoint is automatically determined:
+   - With `VITE_DELIVERY_API_KEY`: Uses preview endpoint for draft content
+   - Without API key: Uses production endpoint for published content only
 
 
 ## License
@@ -63,6 +86,8 @@ If you have any questions or need assistance, please reach out:
 ## Additional Resources
 
 - **Kontent.ai Official Documentation**: [Learn more about Kontent.ai](https://kontent.ai/learn/)
+- **Kontent.ai GraphQL API**: [GraphQL API Documentation](https://kontent.ai/learn/docs/apis/graphql-api)
+- **GraphQL Code Generator**: [Documentation and Configuration](https://the-guild.dev/graphql/codegen)
 
 ---
 
