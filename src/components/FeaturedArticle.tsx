@@ -1,38 +1,36 @@
 import React from "react";
 import FeaturedComponentBase from "./FeaturedComponentBase";
-import { Article } from "../model";
-import { Replace } from "../utils/types";
+import { ArticleFragment } from "../graphql/graphql";
 
 type FeaturedArticleProps = Readonly<{
-  article: Replace<Article, { elements: Partial<Article["elements"]> }>;
+  article: ArticleFragment
 }>;
 
 const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
-  const shouldRender = Object.entries(article.elements).length > 0;
+  const shouldRender = Object.entries(article).length > 0;
 
   return shouldRender && (
-    <FeaturedComponentBase type="article" image={article.elements?.image}>
+    <FeaturedComponentBase type="article" image={article.image.items[0]}>
       <>
         <div>
-          {article.elements.title && (
+          {article.title && (
             <h2 className="text-center xl:text-left text-5xl font-semibold text-burgundy">
-              {article.elements.title.value}
+              {article.title}
             </h2>
           )}
-          {article.elements.publish_date?.value && (
+          {article.publishDate_with_timezone?.value && (
             <p className="text-center xl:text-left text-gray-light mt-6 text-lg">
-              {`Published on ${
-                new Date(article.elements.publish_date.value).toLocaleDateString("en-US", {
-                  month: "short",
-                  year: "numeric",
-                  day: "numeric",
-                })
-              }`}
+              {`Published on ${new Date(article.publishDate_with_timezone.value).toLocaleDateString("en-US", {
+                month: "short",
+                year: "numeric",
+                day: "numeric",
+              })
+                }`}
             </p>
           )}
-          {article.elements.introduction && (
+          {article.introduction && (
             <p className="text-left text-gray-700 mt-4 text-xl">
-              {article.elements.introduction.value}
+              {article.introduction}
             </p>
           )}
         </div>

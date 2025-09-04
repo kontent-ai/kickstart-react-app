@@ -1,11 +1,11 @@
-import { Elements } from "@kontent-ai/delivery-sdk";
 import { FC } from "react";
+import { AssetFragment } from "../graphql/graphql";
 
 type HeroImageProps = Readonly<{
   data: {
-    headline?: Elements.TextElement;
-    subheadline?: Elements.TextElement;
-    heroImage?: Elements.AssetsElement;
+    headline?: string;
+    subheadline?: string;
+    heroImage?: AssetFragment;
   };
 }>;
 
@@ -15,21 +15,21 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
       <div className="xl:basis-1/2">
         {data.headline && (
           <h1 className="text-center xl:text-left font-family-libre text-[64px] md:text-[94px] text-burgundy font-bold leading-[64px] md:leading-[78px]">
-            {data.headline.value}
+            {data.headline}
           </h1>
         )}
         {data.subheadline && (
-          <p className="text-center xl:text-left font-family-sans text-xl text-gray">{data.subheadline.value}</p>
+          <p className="text-center xl:text-left font-family-sans text-xl text-gray">{data.subheadline}</p>
         )}
       </div>
       <div className="xl:basis-1/2">
-        {data.heroImage?.value?.[0]?.url && (
+        {data.heroImage && (
           <img
             className="object-cover mx-auto"
             width={670}
             height={440}
-            src={`${data.heroImage.value[0].url}?auto=format&w=800`}
-            alt={data.heroImage.value[0].description ?? "image-alt"}
+            src={`${data.heroImage.url}?auto=format&w=800`}
+            alt={data.heroImage.description ?? "image-alt"}
           />
         )}
       </div>

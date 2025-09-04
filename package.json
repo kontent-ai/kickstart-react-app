@@ -14,15 +14,21 @@
     "preview": "vite preview",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots",
-    "test:visual:report": "playwright show-report"
+    "test:visual:report": "playwright show-report",
+    "codegen": "graphql-codegen --config codegen.ts",
+    "codegen:watch": "graphql-codegen --config codegen.ts --watch",
+    "codegen:check": "graphql-codegen --config codegen.ts --check"
   },
   "dependencies": {
+    "@graphql-typed-document-node/core": "^3.2.0",
     "@kontent-ai/delivery-sdk": "^16.1.0",
     "@kontent-ai/rich-text-resolver": "^2.0.2",
     "@portabletext/react": "^3.2.1",
     "@tailwindcss/vite": "^4.1.11",
     "@tanstack/react-query": "^5.74.4",
     "dotenv": "^16.5.0",
+    "graphql": "^16.11.0",
+    "graphql-request": "^7.2.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-error-boundary": "^5.0.0",
@@ -30,9 +36,14 @@
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
+    "@0no-co/graphqlsp": "^1.15.0",
     "@eslint/js": "^9.25.1",
+    "@graphql-codegen/cli": "^5.0.7",
+    "@graphql-codegen/client-preset": "^4.8.3",
+    "@graphql-codegen/introspection": "^4.0.3",
     "@kontent-ai/data-ops": "^2.3.9",
     "@kontent-ai/model-generator": "^8.1.1",
+    "@parcel/watcher": "^2.5.1",
     "@playwright/test": "^1.54.2",
     "@types/node": "^22.14.1",
     "@types/react": "^19.1.2",

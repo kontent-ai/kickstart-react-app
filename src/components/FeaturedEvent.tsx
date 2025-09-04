@@ -1,14 +1,13 @@
 import { FC } from "react";
 import FeaturedComponentBase from "./FeaturedComponentBase";
-import { Event } from "../model";
 import { formatDate } from "../utils/date";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
-import { Replace } from "../utils/types";
 import { PortableText } from "@kontent-ai/rich-text-resolver/utils/react";
+import { EventFragment } from "../graphql/graphql";
 
 type FeaturedEventProps = Readonly<{
-  event: Replace<Event, { elements: Partial<Event["elements"]> }>;
+  event: EventFragment;
 }>;
 
 const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
@@ -18,45 +17,43 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
     </div>
   );
 
-  const shouldRender = Object.entries(event.elements).length > 0;
+  const shouldRender = Object.entries(event).length > 0;
 
   return shouldRender
     ? (
-      <FeaturedComponentBase image={event.elements.image} type="event">
+      <FeaturedComponentBase image={event.image.items[0]} type="event">
         <>
           <div>
-            {event.elements.name && (
+            {event.name && (
               <h2 className="text-center xl:text-left text-5xl font-semibold text-burgundy">
-                {event.elements.name.value}
+                {event.name}
               </h2>
             )}
-            {event.elements.start_date && (
+            {event.startDate_with_timezone?.value && (
               <p className="text-center xl:text-left text-gray-light mt-6 text-lg">
-                {`${
-                  event.elements.start_date.value?.length
-                    ? formatDate(event.elements.start_date.value as string)
+                {`${event.startDate_with_timezone.value?.length
+                  ? formatDate(event.startDate_with_timezone.value as string)
+                  : ""
+                  }${event.endDate_with_timezone?.value?.length
+                    ? ` - ${formatDate(event.endDate_with_timezone.value as string)}`
                     : ""
-                }${
-                  event.elements.end_date?.value?.length
-                    ? ` - ${formatDate(event.elements.end_date.value as string)}`
-                    : ""
-                }`}
+                  }`}
               </p>
             )}
             <div className="flex mt-6 gap-2 justify-center xl:justify-normal">
-              {event.elements.event_type?.value.map(t => createTag(t.name.toUpperCase()))}
-              {event.elements.event_topic?.value.map(t => createTag(t.name.toUpperCase()))}
+              {event.eventType.items.map(t => createTag(t._system_.name.toUpperCase()))}
+              {event.eventTopic.items.map(t => createTag(t._system_.name.toUpperCase()))}
             </div>
-            {event.elements.description && (
+            {event.description.html && (
               <div className="mt-4">
                 <PortableText
-                  value={transformToPortableText(event.elements.description.value ?? "")}
+                  value={transformToPortableText(event.description.html)}
                   components={defaultPortableRichTextResolvers}
                 />
               </div>
             )}
           </div>
-          {event.elements.description?.value !== "<p><br></p>" && (
+          {event.description.html !== "<p><br></p>" && (
             <a href="#" className="text-center xl:text-left text-burgundy text-xl mt-6 font-semibold underline">
               Read more
             </a>

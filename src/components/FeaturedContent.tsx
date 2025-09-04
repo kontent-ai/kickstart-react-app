@@ -1,17 +1,17 @@
 import { FC } from "react";
-import { isArticle, isEvent, LandingPage } from "../model";
 import PageSection from "./PageSection";
 import FeaturedArticle from "./FeaturedArticle";
 import FeaturedEvent from "./FeaturedEvent";
 import Divider from "./Divider";
+import { GetLandingPageQueryQuery } from "../graphql/graphql";
 
 type FeaturedContentProps = {
-  featuredContent: LandingPage["elements"]["featured_content"];
+  featuredContent: GetLandingPageQueryQuery['landingPage_All']['items'][0]['featuredContent'];
 };
 
 const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent }) => {
-  const featuredArticle = featuredContent.linkedItems.find(isArticle);
-  const featuredEvent = featuredContent.linkedItems.find(isEvent);
+  const featuredArticle = featuredContent.items.find(item => item.__typename === "Article");
+  const featuredEvent = featuredContent.items.find(item => item.__typename === "Event");
 
   return (
     <>
