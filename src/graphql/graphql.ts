@@ -905,6 +905,27 @@ export type EventFragment = {
     | null;
 };
 
+export type SolutionFragment = {
+  __typename: "Solution";
+  headline: string;
+  introduction: string;
+  _system_: { __typename: "_Sys"; id: string; codename: string };
+  image: {
+    __typename: "_AssetCollection";
+    items: Array<
+      {
+        __typename: "_Asset";
+        url: string;
+        description?: string | null;
+        width?: number | null;
+        height?: number | null;
+        type?: string | null;
+        size?: number | null;
+      }
+    >;
+  };
+};
+
 export type VideoFragment = {
   __typename: "Video";
   headline: string;
@@ -1058,6 +1079,37 @@ export type GetLandingPageQueryQuery = {
   };
 };
 
+export type GetSolutionsQueryQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetSolutionsQueryQuery = {
+  __typename: "_RootQuery";
+  solution_All: {
+    __typename: "Solution_All";
+    items: Array<
+      {
+        __typename: "Solution";
+        headline: string;
+        introduction: string;
+        _system_: { __typename: "_Sys"; id: string; codename: string };
+        image: {
+          __typename: "_AssetCollection";
+          items: Array<
+            {
+              __typename: "_Asset";
+              url: string;
+              description?: string | null;
+              width?: number | null;
+              height?: number | null;
+              type?: string | null;
+              size?: number | null;
+            }
+          >;
+        };
+      }
+    >;
+  };
+};
+
 export class TypedDocumentString<TResult, TVariables> extends String
   implements DocumentTypeDecoration<TResult, TVariables> {
   __apiType?: NonNullable<DocumentTypeDecoration<TResult, TVariables>["__apiType"]>;
@@ -1172,6 +1224,32 @@ export const EventFragmentDoc = new TypedDocumentString(
 }`,
   { fragmentName: "Event" },
 ) as unknown as TypedDocumentString<EventFragment, unknown>;
+export const SolutionFragmentDoc = new TypedDocumentString(
+  `
+    fragment Solution on Solution {
+  __typename
+  _system_ {
+    id
+    codename
+  }
+  headline
+  introduction
+  image {
+    items {
+      ...Asset
+    }
+  }
+}
+    fragment Asset on _Asset {
+  url
+  description
+  width
+  height
+  type
+  size
+}`,
+  { fragmentName: "Solution" },
+) as unknown as TypedDocumentString<SolutionFragment, unknown>;
 export const VideoFragmentDoc = new TypedDocumentString(
   `
     fragment Video on Video {
@@ -1319,3 +1397,33 @@ fragment Video on Video {
     }
   }
 }`) as unknown as TypedDocumentString<GetLandingPageQueryQuery, GetLandingPageQueryQueryVariables>;
+export const GetSolutionsQueryDocument = new TypedDocumentString(`
+    query GetSolutionsQuery {
+  solution_All {
+    items {
+      ...Solution
+    }
+  }
+}
+    fragment Asset on _Asset {
+  url
+  description
+  width
+  height
+  type
+  size
+}
+fragment Solution on Solution {
+  __typename
+  _system_ {
+    id
+    codename
+  }
+  headline
+  introduction
+  image {
+    items {
+      ...Asset
+    }
+  }
+}`) as unknown as TypedDocumentString<GetSolutionsQueryQuery, GetSolutionsQueryQueryVariables>;
