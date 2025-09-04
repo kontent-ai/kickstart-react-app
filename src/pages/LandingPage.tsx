@@ -12,8 +12,6 @@ import { GetLandingPageQuery } from "../queries/getLandingPage";
 
 
 const LandingPage: FC = () => {
-  // const { environmentId, apiKey } = useAppContext();
-
   const landingPage = useQuery({
     queryKey: ["landing_page"],
     queryFn: () =>
