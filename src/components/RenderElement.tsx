@@ -1,6 +1,6 @@
 import { Elements } from "@kontent-ai/delivery-sdk";
 import type { FC, ReactNode } from "react";
-import { ContentTypeCodenames, ElementCodenames } from "../model";
+import { TypeCodenames, ElementCodenames } from "../model";
 import KontentComponentErrorMessage from "./KontentComponentErrorMessage";
 
 type AllElementsUnion =
@@ -30,7 +30,7 @@ type ElementTypeUnion =
 type RenderElementProps = {
   element?: AllElementsUnion;
   elementCodename: ElementCodenames;
-  typeCodename: ContentTypeCodenames;
+  typeCodename: TypeCodenames;
   requiredElementType: ElementTypeUnion;
   errorMessageClassName?: string;
   link: string | undefined;

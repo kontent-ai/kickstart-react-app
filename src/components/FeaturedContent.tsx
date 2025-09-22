@@ -1,17 +1,17 @@
 import { FC } from "react";
-import { isArticle, isEvent, LandingPage } from "../model";
+import { isArticleType, isEventType, LandingPageType } from "../model";
 import PageSection from "./PageSection";
 import FeaturedArticle from "./FeaturedArticle";
 import FeaturedEvent from "./FeaturedEvent";
 import Divider from "./Divider";
 
 type FeaturedContentProps = {
-  featuredContent: LandingPage["elements"]["featured_content"];
+  featuredContent: LandingPageType["elements"]["featured_content"];
 };
 
 const FeaturedContent: FC<FeaturedContentProps> = ({ featuredContent }) => {
-  const featuredArticle = featuredContent.linkedItems.find(isArticle);
-  const featuredEvent = featuredContent.linkedItems.find(isEvent);
+  const featuredArticle = featuredContent.linkedItems.find(isArticleType);
+  const featuredEvent = featuredContent.linkedItems.find(isEventType);
 
   return (
     <>
