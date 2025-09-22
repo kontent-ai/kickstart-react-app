@@ -1,6 +1,6 @@
 import { FC } from "react";
 import FeaturedComponentBase from "./FeaturedComponentBase";
-import { Event } from "../model";
+import { EventType } from "../model";
 import { formatDate } from "../utils/date";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
@@ -10,7 +10,7 @@ import { eventLink } from "../constants/links";
 import { PortableText } from "@kontent-ai/rich-text-resolver/utils/react";
 
 type FeaturedEventProps = Readonly<{
-  event: Replace<Event, { elements: Partial<Event["elements"]> }>;
+  event: Replace<EventType, { elements: Partial<EventType["elements"]> }>;
 }>;
 
 const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
@@ -46,15 +46,13 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
               typeCodename={"event"}
             >
               <p className="text-center xl:text-left text-gray-light mt-6 text-lg">
-                {`${
-                  event.elements.start_date?.value?.length
+                {`${event.elements.start_date?.value?.length
                     ? formatDate(event.elements.start_date?.value as string)
                     : ""
-                }${
-                  event.elements.end_date?.value?.length
+                  }${event.elements.end_date?.value?.length
                     ? ` - ${formatDate(event.elements.end_date?.value as string)}`
                     : ""
-                }`}
+                  }`}
               </p>
             </RenderElement>
             <div className="flex mt-6 gap-2 justify-center xl:justify-normal">

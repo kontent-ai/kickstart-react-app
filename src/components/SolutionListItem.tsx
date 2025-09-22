@@ -3,18 +3,18 @@ import RenderElement from "./RenderElement";
 import { articleLink } from "../constants/links";
 import { createClient } from "../utils/client";
 import { useAppContext } from "../context/AppContext";
-import { Solution } from "../model/content-types/solution";
+import { SolutionType } from "../model";
 import { Replace } from "../utils/types";
 import { DeliveryError } from "@kontent-ai/delivery-sdk";
 
 const SolutionList: React.FC = () => {
   const { environmentId, apiKey } = useAppContext();
 
-  const [solutions, setSolutions] = useState<ReadonlyArray<Solution> | null>(null);
+  const [solutions, setSolutions] = useState<ReadonlyArray<SolutionType> | null>(null);
 
   useEffect(() => {
     createClient(environmentId, apiKey)
-      .items<Solution>()
+      .items<SolutionType>()
       .type("solution")
       .toPromise()
       .then(res => setSolutions(res.data.items))
@@ -41,7 +41,7 @@ const SolutionList: React.FC = () => {
 };
 
 type SolutionListItemProps = Readonly<{
-  solution: Replace<Solution, { elements: Partial<Solution["elements"]> }>;
+  solution: Replace<SolutionType, { elements: Partial<SolutionType["elements"]> }>;
 }>;
 
 const SolutionListItem: React.FC<SolutionListItemProps> = ({ solution }) => {

@@ -1,13 +1,13 @@
 import { FC } from "react";
 import { Elements } from "@kontent-ai/delivery-sdk";
-import { LandingPage, Video as VideoElement } from "../model";
+import { LandingPageType, VideoType } from "../model";
 import Video from "./Video";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
 import { defaultPortableRichTextResolvers } from "../utils/richtext";
 import { PortableText, PortableTextReactResolvers } from "@kontent-ai/rich-text-resolver/utils/react";
 
 type PageContentProps = {
-  body: LandingPage["elements"]["body_copy"];
+  body: LandingPageType["elements"]["body_copy"];
 };
 
 const PageContent: FC<PageContentProps> = ({ body }) => {
@@ -21,7 +21,7 @@ const PageContent: FC<PageContentProps> = ({ body }) => {
 };
 
 const createPortableTextComponents = (
-  element: Elements.RichTextElement<VideoElement>,
+  element: Elements.RichTextElement<VideoType>,
 ): PortableTextReactResolvers => ({
   ...defaultPortableRichTextResolvers,
   types: {

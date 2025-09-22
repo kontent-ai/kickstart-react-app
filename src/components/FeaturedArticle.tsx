@@ -1,12 +1,12 @@
 import React from "react";
 import FeaturedComponentBase from "./FeaturedComponentBase";
-import { Article } from "../model";
+import { ArticleType } from "../model";
 import { Replace } from "../utils/types";
 import RenderElement from "./RenderElement";
 import { articleLink } from "../constants/links";
 
 type FeaturedArticleProps = Readonly<{
-  article: Replace<Article, { elements: Partial<Article["elements"]> }>;
+  article: Replace<ArticleType, { elements: Partial<ArticleType["elements"]> }>;
 }>;
 
 const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
@@ -36,12 +36,11 @@ const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
           >
             <p className="text-center xl:text-left text-gray-light mt-6 text-lg">
               {article.elements.publish_date?.value
-                && `Published on ${
-                  new Date(article.elements.publish_date.value!).toLocaleDateString("en-US", {
-                    month: "short",
-                    year: "numeric",
-                    day: "numeric",
-                  })
+                && `Published on ${new Date(article.elements.publish_date.value!).toLocaleDateString("en-US", {
+                  month: "short",
+                  year: "numeric",
+                  day: "numeric",
+                })
                 }`}
             </p>
           </RenderElement>

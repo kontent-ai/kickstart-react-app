@@ -30,7 +30,7 @@
   "devDependencies": {
     "@eslint/js": "^9.25.1",
     "@kontent-ai/data-ops": "^2.3.13",
-    "@kontent-ai/model-generator": "^8.1.1",
+    "@kontent-ai/model-generator": "^9.1.0",
     "@types/node": "^24.5.2",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
