@@ -4,7 +4,7 @@ import HeroImage from "../components/HeroImage";
 import PageContent from "../components/PageContent";
 import PageSection from "../components/PageSection";
 import "../index.css";
-import { type LandingPage } from "../model";
+import { type LandingPageType } from "../model";
 import { createClient } from "../utils/client";
 import { useSuspenseQueries } from "@tanstack/react-query";
 import { FC } from "react";
@@ -44,7 +44,7 @@ const LandingPage: FC = () => {
             .limitParameter(1)
             .toPromise()
             .then(res =>
-              res.data.items[0] as Replace<LandingPage, { elements: Partial<LandingPage["elements"]> }> ?? null
+              res.data.items[0] as Replace<LandingPageType, { elements: Partial<LandingPageType["elements"]> }> ?? null
             )
             .catch((err) => {
               if (err instanceof DeliveryError) {

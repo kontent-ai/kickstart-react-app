@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import {generateDeliveryModelsAsync} from "@kontent-ai/model-generator";
+import {generateDeliveryModelsAsync, resolveCase} from "@kontent-ai/model-generator";
 
 
 dotenv.config();
@@ -17,15 +17,15 @@ if(!VITE_MANAGEMENT_API_KEY){
 await generateDeliveryModelsAsync(
   {
     environmentId: VITE_ENVIRONMENT_ID,
-    apiKey: VITE_MANAGEMENT_API_KEY,
+    managementApiKey: VITE_MANAGEMENT_API_KEY,
     addTimestamp: false,
     createFiles: true,
     outputDir: "./src/model",
     moduleFileExtension: "ts",
     fileResolvers: {
-      taxonomy: "camelCase",
-      contentType: "camelCase",
-      snippet: "camelCase"
+      taxonomy: (taxonomy) => resolveCase(taxonomy.codename, "camelCase"),
+      contentType: (type) => resolveCase(type.codename, "camelCase"),
+      snippet: (snippet) => resolveCase(snippet.codename, "camelCase"),
     },
     formatOptions: {
       printWidth: 120,

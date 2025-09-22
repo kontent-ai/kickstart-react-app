@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import RenderElement from "./RenderElement";
 import { articleLink } from "../constants/links";
 import { useAppContext } from "../context/AppContext";
-import { Solution } from "../model/content-types/solution";
+import { SolutionType as Solution } from "../model";
 import { Replace } from "../utils/types";
 
 const SolutionList: React.FC = () => {

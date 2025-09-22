@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Video as VideoType } from "../model";
+import { VideoType } from "../model";
 import { Replace } from "../utils/types";
 import RenderElement from "./RenderElement";
 import { videoLink } from "../constants/links";
@@ -48,9 +48,8 @@ const Video: FC<VideoProps> = ({ video }) => {
                 title={video.elements.headline?.value ?? "Video Title"}
                 width={900}
                 height={590}
-                src={`${video.elements.video_link.value}${
-                  video.elements.autoplay?.value[0].codename === "true" ? "&autoplay=1&mute=1" : ""
-                }`}
+                src={`${video.elements.video_link.value}${video.elements.autoplay?.value[0].codename === "true" ? "&autoplay=1&mute=1" : ""
+                  }`}
                 referrerPolicy="strict-origin-when-cross-origin"
                 allow={"autoplay"}
               />
