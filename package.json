@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.3.0",
-    "@kontent-ai/delivery-sdk": "^16.1.0",
+    "@kontent-ai/delivery-sdk": "^16.4.0",
     "@kontent-ai/rich-text-resolver": "^2.0.2",
     "@portabletext/react": "^4.0.3",
     "@tailwindcss/vite": "^4.1.11",
@@ -29,8 +29,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.1",
-    "@kontent-ai/data-ops": "^2.3.13",
-    "@kontent-ai/model-generator": "^9.1.0",
+    "@kontent-ai/data-ops": "^2.5.0",
+    "@kontent-ai/model-generator": "^9.1.1",
     "@types/node": "^24.5.2",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
