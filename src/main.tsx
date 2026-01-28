@@ -1,12 +1,12 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import LandingPage from "./pages/LandingPage.tsx";
-import { AppContextComponent } from "./context/AppContext.tsx";
+import { ErrorBoundary } from "react-error-boundary";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Auth0ProviderWithRedirect from "./components/auth/AuthProviderWithRedirect.tsx";
 import Loader from "./components/Loader.tsx";
-import { ErrorBoundary } from "react-error-boundary";
+import { AppContextComponent } from "./context/AppContext.tsx";
+import LandingPage from "./pages/LandingPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -35,11 +35,11 @@ const router = createBrowserRouter([
             )}
           >
             <Suspense
-              fallback={
+              fallback={(
                 <div className="flex w-screen h-screen justify-center">
                   <Loader />
                 </div>
-              }
+              )}
             >
               <AppContextComponent>
                 <LandingPage />
@@ -52,7 +52,12 @@ const router = createBrowserRouter([
   },
 ]);
 
-createRoot(document.getElementById("root")!).render(
+const root = document.getElementById("root");
+if (!root) {
+  throw new Error("Root element not found");
+}
+
+createRoot(root).render(
   <StrictMode>
     <RouterProvider router={router} />
   </StrictMode>,

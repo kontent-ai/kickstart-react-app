@@ -1,7 +1,7 @@
-import { FC } from "react";
-import Logo from "./Logo";
-import Navigation from "./Navigation";
-import Divider from "./Divider";
+import type { FC } from "react";
+import Divider from "./Divider.tsx";
+import Logo from "./Logo.tsx";
+import Navigation from "./Navigation.tsx";
 
 const Footer: FC = () => (
   <footer className="w-full">
@@ -10,7 +10,9 @@ const Footer: FC = () => (
       <Navigation />
     </div>
     <Divider />
-    <p className="text-[16px] text-gray-light mx-auto w-fit py-[60px]">©2024 Karma Health, LLC. All Rights Reserved.</p>
+    <p className="text-[16px] text-gray-light mx-auto w-fit py-[60px]">
+      ©2024 Karma Health, LLC. All Rights Reserved.
+    </p>
   </footer>
 );
 

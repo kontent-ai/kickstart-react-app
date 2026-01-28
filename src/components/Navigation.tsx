@@ -1,9 +1,11 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 const Navigation: FC = () => {
   const createMenuLink = (name: string) => (
     <li key={name}>
-      <a href="#" className="text-xl leading-5 text-gray w-fit block hover:text-burgundy">{name}</a>
+      <a href="#" className="text-xl leading-5 text-gray w-fit block hover:text-burgundy">
+        {name}
+      </a>
     </li>
   );
 

@@ -1,7 +1,7 @@
-import { Elements } from "@kontent-ai/delivery-sdk";
-import { FC } from "react";
-import RenderElement from "./RenderElement";
-import { landingPageLink } from "../constants/links";
+import type { Elements } from "@kontent-ai/delivery-sdk";
+import type { FC } from "react";
+import { landingPageLink } from "../constants/links.ts";
+import RenderElement from "./RenderElement.tsx";
 
 type HeroImageProps = Readonly<{
   data: {
@@ -19,7 +19,7 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
           element={data.headline}
           elementCodename="headline"
           requiredElementType="text"
-          typeCodename={"landing_page"}
+          typeCodename="landing_page"
           link={landingPageLink}
         >
           <h1 className="text-center xl:text-left font-family-libre text-[64px] md:text-[94px] text-burgundy font-bold leading-[64px] md:leading-[78px]">
@@ -30,10 +30,12 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
           element={data.subheadline}
           elementCodename="subheadline"
           requiredElementType="text"
-          typeCodename={"landing_page"}
+          typeCodename="landing_page"
           link={landingPageLink}
         >
-          <p className="text-center xl:text-left font-family-sans text-xl text-gray">{data.subheadline?.value}</p>
+          <p className="text-center xl:text-left font-family-sans text-xl text-gray">
+            {data.subheadline?.value}
+          </p>
         </RenderElement>
       </div>
       <div className="xl:basis-1/2">
@@ -41,21 +43,18 @@ const HeroImage: FC<HeroImageProps> = ({ data }) => {
           element={data.heroImage}
           elementCodename="hero_image"
           requiredElementType="asset"
-          typeCodename={"landing_page"}
+          typeCodename="landing_page"
           link={landingPageLink}
         >
-          {data.heroImage?.value[0]
-            ? (
-              <img
-                className=" object-cover mx-auto"
-                width={670}
-                height={440}
-                src={`${data.heroImage.value[0].url}?auto=format&w=800`}
-                alt={data.heroImage.value[0].description ?? "image-alt"}
-              >
-              </img>
-            )
-            : <></>}
+          {data.heroImage?.value[0] ? (
+            <img
+              className=" object-cover mx-auto"
+              width={670}
+              height={440}
+              src={`${data.heroImage.value[0].url}?auto=format&w=800`}
+              alt={data.heroImage.value[0].description ?? "image-alt"}
+            />
+          ) : null}
         </RenderElement>
       </div>
     </div>

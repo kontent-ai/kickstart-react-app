@@ -1,5 +1,5 @@
 import { createDeliveryClient } from "@kontent-ai/delivery-sdk";
-import { CoreClientTypes } from "../model";
+import type { CoreClientTypes } from "../model/index.ts";
 
 export const createClient = (environmentId: string, previewApiKey: string) =>
   createDeliveryClient<CoreClientTypes>({
@@ -9,6 +9,6 @@ export const createClient = (environmentId: string, previewApiKey: string) =>
       usePreviewMode: true,
     },
     proxy: {
-      basePreviewUrl: import.meta.env.VITE_DELIVER_URL,
+      basePreviewUrl: import.meta.env.VITE_DELIVER_URL as string | undefined,
     },
   });

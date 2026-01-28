@@ -8,13 +8,17 @@ export type CustomHeaders = Record<string, string>;
 const makeHeaders = (requestContext?: RequestContext): CustomHeaders =>
   requestContext
     ? {
-      ...requestContext.authToken ? { Authorization: `Bearer ${requestContext.authToken}` } : {},
-      ...requestContext.appInstanceId ? { "X-AppInstanceId": requestContext.appInstanceId } : {},
-    }
+        ...(requestContext.authToken
+          ? { Authorization: `Bearer ${requestContext.authToken}` }
+          : {}),
+        ...(requestContext.appInstanceId
+          ? { "X-AppInstanceId": requestContext.appInstanceId }
+          : {}),
+      }
     : {};
 
-export const get = (url: string, requestContext: RequestContext) => {
-  return fetch(url, {
+export const get = async (url: string, requestContext: RequestContext) => {
+  return await fetch(url, {
     method: "get",
     headers: {
       "Content-Type": "application/json",
@@ -24,8 +28,8 @@ export const get = (url: string, requestContext: RequestContext) => {
   });
 };
 
-export const post = (url: string, data: object, requestContext: RequestContext) => {
-  return fetch(url, {
+export const post = async (url: string, data: object, requestContext: RequestContext) => {
+  return await fetch(url, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
