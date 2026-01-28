@@ -1,10 +1,13 @@
-import { FC } from "react";
-import { Elements } from "@kontent-ai/delivery-sdk";
-import { LandingPageType, VideoType } from "../model";
-import Video from "./Video";
+import type { Elements } from "@kontent-ai/delivery-sdk";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
-import { defaultPortableRichTextResolvers } from "../utils/richtext";
-import { PortableText, PortableTextReactResolvers } from "@kontent-ai/rich-text-resolver/utils/react";
+import {
+  PortableText,
+  type PortableTextReactResolvers,
+} from "@kontent-ai/rich-text-resolver/utils/react";
+import type { FC } from "react";
+import type { LandingPageType, VideoType } from "../model/index.ts";
+import { defaultPortableRichTextResolvers } from "../utils/richtext.tsx";
+import Video from "./Video.tsx";
 
 type PageContentProps = {
   body: LandingPageType["elements"]["body_copy"];
@@ -26,9 +29,11 @@ const createPortableTextComponents = (
   ...defaultPortableRichTextResolvers,
   types: {
     componentOrItem: ({ value }) => {
-      const item = element.linkedItems.find(item => item.system.codename === value.componentOrItem._ref);
+      const item = element.linkedItems.find(
+        (item) => item.system.codename === value.componentOrItem._ref,
+      );
       if (!item) {
-        return <div>Did not find any item with codename {value.component._ref}</div>;
+        return <div>Did not find any item with codename {value.componentOrItem._ref}</div>;
       }
 
       return <Video video={item} />;

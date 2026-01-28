@@ -1,5 +1,5 @@
-import { FC, PropsWithChildren } from "react";
-import Container from "./Container";
+import type { FC, PropsWithChildren } from "react";
+import Container from "./Container.tsx";
 
 type PageSectionProps = PropsWithChildren<
   Readonly<{
@@ -9,9 +9,7 @@ type PageSectionProps = PropsWithChildren<
 
 const PageSection: FC<PageSectionProps> = ({ children, color }) => (
   <div className={color}>
-    <Container>
-      {children}
-    </Container>
+    <Container>{children}</Container>
   </div>
 );
 

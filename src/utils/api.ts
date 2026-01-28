@@ -1,4 +1,4 @@
-import { get, post, RequestContext } from "./fetch";
+import { get, post, type RequestContext } from "./fetch.ts";
 
 type LoadPreviewApiKeyDeps = Readonly<{
   accessToken: string;
@@ -18,45 +18,48 @@ type KeyFromSeedResponse = Readonly<{
 }>;
 
 export const loadPreviewApiKey = async ({ accessToken, environmentId }: LoadPreviewApiKeyDeps) => {
-  const projectContainerId = await getProjectContainerForEnvironment(accessToken, environmentId)
-    .then(res => res?.projectContainerId);
+  const projectContainerId = await getProjectContainerForEnvironment(
+    accessToken,
+    environmentId,
+  ).then((res) => res?.projectContainerId);
 
   if (!projectContainerId) {
     return null;
   }
 
-  const tokenSeed = await getPreviewApiTokenSeed(accessToken, projectContainerId, environmentId).then(res =>
-    res?.[0]?.token_seed_id
-  );
+  const tokenSeed = await getPreviewApiTokenSeed(
+    accessToken,
+    projectContainerId,
+    environmentId,
+  ).then((res) => res?.[0]?.token_seed_id);
 
   if (!tokenSeed) {
     return null;
   }
 
   return getKeyForTokenSeed(accessToken, projectContainerId, tokenSeed)
-    .then(response => response.api_key)
+    .then((response) => response.api_key)
     .catch(() => null);
 };
 
-export const getProjectContainerForEnvironment = (
+export const getProjectContainerForEnvironment = async (
   authToken: string,
   environmentId: string,
 ): Promise<ProjectContainer | null> => {
   const requestContext: RequestContext = { authToken };
   const url = `${import.meta.env.VITE_KONTENT_URL}/api/project-management/${environmentId}`;
 
-  return get(url, requestContext)
-    .then(async (res) => {
-      if (res.ok) {
-        return await res.json() as ProjectContainer;
-      }
+  return await get(url, requestContext).then(async (res) => {
+    if (res.ok) {
+      return (await res.json()) as ProjectContainer;
+    }
 
-      console.error((await res.json()).description);
-      return null;
-    });
+    console.error(((await res.json()) as unknown as { description: string }).description);
+    return null;
+  });
 };
 
-export const getPreviewApiTokenSeed = (
+export const getPreviewApiTokenSeed = async (
   authToken: string,
   projectContainerId: string,
   environmentId: string,
@@ -71,25 +74,25 @@ export const getPreviewApiTokenSeed = (
     environments: [environmentId],
   };
 
-  return post(url, data, requestContext)
-    .then(async res => {
-      if (!res.ok) {
-        console.error((await res.json()).description);
-        return null;
-      }
+  return await post(url, data, requestContext).then(async (res) => {
+    if (!res.ok) {
+      const json = (await res.json()) as unknown as { description: string };
+      console.error("description" in json ? String(json.description) : "Unknown error");
+      return null;
+    }
 
-      const tokens = await res.json() as TokenSeedResponse[];
+    const tokens = (await res.json()) as TokenSeedResponse[];
 
-      if (!tokens.length) {
-        console.error(`There is no Delivery API key for environment ${environmentId}`);
-        return null;
-      }
+    if (!tokens.length) {
+      console.error(`There is no Delivery API key for environment ${environmentId}`);
+      return null;
+    }
 
-      return tokens;
-    });
+    return tokens;
+  });
 };
 
-export const getKeyForTokenSeed = (
+export const getKeyForTokenSeed = async (
   authToken: string,
   projectContainerId: string,
   tokenSeed: string,
@@ -99,5 +102,5 @@ export const getKeyForTokenSeed = (
   };
   const url = `${import.meta.env.VITE_KONTENT_URL}/api/project-container/${projectContainerId}/keys/${tokenSeed}`;
 
-  return get(url, requestContext).then(res => res.json());
+  return await get(url, requestContext).then((res) => res.json() as unknown as KeyFromSeedResponse);
 };

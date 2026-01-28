@@ -1,6 +1,6 @@
-import Container from "./Container";
-import Logo from "./Logo";
-import Navigation from "./Navigation";
+import Container from "./Container.tsx";
+import Logo from "./Logo.tsx";
+import Navigation from "./Navigation.tsx";
 
 const Header: React.FC = () => {
   return (

@@ -11,7 +11,9 @@ if (!environmentId || !mapiKey) {
 }
 
 if (!process.env.npm_config_filename) {
-  throw new Error('You have to provide a filename of backup zip file. Provide the "filename" parameter directly without -- (e.g. npm run model:import --filename="<path>").');
+  throw new Error(
+    'You have to provide a filename of backup zip file. Provide the "filename" parameter directly without -- (e.g. npm run model:import --filename="<path>").',
+  );
 }
 
 await cleanEnvironment({
@@ -23,5 +25,5 @@ await restoreEnvironment({
   environmentId,
   apiKey: mapiKey,
   fileName: process.env.npm_config_filename,
-  exclude: ["previewUrls"]
+  exclude: ["previewUrls"],
 });

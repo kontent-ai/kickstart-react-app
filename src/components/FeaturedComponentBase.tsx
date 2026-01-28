@@ -1,7 +1,7 @@
-import { Elements } from "@kontent-ai/delivery-sdk";
-import { FC, PropsWithChildren } from "react";
-import RenderElement from "./RenderElement";
-import { articleLink, eventLink } from "../constants/links";
+import type { Elements } from "@kontent-ai/delivery-sdk";
+import type { FC, PropsWithChildren } from "react";
+import { articleLink, eventLink } from "../constants/links.ts";
+import RenderElement from "./RenderElement.tsx";
 
 type FeaturedContentProps = PropsWithChildren<
   Readonly<{
@@ -22,7 +22,7 @@ const FeaturedComponentBase: FC<FeaturedContentProps> = ({ type, image, children
           typeCodename={type === "article" ? "article" : "event"}
           link={type === "article" ? articleLink : eventLink}
         >
-          {img && (
+          {!!img && (
             <>
               <span className="px-3.5 py-1.5 absolute text-[12px] bg-azure text-white mt-4 ms-4 rounded-md font-bold">
                 {type === "event" ? "FEATURED EVENT" : "FEATURED ARTICLE"}
@@ -30,17 +30,15 @@ const FeaturedComponentBase: FC<FeaturedContentProps> = ({ type, image, children
               <img
                 width={640}
                 height={420}
-                src={image.value[0]?.url ? `${image.value[0]?.url}?auto=format&w=800` : ""}
-                alt={image.value[0].description ?? "image alt"}
+                src={img.url ? `${img.url}?auto=format&w=800` : ""}
+                alt={img.description ?? "image alt"}
                 className="object-cover rounded-lg static"
               />
             </>
           )}
         </RenderElement>
       </div>
-      <div className="basis-2/3 flex flex-col">
-        {children}
-      </div>
+      <div className="basis-2/3 flex flex-col">{children}</div>
     </div>
   );
 };

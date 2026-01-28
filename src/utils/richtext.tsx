@@ -1,9 +1,11 @@
-import { PortableTextReactResolvers } from "@kontent-ai/rich-text-resolver/utils/react";
+import type { PortableTextReactResolvers } from "@kontent-ai/rich-text-resolver/utils/react";
 
 export const defaultPortableRichTextResolvers: PortableTextReactResolvers = {
   list: {
     bullet: ({ children }) => <ul className="text-xl text-gray-700 list-disc ml-8">{children}</ul>,
-    number: ({ children }) => <ol className="text-xl text-gray-700 list-decimal ml-8">{children}</ol>,
+    number: ({ children }) => (
+      <ol className="text-xl text-gray-700 list-decimal ml-8">{children}</ol>
+    ),
   },
   block: {
     h1: ({ children }) => <h1 className="text-8xl font-family-libre text-azure">{children}</h1>,
