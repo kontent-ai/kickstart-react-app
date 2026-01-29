@@ -1,5 +1,5 @@
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
-import { PortableText } from "@kontent-ai/rich-text-resolver/utils/react";
+import { PortableText } from "@kontent-ai/rich-text-resolver-react";
 import type { FC } from "react";
 import { eventLink } from "../constants/links.ts";
 import type { EventType } from "../model/index.ts";

@@ -1,9 +1,6 @@
 import type { Elements } from "@kontent-ai/delivery-sdk";
 import { transformToPortableText } from "@kontent-ai/rich-text-resolver";
-import {
-  PortableText,
-  type PortableTextReactResolvers,
-} from "@kontent-ai/rich-text-resolver/utils/react";
+import { PortableText, type PortableTextReactResolvers } from "@kontent-ai/rich-text-resolver-react";
 import type { FC } from "react";
 import type { LandingPageType, VideoType } from "../model/index.ts";
 import { defaultPortableRichTextResolvers } from "../utils/richtext.tsx";
