@@ -14,6 +14,7 @@ export default defineConfig([
     rules: {
       "react/jsx-max-props-per-line": "off",
       "@typescript-eslint/strict-boolean-expressions": "off",
+      "react/jsx-wrap-multilines": "off",
     },
   },
 ]);
