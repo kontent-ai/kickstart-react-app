@@ -35,11 +35,11 @@ const router = createBrowserRouter([
             )}
           >
             <Suspense
-              fallback={(
+              fallback={
                 <div className="flex w-screen h-screen justify-center">
                   <Loader />
                 </div>
-              )}
+              }
             >
               <AppContextComponent>
                 <LandingPage />

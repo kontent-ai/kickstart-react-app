@@ -44,13 +44,15 @@ const FeaturedEvent: FC<FeaturedEventProps> = ({ event }) => {
           typeCodename="event"
         >
           <p className="text-center xl:text-left text-gray-light mt-6 text-lg">
-            {`${event.elements.start_date?.value?.length
+            {`${
+              event.elements.start_date?.value?.length
                 ? formatDate(event.elements.start_date?.value)
                 : ""
-              }${event.elements.end_date?.value?.length
+            }${
+              event.elements.end_date?.value?.length
                 ? ` - ${formatDate(event.elements.end_date?.value)}`
                 : ""
-              }`}
+            }`}
           </p>
         </RenderElement>
         <div className="flex mt-6 gap-2 justify-center xl:justify-normal">
