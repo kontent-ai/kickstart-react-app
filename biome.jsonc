@@ -7,7 +7,7 @@
   "linter": {
     "rules": {
       "a11y": {
-        "useValidAnchor": "off" // remove as this is a demo not showcasing navigaition
+        "useValidAnchor": "off" // ignored, because the demo doesn't need working navigation
       }
     }
   }
