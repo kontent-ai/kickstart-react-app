@@ -7,8 +7,6 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint ./src",
-    "format": "biome format --write .",
-    "format:check": "biome format .",
     "biome:fix": "biome check --fix .",
     "biome:check": "biome check .",
     "biome:ci": "biome ci .",
