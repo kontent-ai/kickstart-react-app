@@ -26,10 +26,15 @@ await generateDeliveryModelsAsync({
     snippet: (snippet) => resolveCase(snippet.codename, "camelCase"),
   },
   formatOptions: {
-    printWidth: 120,
-    tabWidth: 2,
-    useTabs: false,
-    trailingComma: "all",
-    parser: "typescript",
+    formatter: {
+      lineWidth: 120,
+      indentWidth: 2,
+      indentStyle: "space",
+    },
+    javascript: {
+      formatter: {
+        trailingCommas: "all",
+      },
+    },
   },
 });
