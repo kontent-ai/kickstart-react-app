@@ -1,6 +1,6 @@
 import { Auth0Provider } from "@auth0/auth0-react";
 import type { FC, PropsWithChildren } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 type Props = {
   domain: string;

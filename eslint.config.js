@@ -1,20 +1,18 @@
 import kontentAiConfig from "@kontent-ai/eslint-config";
-import kontentAiReactConfig from "@kontent-ai/eslint-config/react";
 import { defineConfig } from "eslint/config";
 
+// React-specific linting lives in Biome (see biome.jsonc); ESLint covers type-aware TS rules only.
 export default defineConfig([
   {
     files: ["src/**/*.{ts,tsx}"],
-    extends: [kontentAiConfig, kontentAiReactConfig],
+    extends: [kontentAiConfig],
     languageOptions: {
       parserOptions: {
         project: "./tsconfig.app.json",
       },
     },
     rules: {
-      "react/jsx-max-props-per-line": "off",
       "@typescript-eslint/strict-boolean-expressions": "off",
-      "react/jsx-wrap-multilines": "off",
     },
   },
 ]);

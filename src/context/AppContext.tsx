@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createContext, type FC, type PropsWithChildren, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { loadPreviewApiKey } from "../utils/api.ts";
 
 type AppContext = {
